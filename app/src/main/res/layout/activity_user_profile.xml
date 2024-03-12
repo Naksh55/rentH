@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UserProfileActivity">
+
+    <TextView
+        android:id="@+id/ownerprofile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Profile"
+        android:textSize="50dp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="15sp"/>
+
+    <TextView
+        android:id="@+id/username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name of owner"
+        android:textSize="25dp"
+        app:layout_constraintTop_toBottomOf="@+id/ownerprofile"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20sp"/>
+
+    <TextView
+        android:id="@+id/ownerphoneno"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Phone number of owner"
+        android:textSize="25dp"
+        app:layout_constraintTop_toBottomOf="@+id/username"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="15sp"/>
+
+    <TextView
+        android:id="@+id/owneremail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Email of owner"
+        android:textSize="25dp"
+        app:layout_constraintTop_toBottomOf="@+id/ownerphoneno"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="15sp"/>
+
+    <TextView
+        android:id="@+id/about"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="About"
+        android:textSize="40dp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/owneremail"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20sp"/>
+
+    <TextView
+        android:id="@+id/aboutrentH"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="As rentH is the first project to be MADE IN INDIA, rentH can be used by Owner to show their properties to Users. It also helps the User to enquire about the availability of property and check the details of the property at a particular date from a particular location.This Property Booking System will act as a  complete game changer for our current era and this has an ultimate potential to alter markrt which are dominated by some hotels companies.The main objective of this project is to provide the facilities to those people who don't want to stay/check-in a hotel and need a complete privacy at a reasonable price ranges, the main objective is that a family when travels should stay together which is not possible in any hotel and this software provides a medium for users to enjoy all the benefits which was not provided by hotels. This project has contained essential modules like Owner,User and Admin. "
+        app:layout_constraintTop_toBottomOf="@+id/about"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="10sp"
+        android:layout_marginTop="20sp"
+        android:layout_marginStart="10sp"
+        android:layout_marginEnd="10sp"/>
+
+    <Button
+        android:id="@+id/logutbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="LOGOUT"
+        app:layout_constraintTop_toBottomOf="@id/aboutrentH"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="90sp"
+        android:paddingHorizontal="50sp"/>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomnavigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="2dp"
+        app:menu="@menu/bottom_navigation_menu"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

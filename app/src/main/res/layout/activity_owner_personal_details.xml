@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".OwnerPersonalDetails">
+    <androidx.constraintlayout.widget.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent=".1"
+        android:orientation="vertical"
+        android:id="@+id/guide_v_10"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enter personal details"
+        android:textSize="30sp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:id="@+id/ownerhomescreenTV"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingTop="20dp"
+        android:layout_marginTop="30sp"
+        />
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:id="@+id/nametv"
+        android:layout_width="350sp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/ownerhomescreenTV"
+        app:layout_constraintStart_toEndOf="@+id/guide_v_10"
+        android:hint="Enter Name"
+        android:layout_marginTop="50sp"
+        >
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/nameet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/tv"
+            app:layout_constraintStart_toEndOf="@+id/guide_v_10"
+            android:layout_marginTop="30sp"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:id="@+id/agetv"
+        android:layout_width="350sp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/nametv"
+        app:layout_constraintStart_toEndOf="@+id/guide_v_10"
+        android:hint="Enter Age"
+        android:layout_marginTop="20sp"
+        >
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/ageet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            app:layout_constraintTop_toBottomOf="@+id/tv"
+            app:layout_constraintStart_toEndOf="@+id/guide_v_10"
+            android:layout_marginTop="30sp"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/gender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:text="Select Gender"
+        app:layout_constraintTop_toBottomOf="@+id/agetv"
+        app:layout_constraintStart_toEndOf="@+id/guide_v_10"
+        android:layout_marginTop="25sp"/>
+    <RadioGroup
+        android:id="@+id/ownergender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/agetv"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="@id/guide_v_10">
+        <RadioButton
+            android:id="@+id/user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Male"
+            android:textSize="15sp"
+            android:layout_marginLeft="150dp"
+            android:layout_marginTop="-14dp"
+            />
+        <RadioButton
+            android:id="@+id/owner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Female"
+            android:textSize="15sp"
+            android:layout_marginTop="-14dp"
+            android:layout_marginLeft="50dp"
+
+            />
+    </RadioGroup>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:id="@+id/ophonenotv"
+        android:layout_width="350sp"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toBottomOf="@id/gender"
+        app:layout_constraintStart_toEndOf="@+id/guide_v_10"
+        android:hint="Enter Phone number"
+        android:layout_marginTop="20sp"
+        >
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/ophonenoet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            app:layout_constraintTop_toBottomOf="@+id/tv"
+            app:layout_constraintStart_toEndOf="@+id/guide_v_10"
+            android:layout_marginTop="30sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:id="@+id/oemailtv"
+        android:layout_width="350sp"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toBottomOf="@id/ophonenotv"
+        app:layout_constraintStart_toEndOf="@+id/guide_v_10"
+        android:hint="Enter E-mail address"
+        android:layout_marginTop="20sp"
+        >
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/oemailet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/tv"
+            app:layout_constraintStart_toEndOf="@+id/guide_v_10"
+            android:layout_marginTop="30sp"
+            android:inputType="textEmailAddress"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <Button
+        android:id="@+id/onextbtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="180sp"
+        app:layout_constraintTop_toBottomOf="@id/oemailtv"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Next" />
+</androidx.constraintlayout.widget.ConstraintLayout>

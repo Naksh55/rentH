@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".OwnerHomeActivity"
+    android:background="#3366cc">
+<TextView
+    android:id="@+id/owneremail"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="email"
+    android:textSize="20sp"
+    android:layout_marginStart="150sp"/>
+
+    <TextView
+        android:id="@+id/ownerphoneno"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="phone number"
+        android:textSize="20sp"
+        android:layout_marginStart="250sp"/>
+
+    <TextView
+        android:id="@+id/ownername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="name"
+        android:textSize="20sp"
+        android:layout_marginStart="45sp"/>
+    <ImageView
+        android:id="@+id/profileimg"
+        android:layout_width="50sp"
+        android:layout_height="50sp"
+        android:src="@drawable/baseline_account_circle_24"/>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="770dp"
+        android:id="@+id/container"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="70dp"
+        android:background="#FFFFFF"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:padding="10sp"
+        tools:ignore="MissingConstraints"
+        app:layout_constraintBottom_toTopOf="@+id/bottomnavigation2"/>
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomnavigation2"
+        android:layout_width="match_parent"
+        android:layout_height="70sp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="2dp"
+        app:menu="@menu/bottom_navigation_menu2" />
+
+
+</RelativeLayout>

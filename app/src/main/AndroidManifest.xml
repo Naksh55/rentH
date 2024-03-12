@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher_round"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.RentH"
+        tools:targetApi="31">
+        <meta-data
+            android:name="com.google.android.actions"
+            android:resource="@xml/scale_animation" />
+
+        <activity
+            android:name=".UserProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TripDetails"
+            android:exported="false" />
+        <activity
+            android:name=".BookingScreen"
+            android:exported="false" />
+        <activity
+            android:name=".PropertyRecyclerActivityForUser"
+            android:exported="false" />
+        <activity
+            android:name=".PropertyDetails"
+            android:exported="false" />
+        <activity
+            android:name=".OwnerHomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UserHomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".OwnerPersonalDetails"
+            android:exported="false" />
+        <activity
+            android:name=".UserPersonalDetails"
+            android:exported="false" />
+        <activity
+            android:name=".SignUpScreen"
+            android:exported="false" />
+        <activity
+            android:name=".LoginScreen"
+            android:exported="false" />
+        <activity
+            android:name=".SplashActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10sp"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="200sp"
+            android:src="@drawable/baseline_add_box_24"
+            android:id="@+id/img2"
+            android:background="#D5A2DAD3"/>
+
+        <TextView
+            android:id="@+id/tvItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="38sp"
+            android:background="#D5A2DAD3"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:text="House"
+            android:textColor="@color/black"
+            android:layout_below="@id/img2"
+            android:padding="10dp"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/tvItem1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="38sp"
+            android:background="#D5A2DAD3"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:text="$120"
+            android:layout_below="@id/tvItem"
+            android:padding="10dp"
+            tools:ignore="MissingConstraints"
+            android:layout_marginBottom="20sp"/>
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

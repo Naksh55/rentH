@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        tools:context=".LoginScreen"
+        android:background="@color/white"
+    >
+    <ImageView
+        android:id="@+id/login_photo"
+        android:layout_width="350dp"
+        android:layout_height="350dp"
+        android:src="@drawable/loginimage"
+        tools:ignore="MissingConstraints"
+        android:paddingTop="50sp"
+        android:paddingLeft="10sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <!-- Your other views go here -->
+
+        <androidx.constraintlayout.widget.Guideline
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintGuide_percent=".1"
+            android:orientation="vertical"
+            android:id="@+id/guide_v_10"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="LOGIN"
+            android:textSize="30sp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/login_photo"
+            android:id="@+id/tvLogin"
+            android:layout_marginTop="20sp"
+            />
+        <RadioGroup
+            android:id="@+id/person"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tvLogin"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="@id/guide_v_10">
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="User"
+                android:textSize="20sp"
+                android:id="@+id/user"
+                android:layout_marginLeft="130sp"
+
+                />
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/owner"
+                android:text="Owner"
+                android:textSize="20sp"
+
+                />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/loginasTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
+            android:text="Log In as:"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            app:layout_constraintStart_toStartOf="@id/guide_v_10"
+            app:layout_constraintTop_toBottomOf="@+id/tvLogin"
+
+            />
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" Email"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:textStyle="normal"
+            android:layout_marginTop="20sp"
+            app:layout_constraintTop_toBottomOf="@id/person"
+            app:layout_constraintStart_toStartOf="@id/guide_v_10"
+            android:id="@+id/tvEmail"
+            />
+
+        <EditText
+            android:id="@+id/emailet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Enter your email"
+            android:textColor="@color/black"
+            android:textColorHint="#808080"
+            android:inputType="textEmailAddress"
+            android:textSize="20sp"
+            app:layout_constraintTop_toBottomOf="@+id/tvEmail"
+            app:layout_constraintStart_toStartOf="@id/guide_v_10"
+            />
+
+        <TextView
+            android:id="@+id/tvPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" Password"
+            android:textColor="@color/black"
+            android:paddingTop="15sp"
+            android:textSize="25sp"
+            android:textStyle="normal"
+            app:layout_constraintTop_toBottomOf="@id/emailet"
+            app:layout_constraintStart_toStartOf="@id/guide_v_10"
+            />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Enter your password"
+            android:textColor="@color/black"
+            android:textColorHint="#808080"
+            android:inputType="textPassword"
+            android:textSize="20sp"
+            app:layout_constraintTop_toBottomOf="@+id/tvPassword"
+            app:layout_constraintStart_toStartOf="@id/guide_v_10"
+            android:id="@+id/etPassword"
+            />
+
+        <TextView
+            android:id="@+id/signuptext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New to rentH? Please SIGNUP"
+            android:textSize="16sp"
+            android:padding="10sp"
+            android:paddingTop="10sp"
+            android:textColor="#72acaa"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/etPassword"
+            android:layout_marginTop="20dp"
+
+            />
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="LOGIN"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            android:backgroundTint="#b52b79"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/emailet"
+            app:layout_constraintStart_toEndOf="@+id/etPassword"
+            android:layout_marginLeft="200sp"
+            android:id="@+id/loginbtn"
+            android:layout_marginTop="20dp"
+            />
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>

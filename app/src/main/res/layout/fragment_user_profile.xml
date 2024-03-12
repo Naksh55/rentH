@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UserProfileFragment">
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:id="@+id/userprofile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Profile"
+        android:textSize="40dp"
+        android:textStyle="bold"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="15sp"
+        android:layout_marginLeft="30dp"/>
+
+    <TextView
+        android:id="@+id/username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name of user"
+        android:textSize="25dp"
+        android:layout_below="@+id/userprofile"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="20sp"/>
+
+    <TextView
+        android:id="@+id/userphoneno"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Phone number of user"
+        android:textSize="25dp"
+        android:layout_below="@+id/username"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="15sp"/>
+    <TextView
+        android:id="@+id/useremail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Email of user"
+        android:textSize="25dp"
+        android:layout_below="@+id/userphoneno"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="15sp"/>
+
+    <TextView
+        android:id="@+id/about"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="About"
+        android:textSize="40dp"
+        android:textStyle="bold"
+        android:layout_below="@+id/useremail"
+        android:layout_marginTop="20sp"
+        android:layout_marginLeft="30dp"/>
+
+    <TextView
+        android:id="@+id/aboutrentH"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="As rentH is the first project to be MADE IN INDIA, rentH can be used by Owner to show their properties to Users. It also helps the User to enquire about the availability of property and check the details of the property at a particular date from a particular location.This Property Booking System will act as a  complete game changer for our current era and this has an ultimate potential to alter markrt which are dominated by some hotels companies.The main objective of this project is to provide the facilities to those people who don't want to stay/check-in a hotel and need a complete privacy at a reasonable price ranges, the main objective is that a family when travels should stay together which is not possible in any hotel and this software provides a medium for users to enjoy all the benefits which was not provided by hotels. This project has contained essential modules like Owner,User and Admin. "
+        android:layout_below="@+id/about"
+        android:textSize="15sp"
+        android:layout_marginTop="20sp"
+        android:layout_marginLeft="10sp"
+        android:layout_marginRight="10sp"/>
+
+    <Button
+        android:id="@+id/logutbtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="LOGOUT"
+        android:layout_below="@id/aboutrentH"
+        android:layout_marginTop="30sp"
+        android:layout_centerHorizontal="true"
+        android:paddingHorizontal="50sp"/>
+
+</RelativeLayout>
