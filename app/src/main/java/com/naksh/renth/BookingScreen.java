@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -54,7 +55,7 @@ public class BookingScreen extends AppCompatActivity {
             // Show the retrieved values in a toast
             getValuesFromDatabase(parentId);
 //            Toast.makeText(this, "Property ID: " + propertyId, Toast.LENGTH_SHORT).show();
-            Toast.makeText(this, "Parent ID: " + parentId, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Parent ID: " + parentId, Toast.LENGTH_SHORT).show();
 //            Toast.makeText(this, "Parent Info: " + parentInfo, Toast.LENGTH_SHORT).show();
         } else {
             // Handle the case where intent is null
@@ -100,7 +101,7 @@ public class BookingScreen extends AppCompatActivity {
                         typeOfProperty =findViewById(R.id.typeodproperty);
                         city = findViewById(R.id.cityofprperty);
                         propertyDescription = findViewById(R.id.discription);
-
+                        address=findViewById(R.id.addressofprperty);
                         imageView =findViewById(R.id.proimage);
 
                         String state = dataSnapshot.child("state").getValue(String.class);
@@ -108,15 +109,20 @@ public class BookingScreen extends AppCompatActivity {
                         String top = dataSnapshot.child("typeofproperty").getValue(String.class);
                         String cy = dataSnapshot.child("city").getValue(String.class);
                         String pd = dataSnapshot.child("propertydiscription").getValue(String.class);
+                        String addressOfProperty = dataSnapshot.child("address").getValue(String.class);
+
 
                         String imageUrl = dataSnapshot.child("imageUrl").getValue(String.class);
 
 //                        Toast.makeText(BookingScreen.this, imageUrl, Toast.LENGTH_SHORT).show();
-                        stateofproperty.setText("State : " + state);
-                        nameOfProperty.setText("Name : " + nop);
-                        typeOfProperty.setText(top);
-                        city.setText(cy);
-                        propertyDescription.setText(pd);
+                        stateofproperty.setText(Html.fromHtml("<b>State :</b> " + state));
+                        nameOfProperty.setText(Html.fromHtml("<b>Name :</b> " + nop));
+                        typeOfProperty.setText(Html.fromHtml("<b>Type of property :</b> " + top));
+                        city.setText(Html.fromHtml("<b>City :</b> " + cy));
+                        propertyDescription.setText(Html.fromHtml("<b>Description :</b> " + pd));
+                        address.setText(Html.fromHtml("<b>Address :</b> " + addressOfProperty));
+
+
 
                         storageReference = FirebaseStorage.getInstance().getReference();
                         Picasso.get().load(imageUrl).into(imageView);

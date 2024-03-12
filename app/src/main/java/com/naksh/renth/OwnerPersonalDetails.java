@@ -100,6 +100,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -111,6 +112,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.naksh.renth.Models.OwnerPersonalDetailsModel;
+import com.naksh.renth.Models.PropertyDetailsModel;
 import com.naksh.renth.databinding.ActivityOwnerPersonalDetailsBinding;
 
 import java.util.Objects;
@@ -121,6 +123,8 @@ public class OwnerPersonalDetails extends AppCompatActivity {
     ProgressDialog progressDialog;
     DatabaseReference usersRef;
     RadioGroup genderRadioGroup2;
+    String id;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,38 +150,39 @@ public class OwnerPersonalDetails extends AppCompatActivity {
                 String phoneNumber = binding.ophonenoet.getText().toString();
                 String email = binding.oemailet.getText().toString();
 
+                // Generate a unique user ID
+                String userId = usersRef.push().getKey(); // Generate a unique user ID
+                Toast.makeText(OwnerPersonalDetails.this, userId, Toast.LENGTH_SHORT).show();
+                // Set the id in the model
+                OwnerPersonalDetailsModel ownerPersonalDetailsModel = new OwnerPersonalDetailsModel(name,age, gender, phoneNumber, email,userId);
 
-                // Generate a unique user ID (e.g., using push() method)
-                String userId = usersRef.push().getKey();
-                OwnerPersonalDetailsModel ownerPersonalDetailsModel = new OwnerPersonalDetailsModel(name, age, gender, phoneNumber,email);
-                assert userId != null;
+                // Save the data to Firebase using the generated userId
                 usersRef.child(userId).setValue(ownerPersonalDetailsModel)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 progressDialog.dismiss(); // Dismiss the progress dialog
                                 if (task.isSuccessful()) {
-                                    // Pass owner's name to OwnerHomeActivity
-                                    String ownername = binding.nameet.getText().toString();
-                                    String ownerEmail = binding.oemailet.getText().toString();
-                                    String ownerPhone = binding.ophonenoet.getText().toString();
-
-
-                                    Intent intent = new Intent(OwnerPersonalDetails.this, OwnerHomeActivity.class);
-                                    intent.putExtra("ownerName", ownername);
-                                    intent.putExtra("ownerEmail", ownerEmail);
-                                    intent.putExtra("ownerPhone", ownerPhone);
+                                    // Data saved successfully
+                                    // Proceed with your logic
+                                    Intent intent=new Intent(OwnerPersonalDetails.this,OwnerHomeActivity.class);
+                                    Toast.makeText(OwnerPersonalDetails.this, "Data saved successfully!", Toast.LENGTH_SHORT).show();
+                                    Log.d("OwnerPersonalDetails", "Data saved successfully");
                                     startActivity(intent);
-
-                                    finish(); // Finish this activity after starting the next one
+                                    // Proceed to the next activity or perform other actions
                                 } else {
-                                    Toast.makeText(OwnerPersonalDetails.this, "Failed to create user", Toast.LENGTH_SHORT).show();
+                                    // Data save failed
+                                    Toast.makeText(OwnerPersonalDetails.this, "Failed to save data: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                    Log.e("OwnerPersonalDetails", "Failed to save data", task.getException());
                                 }
                             }
                         });
             }
         });
     }
+
+
+
 
     private String getSelectedGender() {
         int selectedId = genderRadioGroup2.getCheckedRadioButtonId();
@@ -190,3 +195,66 @@ public class OwnerPersonalDetails extends AppCompatActivity {
         }
     }
 }
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        binding = ActivityOwnerPersonalDetailsBinding.inflate(getLayoutInflater());
+//        setContentView(binding.getRoot());
+//
+//        // Initialize FirebaseAuth instance
+//        mAuth = FirebaseAuth.getInstance();
+//        FirebaseDatabase database = FirebaseDatabase.getInstance();
+//        usersRef = database.getReference("OwnerPersonalDetailsModel"); // Initialize usersRef
+//        progressDialog = new ProgressDialog(OwnerPersonalDetails.this);
+//        progressDialog.setTitle("Saving personal details");
+//        progressDialog.setMessage("Going to home...");
+//        genderRadioGroup2 = findViewById(R.id.ownergender);
+//        binding.onextbtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                progressDialog.show();
+//                String name = Objects.requireNonNull(binding.nameet.getText()).toString();
+//                int age = Integer.parseInt(Objects.requireNonNull(binding.ageet.getText()).toString());
+//                String gender = getSelectedGender();
+//                String phoneNumber = binding.ophonenoet.getText().toString();
+//                String email = binding.oemailet.getText().toString();
+//
+//
+//                // Generate a unique user ID (e.g., using push() method)
+//                String userId = usersRef.push().getKey();
+//                OwnerPersonalDetailsModel ownerPersonalDetailsModel = new OwnerPersonalDetailsModel(name, age, gender, phoneNumber,email);
+//                assert userId != null;
+//                usersRef.child(userId).setValue(ownerPersonalDetailsModel)
+//                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                            @Override
+//                            public void onComplete(@NonNull Task<Void> task) {
+//                                progressDialog.dismiss(); // Dismiss the progress dialog
+//                                if (task.isSuccessful()) {
+//                                    // Pass owner's name to OwnerHomeActivity
+//                                    String ownername = binding.nameet.getText().toString();
+//                                    String ownerEmail = binding.oemailet.getText().toString();
+//                                    String ownerPhone = binding.ophonenoet.getText().toString();
+//                                    String propertyId = id; // Use the id variable here
+//                                    OwnerPersonalDetailsModel ownerPersonalDetailsModel1;
+//
+//
+//                                    Intent intent = new Intent(OwnerPersonalDetails.this, OwnerHomeActivity.class);
+//                                    intent.putExtra("ownerName", ownername);
+//                                    intent.putExtra("ownerEmail", ownerEmail);
+//                                    intent.putExtra("ownerPhone", ownerPhone);
+//                                    startActivity(intent);
+//
+//                                    finish(); // Finish this activity after starting the next one
+//                                } else {
+//                                    Toast.makeText(OwnerPersonalDetails.this, "Failed to create user", Toast.LENGTH_SHORT).show();
+//                                }
+//                            }
+//
+//                        });
+//
+//            }
+//        });
+//
+//        // Generate property id only once when the user initiates the process
+//        id = usersRef.push().getKey();
+//    }

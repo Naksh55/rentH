@@ -23,13 +23,13 @@
             android:layout_height="331dp"
             android:src="@drawable/ic_image"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="30sp"/>
         <TextView
             android:id="@+id/nameofproperty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Name of property"
-            android:textStyle="bold"
             android:textSize="35sp"
             android:textColor="@color/black"
             app:layout_constraintTop_toBottomOf="@+id/proimage"
@@ -87,7 +87,8 @@
             app:layout_constraintTop_toBottomOf="@+id/stateofprperty"
             app:layout_constraintStart_toEndOf="@+id/guide_v_10"
             android:textSize="25sp"
-            android:text="Property Disription"
+            android:textStyle="bold"
+            android:text="Property Disription : "
             android:paddingTop="20sp"/>
 
         <TextView
