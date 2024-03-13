@@ -8,12 +8,14 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -28,12 +30,20 @@ public class OwnerHomeActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView2;
     OwnerProfileFragment ownerProfile = new OwnerProfileFragment();
     OwnerHomeFragment ownerHome = new OwnerHomeFragment();
+     String ownerId;
 
     //    OwnerNotificationFragment ownerNotification=new OwnerNotificationFragment();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_owner_home);
+        ownerId = getIntent().getStringExtra("id");
+//        Intent i=new Intent(OwnerHomeActivity.this,PropertyDetails.class);
+//        i.putExtra("id", ownerId); // Pass ownerId to PropertyDetails activity
+
+        OwnerHomeFragment fragment = OwnerHomeFragment.newInstance(ownerId, null);
+
+//        Toast.makeText(OwnerHomeActivity.this, ownerId, Toast.LENGTH_SHORT).show();
 //        ownername
         owneremail = findViewById(R.id.owneremail);
         String useremail = getIntent().getStringExtra("ownerEmail");
@@ -48,6 +58,8 @@ public class OwnerHomeActivity extends AppCompatActivity {
         String oPhone = getIntent().getStringExtra("ownerPhone");
         ownerphoneno.setText(oPhone);
 
+        loadFragmentWithOwnerId(fragment); // Call the method to load the fragment with ownerId
+
 
 //        owneremail = findViewById(R.id.owneremail);
 //        String owneremail = getIntent().getStringExtra("ownerName2");
@@ -60,8 +72,20 @@ public class OwnerHomeActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
                 if (item.getItemId() == R.id.ohome) {
+                    if (ownerId != null) {
+                        Toast.makeText(OwnerHomeActivity.this, ownerId, Toast.LENGTH_SHORT).show();
 
-                    getSupportFragmentManager().beginTransaction().replace(R.id.container, ownerHome).commit();
+                        // Create the intent to start PropertyDetails activity
+                        Intent intent = new Intent(OwnerHomeActivity.this, PropertyDetails.class);
+                        intent.putExtra("id", ownerId);
+
+                        // Start the activity with the intent
+                        startActivity(intent);
+
+                    } else {
+                        Toast.makeText(OwnerHomeActivity.this, "Owner ID is null", Toast.LENGTH_SHORT).show();
+                    }
+
                     return true;
                 } else {
                     // Handle other menu items if needed
@@ -95,5 +119,13 @@ public class OwnerHomeActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void loadFragmentWithOwnerId(OwnerHomeFragment fragment) {
+        // Create a new instance of your fragment
+        // Begin the transaction to add the fragment to the layout
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container, fragment) // Replace fragment_container with the ID of your fragment container
+                .commit();
     }
 }

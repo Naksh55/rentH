@@ -151,13 +151,13 @@ public class OwnerPersonalDetails extends AppCompatActivity {
                 String email = binding.oemailet.getText().toString();
 
                 // Generate a unique user ID
-                String userId = usersRef.push().getKey(); // Generate a unique user ID
-                Toast.makeText(OwnerPersonalDetails.this, userId, Toast.LENGTH_SHORT).show();
+                String ownerId = usersRef.push().getKey(); // Generate a unique user ID
+
                 // Set the id in the model
-                OwnerPersonalDetailsModel ownerPersonalDetailsModel = new OwnerPersonalDetailsModel(name,age, gender, phoneNumber, email,userId);
+                OwnerPersonalDetailsModel ownerPersonalDetailsModel = new OwnerPersonalDetailsModel(name,age, gender, phoneNumber, email,ownerId);
 
                 // Save the data to Firebase using the generated userId
-                usersRef.child(userId).setValue(ownerPersonalDetailsModel)
+                usersRef.child(ownerId).setValue(ownerPersonalDetailsModel)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
@@ -165,9 +165,9 @@ public class OwnerPersonalDetails extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     // Data saved successfully
                                     // Proceed with your logic
-                                    Intent intent=new Intent(OwnerPersonalDetails.this,OwnerHomeActivity.class);
-                                    Toast.makeText(OwnerPersonalDetails.this, "Data saved successfully!", Toast.LENGTH_SHORT).show();
-                                    Log.d("OwnerPersonalDetails", "Data saved successfully");
+                                    Toast.makeText(OwnerPersonalDetails.this, ownerId, Toast.LENGTH_SHORT).show();
+                                    Intent intent=new Intent(OwnerPersonalDetails.this,PropertyDetails.class);
+                                    intent.putExtra("id", ownerId); // Pass ownerId to PropertyDetails activity
                                     startActivity(intent);
                                     // Proceed to the next activity or perform other actions
                                 } else {

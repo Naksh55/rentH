@@ -4,6 +4,7 @@ import androidx.fragment.app.Fragment;
 
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -16,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -87,11 +89,22 @@ public class OwnerHomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_owner_home_fragment, container, false);
+
+
+//        Toast.makeText(getContext(), ownerId, Toast.LENGTH_SHORT).show();
+
+        DatabaseReference propertyRef = FirebaseDatabase.getInstance().getReference().child("PropertyDetailsModel").child("id");
+
         ImageView imageView = view.findViewById(R.id.addpropertyimg);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                assert getArguments() != null;
+                String ownerId = getArguments().getString("id");
+                Toast.makeText(getContext(), ownerId, Toast.LENGTH_SHORT).show();
+                // Open PropertyDetails activity and pass the property ID
                 Intent intent = new Intent(getActivity(), PropertyDetails.class);
+                intent.putExtra("id", ownerId);
                 startActivity(intent);
 
             }
