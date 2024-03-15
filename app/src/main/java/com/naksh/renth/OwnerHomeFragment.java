@@ -1,5 +1,7 @@
 package com.naksh.renth;
 
+import static android.content.Intent.getIntent;
+
 import androidx.fragment.app.Fragment;
 
 
@@ -29,6 +31,7 @@ import com.naksh.renth.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 ///**
 // * A simple {@link Fragment} subclass.
@@ -41,7 +44,7 @@ public class OwnerHomeFragment extends Fragment {
     MyAdapter myAdapter2;
     LinearLayoutManager linearLayoutManager;
     ArrayList<String>list;
-
+String ownerId;
 
     private com.naksh.renth.MyAdapter2 adapter;
     // TODO: Rename parameter arguments, choose names that match
@@ -90,6 +93,8 @@ public class OwnerHomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_owner_home_fragment, container, false);
 
+//        assert getArguments() != null;
+         ownerId = getArguments().getString("id");
 
 //        Toast.makeText(getContext(), ownerId, Toast.LENGTH_SHORT).show();
 
@@ -99,16 +104,22 @@ public class OwnerHomeFragment extends Fragment {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                assert getArguments() != null;
-                String ownerId = getArguments().getString("id");
-                Toast.makeText(getContext(), ownerId, Toast.LENGTH_SHORT).show();
-                // Open PropertyDetails activity and pass the property ID
-                Intent intent = new Intent(getActivity(), PropertyDetails.class);
-                intent.putExtra("id", ownerId);
-                startActivity(intent);
-
+                // Check if getArguments() is not null and contains "id" key
+                Bundle args = getArguments();
+                if (args != null && args.containsKey("id")) {
+                    String ownerId = args.getString("id");
+                    Toast.makeText(getContext(), ownerId, Toast.LENGTH_SHORT).show();
+                    // Open PropertyDetails activity and pass the property ID
+                    Intent intent = new Intent(getActivity(), PropertyDetails.class);
+                    intent.putExtra("id", ownerId);
+                    startActivity(intent);
+                } else {
+                    // Handle the case where ownerId is not available
+                    Toast.makeText(getContext(), "Owner ID is not available", Toast.LENGTH_SHORT).show();
+                }
             }
         });
+
 
 
         ArrayList<String> data = new ArrayList<>();

@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white">
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        tools:context=".LoginScreen"
-        android:background="@color/white"
-    >
+        android:layout_height="wrap_content"
+        tools:context=".LoginScreen">
+
     <ImageView
         android:id="@+id/login_photo"
         android:layout_width="350dp"
@@ -174,3 +177,4 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

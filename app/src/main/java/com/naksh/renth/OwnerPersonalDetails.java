@@ -182,8 +182,6 @@ public class OwnerPersonalDetails extends AppCompatActivity {
     }
 
 
-
-
     private String getSelectedGender() {
         int selectedId = genderRadioGroup2.getCheckedRadioButtonId();
         RadioButton selectedRadioButton = findViewById(selectedId);
