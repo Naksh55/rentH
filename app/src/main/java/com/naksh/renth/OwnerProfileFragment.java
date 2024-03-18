@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.naksh.renth.Models.Users;
 
 /**
@@ -26,7 +33,15 @@ import com.naksh.renth.Models.Users;
  * create an instance of this fragment.
  */
 public class OwnerProfileFragment extends Fragment {
-TextView owneremail;
+    TextView owneremail;
+    TextView ownername;
+    TextView ownerphoneno;
+
+    // Declare textView2 as a class-level variable
+    TextView textView2;
+    TextView textView3;
+    TextView textView;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -44,19 +59,20 @@ TextView owneremail;
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
+     * @param ownerId Parameter 1.
      * @param param2 Parameter 2.
      * @return A new instance of fragment OwnerProfileFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static OwnerProfileFragment newInstance(String param1, String param2) {
+    public static OwnerProfileFragment newInstance(String ownerId, String param2) {
         OwnerProfileFragment fragment = new OwnerProfileFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM1, ownerId);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -87,20 +103,17 @@ TextView owneremail;
 public View onCreateView(LayoutInflater inflater, ViewGroup container,
                          Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_owner_profile, container, false);
-    TextView textView = view.findViewById(R.id.owneremail);
+    TextView textView1= view.findViewById(R.id.owneremail);
     TextView textView2 = view.findViewById(R.id.username);
     TextView textView3 = view.findViewById(R.id.ownerphoneno);
 
     Bundle bundle = getArguments();
 
     if (bundle != null) {
-        String receivedText2 = bundle.getString("nameOwner");
-        textView2.setText(receivedText2); // Set name text to textView2
-        String receivedText3 = bundle.getString("emailOwner");
-        textView.setText(receivedText3); // Set email text to textView
-        String receivedText4 = bundle.getString("ownerPhoneNo");
-        textView3.setText(receivedText4);
+        String ownerId = bundle.getString(ARG_PARAM1);
+        retrieveOwnerDetails(ownerId, textView2, textView1, textView3);
     }
+
 
     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(requireContext())
             .setTitle("Logout Confirmation")
@@ -140,5 +153,49 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container,
 
 
     }
+    private void retrieveOwnerDetails(String ownerId,TextView textView3,TextView textView1,TextView textView2) {
+        if (ownerId == null) {
+            // Handle the case where ownerId is null
+            Log.e("OwnerProfileFragment", "OwnerId is null");
+            return;
+        }
+        if (textView1 == null || textView2 == null || textView3 == null) {
+            Log.e("OwnerProfileFragment", "TextView references are null");
+            return;
+        }
 
+        DatabaseReference ownerRef = FirebaseDatabase.getInstance("https://renth-aca8f-default-rtdb.firebaseio.com/")
+                .getReference("OwnerPersonalDetailsModel")
+                .child(ownerId);
+
+        ownerRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.d("OwnerProfileFragment", "DataSnapshot exists: " + dataSnapshot.exists());
+                if (dataSnapshot.exists()) {
+                    // Retrieve owner details
+                    String ownerName = dataSnapshot.child("oname").getValue(String.class);
+                    String ownerEmail = dataSnapshot.child("email").getValue(String.class);
+                    String ownerPhoneNo = dataSnapshot.child("ophoneno").getValue(String.class);
+
+                    // Set owner details to TextViews
+                    textView2.setText(Html.fromHtml("<b>Name:</b> " + ownerName));
+                    textView1.setText(Html.fromHtml("<b>Email:</b> " + ownerEmail));
+                    textView3.setText(Html.fromHtml("<b>PhoneNo:</b> " + ownerPhoneNo));
+
+                } else {
+                    // Handle the case where no owner details are found
+                    Toast.makeText(getContext(), "No owner details found", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+
+
+        });
+    }
 }

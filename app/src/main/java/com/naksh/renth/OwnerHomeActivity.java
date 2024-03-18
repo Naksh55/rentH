@@ -31,38 +31,66 @@ public class OwnerHomeActivity extends AppCompatActivity {
         if (intent != null && intent.hasExtra("id")) {
             ownerId = intent.getStringExtra("id");
             Toast.makeText(OwnerHomeActivity.this, ownerId, Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(OwnerHomeActivity.this, "Intent or ownerId is null", Toast.LENGTH_SHORT).show();
+
+            // Pass the ID to the fragment
+            loadHomeFragmentWithOwnerId(ownerId);
+
+            bottomNavigationView2 = findViewById(R.id.bottomnavigation2);
+            bottomNavigationView2.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(MenuItem item) {
+                    if (item.getItemId() == R.id.addproperty) {
+                        if (ownerId != null) {
+                            Toast.makeText(OwnerHomeActivity.this, ownerId, Toast.LENGTH_SHORT).show();
+
+                            // Create the intent to start PropertyDetails activity
+                            Intent intent = new Intent(OwnerHomeActivity.this, PropertyDetails.class);
+                            intent.putExtra("id", ownerId);
+
+                            // Start the activity with the intent
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(OwnerHomeActivity.this, "Intent or ownerId is null", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                        else if (item.getItemId() == R.id.ohome) {
+                            getSupportFragmentManager().beginTransaction().replace(R.id.container, ownerHome).commit();
+                            return true;
+                        }
+                    
+                    return false;
+                }
+            });
+
+            ImageView profileImg = findViewById(R.id.profileimg);
+            profileImg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    loadProfileFragmentWithOwnerId(ownerId);
+                }
+            });
+            // Other initialization code...
         }
-
-        // Initialize TextViews
-        owneremail = findViewById(R.id.owneremail);
-        ownername = findViewById(R.id.ownername);
-        ownerphoneno = findViewById(R.id.ownerphoneno);
-
-        // Set values to TextViews
-        owneremail.setText(intent.getStringExtra("ownerEmail"));
-        ownername.setText(intent.getStringExtra("ownerName"));
-        ownerphoneno.setText(intent.getStringExtra("ownerPhone"));
-
-        // Create a new instance of OwnerHomeFragment with ownerId
-// Create a new instance of OwnerHomeFragment with ownerId
-        OwnerHomeFragment fragment = OwnerHomeFragment.newInstance(ownerId, null);
-        Bundle args = new Bundle();
-        args.putString("id", ownerId);
-        fragment.setArguments(args);
-
-        // Load the fragment into the activity
-        loadFragmentWithOwnerId(fragment);
-
-        // Other initialization code...
-
-        // ImageView click listener...
     }
 
-    private void loadFragmentWithOwnerId(OwnerHomeFragment fragment) {
+    private void loadProfileFragmentWithOwnerId(String ownerId) {
+        // Create a new instance of the OwnerProfileFragment
+        OwnerProfileFragment fragment = OwnerProfileFragment.newInstance(ownerId, null);
+        Intent intent = new Intent(OwnerHomeActivity.this, OwnerHomeActivity.class);
+        intent.putExtra("id", ownerId);
+        // Start a new transaction to replace the container with the fragment
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container, fragment)
+                .commit();
+    }
+
+    private void loadHomeFragmentWithOwnerId(String ownerId) {
+        // Create a new instance of the OwnerProfileFragment
+        OwnerHomeFragment homeFragment = OwnerHomeFragment.newInstance(ownerId, null);
+
+        // Start a new transaction to replace the container with the fragment
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container, homeFragment)
                 .commit();
     }
 }

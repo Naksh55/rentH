@@ -95,11 +95,12 @@
             android:id="@+id/sepline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="    _____________________________________________________________"
-            android:textColor="@color/background_gradient_end"
+            android:text="              ________________________________________________________"
+            android:textColor="@color/black"
             app:layout_constraintTop_toBottomOf="@+id/prodiscription"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="100dp"
+            app:layout_constraintStart_toEndOf="@+id/guide_v_10"
+            android:layout_marginTop="50sp"
             />
         <TextView
             android:id="@+id/discription"
@@ -119,8 +120,8 @@
             android:text="BOOK NOW"
             app:layout_constraintTop_toBottomOf="@+id/oemail"
             app:layout_constraintStart_toEndOf="@id/guide_v_10"
-            android:layout_marginTop="100sp"
-            android:layout_marginLeft="130dp" />
+            android:layout_marginTop="70sp"
+            android:layout_marginLeft="110dp" />
 
         <TextView
             android:id="@+id/oname"
@@ -137,8 +138,7 @@
             android:id="@+id/opnumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Owner Contact Number"
-            android:textColor="#4848EF"
+            android:text="Owner Contact"
             app:layout_constraintTop_toBottomOf="@+id/oname"
             app:layout_constraintStart_toEndOf="@+id/guide_v_10"
             android:textSize="25sp"

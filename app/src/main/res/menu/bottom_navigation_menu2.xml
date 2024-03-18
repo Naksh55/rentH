@@ -5,7 +5,13 @@
         android:title="Home"
         android:icon="@drawable/baseline_home_24" />
     <item
+        android:id="@+id/addproperty"
+        android:title="Add Profile"
+        android:icon="@drawable/baseline_add_business_24" />
+
+    <item
         android:id="@+id/onotifications"
         android:title="Notifications"
         android:icon="@drawable/baseline_notifications_active_24" />
+
 </menu>

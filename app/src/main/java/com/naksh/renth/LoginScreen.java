@@ -123,7 +123,7 @@ public class LoginScreen extends AppCompatActivity {
         binding.loginbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String currentUserEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+                String currentUserEmail = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail();
                 checkOwnerPersonalDetails(currentUserEmail);
                 int selectedId = binding.person.getCheckedRadioButtonId();
                 if (selectedId == -1) {
@@ -155,7 +155,7 @@ public class LoginScreen extends AppCompatActivity {
                                     if (dataSnapshot.exists()) {
                                         if (userType.equals("User")) {
                                             // If user type is User, navigate to UserHomeActivity
-                                            startActivity(new Intent(LoginScreen.this, UserHomeActivity.class));
+                                            startActivity(new Intent(LoginScreen.this, PropertyRecyclerActivityForUser.class));
                                             finish(); // Finish the current activity
                                         } else if (userType.equals("Owner")) {
                                             // If user type is Owner, check OwnerPersonalDetails

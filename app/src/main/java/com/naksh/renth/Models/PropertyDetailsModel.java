@@ -1,11 +1,13 @@
 package com.naksh.renth.Models;
 
+import java.util.StringTokenizer;
+
 public class PropertyDetailsModel {
 
 
     String nameofproperty,id;
     String typeofproperty,address,city,state,propertydiscription;
-//    String fromdate,todate;
+    String fromdate,todate;
     int priceofproperty;
     private String propertydp; // Assuming imageUrl is the URL of the image
 
@@ -22,7 +24,21 @@ public class PropertyDetailsModel {
         this.propertydp = propertydp;
     }
 
-    public PropertyDetailsModel(String nameofproperty, int priceofproperty, String typeofproperty, String address, String state, String city, String propertydiscription, String id,String propertydp) {
+//    public PropertyDetailsModel(String nameofproperty, String typeofproperty, String address, String city, String state, String propertydiscription, String fromdate, String todate, int priceofproperty, String propertydp, String randomPropertyId) {
+//        this.nameofproperty = nameofproperty;
+//        this.typeofproperty = typeofproperty;
+//        this.address = address;
+//        this.city = city;
+//        this.state = state;
+//        this.propertydiscription = propertydiscription;
+//        this.fromdate = fromdate;
+//        this.todate = todate;
+//        this.priceofproperty = priceofproperty;
+//        this.propertydp = propertydp;
+//        this.randomPropertyId = randomPropertyId;
+//    }
+
+    public PropertyDetailsModel(String nameofproperty, int priceofproperty, String typeofproperty, String address, String state, String city, String propertydiscription, String id, String propertydp, String fromdate, String todate) {
         this.nameofproperty = nameofproperty;
         this.id = id;
         this.typeofproperty = typeofproperty;
@@ -32,6 +48,8 @@ public class PropertyDetailsModel {
         this.propertydiscription = propertydiscription;
         this.priceofproperty = priceofproperty;
         this.propertydp = propertydp;
+        this.fromdate=fromdate;
+        this.todate=todate;
     }
 //    public PropertyDetailsModel(String nameofproperty, String typeofproperty, String address, String city, String state, String propertydiscription, String fromdate, String todate, int priceofproperty,String imageUrl) {
 ////        this.nameofproperty = nameofproperty;
@@ -115,21 +133,21 @@ public class PropertyDetailsModel {
         this.propertydiscription = propertydiscription;
     }
 
-//    public String getFordate() {
-//        return fromdate;
-//    }
+    public String getFordate() {
+        return fromdate;
+    }
 
-//    public void setFromdate(String fromdate) {
-//        this.fromdate = fromdate;
-//    }
+    public void setFromdate(String fromdate) {
+        this.fromdate = fromdate;
+    }
 
-//    public String getTodate() {
-//        return todate;
-//    }
+    public String getTodate() {
+        return todate;
+    }
 
-//    public void setTodate(String todate) {
-//        this.todate = todate;
-//    }
+    public void setTodate(String todate) {
+        this.todate = todate;
+    }
 
     public int getPriceofproperty() {
         return priceofproperty;

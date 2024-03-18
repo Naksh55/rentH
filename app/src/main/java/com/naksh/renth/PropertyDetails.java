@@ -368,7 +368,7 @@ public class PropertyDetails extends AppCompatActivity {
         PropertyDetailsModel propertyDetailsModel;
 
         if (imageUrl != null) {
-            propertyDetailsModel = new PropertyDetailsModel(nameofproperty, priceofproperty, typeofproperty, address, state, city, propertydiscription, ownerId, imageUrl);
+            propertyDetailsModel = new PropertyDetailsModel(nameofproperty, priceofproperty, typeofproperty, address, state, city, propertydiscription, ownerId, imageUrl,fromDateString,toDateString);
         } else {
             propertyDetailsModel = new PropertyDetailsModel(nameofproperty, typeofproperty, address, city, state, propertydiscription, priceofproperty, imageUrl);
         }

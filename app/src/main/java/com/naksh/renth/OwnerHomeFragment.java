@@ -94,31 +94,38 @@ String ownerId;
         View view = inflater.inflate(R.layout.fragment_owner_home_fragment, container, false);
 
 //        assert getArguments() != null;
-         ownerId = getArguments().getString("id");
+//         ownerId = getArguments().getString("id");
 
 //        Toast.makeText(getContext(), ownerId, Toast.LENGTH_SHORT).show();
+        Bundle args = getArguments();
+        if (args != null && args.containsKey("id")) {
+            ownerId = args.getString("id");
+            Toast.makeText(getContext(), ownerId, Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getContext(), "Owner ID is not available", Toast.LENGTH_SHORT).show();
+        }
 
         DatabaseReference propertyRef = FirebaseDatabase.getInstance().getReference().child("PropertyDetailsModel").child("id");
 
-        ImageView imageView = view.findViewById(R.id.addpropertyimg);
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Check if getArguments() is not null and contains "id" key
-                Bundle args = getArguments();
-                if (args != null && args.containsKey("id")) {
-                    String ownerId = args.getString("id");
-                    Toast.makeText(getContext(), ownerId, Toast.LENGTH_SHORT).show();
-                    // Open PropertyDetails activity and pass the property ID
-                    Intent intent = new Intent(getActivity(), PropertyDetails.class);
-                    intent.putExtra("id", ownerId);
-                    startActivity(intent);
-                } else {
-                    // Handle the case where ownerId is not available
-                    Toast.makeText(getContext(), "Owner ID is not available", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+//        ImageView imageView = view.findViewById(R.id.addpropertyimg);
+//        imageView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // Check if getArguments() is not null and contains "id" key
+//                Bundle args = getArguments();
+//                if (args != null && args.containsKey("id")) {
+//                    String ownerId = args.getString("id");
+//                    Toast.makeText(getContext(), ownerId, Toast.LENGTH_SHORT).show();
+//                    // Open PropertyDetails activity and pass the property ID
+//                    Intent intent = new Intent(getActivity(), PropertyDetails.class);
+//                    intent.putExtra("id", ownerId);
+//                    startActivity(intent);
+//                } else {
+//                    // Handle the case where ownerId is not available
+//                    Toast.makeText(getContext(), "Owner ID is not available", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
 
 
 
