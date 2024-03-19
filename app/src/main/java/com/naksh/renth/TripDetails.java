@@ -1,43 +1,43 @@
-package com.naksh.renth;
+        package com.naksh.renth;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+        import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+        import androidx.annotation.NonNull;
+        import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.DatePickerDialog;
-import android.app.ProgressDialog;
-import android.content.Intent;
-import android.os.Bundle;
-import android.text.Html;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.NumberPicker;
-import android.widget.SeekBar;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
+        import android.app.DatePickerDialog;
+        import android.app.ProgressDialog;
+        import android.content.Intent;
+        import android.os.Bundle;
+        import android.text.Html;
+        import android.util.Log;
+        import android.view.View;
+        import android.widget.Button;
+        import android.widget.DatePicker;
+        import android.widget.NumberPicker;
+        import android.widget.SeekBar;
+        import android.widget.Spinner;
+        import android.widget.TextView;
+        import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.naksh.renth.Models.PropertyDetailsModel;
-import com.naksh.renth.Models.TripDetailsModel;
-import com.naksh.renth.Models.UserPersonalDetailsModel;
-import com.naksh.renth.databinding.ActivityPropertyDetailsBinding;
-import com.naksh.renth.databinding.ActivityTripDetailsBinding;
-import com.squareup.picasso.Picasso;
+        import com.google.android.gms.tasks.OnCompleteListener;
+        import com.google.android.gms.tasks.Task;
+        import com.google.firebase.auth.FirebaseAuth;
+        import com.google.firebase.database.DataSnapshot;
+        import com.google.firebase.database.DatabaseError;
+        import com.google.firebase.database.DatabaseReference;
+        import com.google.firebase.database.FirebaseDatabase;
+        import com.google.firebase.database.ValueEventListener;
+        import com.google.firebase.storage.FirebaseStorage;
+        import com.naksh.renth.Models.PropertyDetailsModel;
+        import com.naksh.renth.Models.TripDetailsModel;
+        import com.naksh.renth.Models.UserPersonalDetailsModel;
+        import com.naksh.renth.databinding.ActivityPropertyDetailsBinding;
+        import com.naksh.renth.databinding.ActivityTripDetailsBinding;
+        import com.squareup.picasso.Picasso;
 
-import java.util.Calendar;
-import java.util.Objects;
+        import java.util.Calendar;
+        import java.util.Objects;
 
 public class TripDetails extends AppCompatActivity {
     private FirebaseAuth mAuth;
@@ -158,7 +158,38 @@ public class TripDetails extends AppCompatActivity {
 //                storePropertyDetails(null);
 //            }
 //        });
-
+//
+//        binding.bookingbutton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                progressDialog.show();
+//                String fromDate = Objects.requireNonNull(binding.fromDate.getText()).toString();
+//                int pickerValue = binding.np.getValue();
+//                Log.d(TAG, "Picker value: '" + pickerValue + "'");
+//                int slots = Integer.parseInt(String.valueOf(pickerValue).trim());
+//                int guests = Integer.parseInt(Objects.requireNonNull(binding.guests.getText()).toString());
+//
+//
+//                // Generate a unique user ID (e.g., using push() method)
+//                String userId = databaseReference.push().getKey();
+//                TripDetailsModel tripDetailsModel = new TripDetailsModel(fromDate, slots, guests);
+//                assert userId != null;
+//                databaseReference.child(userId).setValue(tripDetailsModel)
+//                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                            @Override
+//                            public void onComplete(@NonNull Task<Void> task) {
+//                                progressDialog.dismiss(); // Dismiss the progress dialog
+//                                if (task.isSuccessful()) {
+//                                    Intent intent = new Intent(TripDetails.this, LoginScreen.class);
+//                                    startActivity(intent);
+//                                    finish(); // Finish this activity after starting the next one
+//                                } else {
+//                                    Toast.makeText(TripDetails.this, "Failed to save trip details", Toast.LENGTH_SHORT).show();
+//                                }
+//                            }
+//                        });
+//            }
+//        });
         binding.bookingbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -169,18 +200,15 @@ public class TripDetails extends AppCompatActivity {
                 int slots = Integer.parseInt(String.valueOf(pickerValue).trim());
                 int guests = Integer.parseInt(Objects.requireNonNull(binding.guests.getText()).toString());
 
-
-                // Generate a unique user ID (e.g., using push() method)
-                String userId = databaseReference.push().getKey();
+                // Save trip details to the TripDetailsModel node
                 TripDetailsModel tripDetailsModel = new TripDetailsModel(fromDate, slots, guests);
-                assert userId != null;
-                databaseReference.child(userId).setValue(tripDetailsModel)
+                databaseReference.setValue(tripDetailsModel)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 progressDialog.dismiss(); // Dismiss the progress dialog
                                 if (task.isSuccessful()) {
-                                    Intent intent = new Intent(TripDetails.this, LoginScreen.class);
+                                    Intent intent = new Intent(TripDetails.this, PaymentActivity.class);
                                     startActivity(intent);
                                     finish(); // Finish this activity after starting the next one
                                 } else {
@@ -190,14 +218,16 @@ public class TripDetails extends AppCompatActivity {
                         });
             }
         });
-        Button bookingbutton=findViewById(R.id.bookingbutton);
-        bookingbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(TripDetails.this,PaymentActivity.class);
-                startActivity(intent);
-            }
-        });
+
+
+//        Button bookingbutton=findViewById(R.id.bookingbutton);
+//        bookingbutton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent=new Intent(TripDetails.this,PaymentActivity.class);
+//                startActivity(intent);
+//            }
+//        });
     }
     private void showDatePickerDialog(TextView textView) {
         Calendar cal = Calendar.getInstance();

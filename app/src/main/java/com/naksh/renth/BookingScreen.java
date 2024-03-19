@@ -413,6 +413,9 @@ package com.naksh.renth;//package com.naksh.renth;//package com.naksh.renth;
 //}
 
 
+
+import static android.content.ContentValues.TAG;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -436,6 +439,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
 public class BookingScreen extends AppCompatActivity {
 
     TextView stateofproperty;
@@ -451,6 +456,7 @@ public class BookingScreen extends AppCompatActivity {
     ImageView imageView;
     StorageReference storageReference;
     String ownerphoneno;
+    String fromDate,toDate;
 
 
 
@@ -459,24 +465,6 @@ public class BookingScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booking_screen);
-
-        // Retrieve the extras passed from the previous activity
-        Intent intent = getIntent();
-        if (intent != null) {
-            String propertyId = intent.getStringExtra("property_id");
-            if (propertyId != null) {
-                parentId = intent.getStringExtra("parent_id");
-
-                // Retrieve property and owner details using the parent ID
-                retrieveDetailsFromDatabase(propertyId,parentId);
-            } else {
-                // Handle the case where propertyId is null
-                Toast.makeText(this, "Property ID is null", Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            // Handle the case where intent is null
-            Toast.makeText(this, "Intent is null", Toast.LENGTH_SHORT).show();
-        }
 
         TextView phonetext = findViewById(R.id.opnumber);
         phonetext.setOnClickListener(new View.OnClickListener() {
@@ -487,6 +475,38 @@ public class BookingScreen extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        // Retrieve the extras passed from the previous activity
+        Intent intent = getIntent();
+//        String fromDate = null;
+//        String toDate = null;
+        if (intent != null) {
+             fromDate = intent.getStringExtra("from_date");
+             toDate = intent.getStringExtra("to_date");
+            String propertyId = intent.getStringExtra("property_id");
+            if (propertyId != null) {
+                parentId = intent.getStringExtra("parent_id");
+
+                // Retrieve property and owner details using the parent ID
+                retrieveDetailsFromDatabase(propertyId, parentId);
+            } else {
+                // Handle the case where propertyId is null
+                Toast.makeText(this, "Property ID is null", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            // Handle the case where intent is null
+            Toast.makeText(this, "Intent is null", Toast.LENGTH_SHORT).show();
+        }
+
+        Button bookingbutton = findViewById(R.id.bookingbutton);
+        bookingbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Call the method with fromDate and toDate as arguments
+                handleBookingButtonClick();
+            }
+        });
+    }
         // Assuming you have the ownerId from your previous data retrieval process
 
 // Retrieve the phone number from the database
@@ -523,24 +543,25 @@ public class BookingScreen extends AppCompatActivity {
 //                Toast.makeText(BookingScreen.this, "Database error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
 //            }
 //        });
+//        String fromDate;
+//        String toDate;
+        // Declare fromDate and toDate as final outside the OnClickListener
 
-        Button bookingbutton=findViewById(R.id.bookingbutton);
-        bookingbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                assert intent != null;
-                String propertyId = intent.getStringExtra("property_id");
 
-                Intent intent = new Intent(BookingScreen.this, TripDetails.class);
-                intent.putExtra("property_id", propertyId);
-                intent.putExtra("parent_id", parentId);
-                Toast.makeText(BookingScreen.this, "Property ID: " + propertyId, Toast.LENGTH_SHORT).show();
-                Toast.makeText(BookingScreen.this, "Parent ID: " + parentId, Toast.LENGTH_SHORT).show();
+// Define a method to handle button click
+private void handleBookingButtonClick() {
+    assert getIntent() != null;
+    String propertyId = getIntent().getStringExtra("property_id");
+    Intent tripDetailsIntent = new Intent(BookingScreen.this, UserTripDetails.class);
+    tripDetailsIntent.putExtra("property_id", propertyId);
+    tripDetailsIntent.putExtra("parent_id", parentId);
+    tripDetailsIntent.putExtra("from_date", fromDate);
+    tripDetailsIntent.putExtra("to_date", toDate);
+    startActivity(tripDetailsIntent);
+}
 
-                startActivity(intent);
-            }
-        });
-    }
+
+
 
 
     private void retrieveDetailsFromDatabase(String propertyId,String parentId) {
@@ -558,6 +579,8 @@ public class BookingScreen extends AppCompatActivity {
                     String cy = dataSnapshot.child("city").getValue(String.class);
                     String pd = dataSnapshot.child("propertydiscription").getValue(String.class);
                     String addressOfProperty = dataSnapshot.child("address").getValue(String.class);
+                    String fromDate = dataSnapshot.child("fordate").getValue(String.class);
+                    String toDate = dataSnapshot.child("todate").getValue(String.class);
                     imageView =findViewById(R.id.proimage);
                     // Set property details in respective TextViews
                     stateofproperty = findViewById(R.id.stateofprperty);
@@ -579,6 +602,24 @@ public class BookingScreen extends AppCompatActivity {
                     Picasso.get().load(imageUrl).into(imageView);
                     // Retrieve owner details using the parent ID
                     retrieveOwnerDetails(parentId,propertyId);
+
+                    Intent intent = new Intent();
+                    intent.putExtra("property_id", propertyId);
+                    intent.putExtra("parent_id", parentId);
+                    intent.putExtra("from_date", fromDate);
+                    intent.putExtra("to_date", toDate);
+                    if (fromDate != null) {
+                        Toast.makeText(BookingScreen.this, fromDate, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Log.e(TAG, "From date is null");
+                    }
+
+                    if (toDate != null) {
+                        Toast.makeText(BookingScreen.this, toDate, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Log.e(TAG, "To date is null");
+                    }
+
                 } else {
                     // Handle the case where no property details are found
                     Toast.makeText(BookingScreen.this, "No property details found", Toast.LENGTH_SHORT).show();
