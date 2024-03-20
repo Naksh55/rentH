@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -123,8 +124,17 @@ public class LoginScreen extends AppCompatActivity {
         binding.loginbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String currentUserEmail = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail();
-                checkOwnerPersonalDetails(currentUserEmail);
+                // Get current user's email
+                FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                if (currentUser != null) {
+                    String currentUserEmail = currentUser.getEmail();
+                    // Call the method to check owner details
+                    checkOwnerPersonalDetails(currentUserEmail);
+                } else {
+                    // Handle the case where the current user is null
+                    Toast.makeText(LoginScreen.this, "Current user is null", Toast.LENGTH_SHORT).show();
+                }
+
                 int selectedId = binding.person.getCheckedRadioButtonId();
                 if (selectedId == -1) {
                     Toast.makeText(LoginScreen.this, "Please select a category", Toast.LENGTH_SHORT).show();

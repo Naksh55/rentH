@@ -456,8 +456,8 @@ public class BookingScreen extends AppCompatActivity {
     ImageView imageView;
     StorageReference storageReference;
     String ownerphoneno;
-    String fromDate,toDate;
-
+    String fromDate;
+    String toDate;
 
 
 
@@ -481,8 +481,8 @@ public class BookingScreen extends AppCompatActivity {
 //        String fromDate = null;
 //        String toDate = null;
         if (intent != null) {
-             fromDate = intent.getStringExtra("from_date");
-             toDate = intent.getStringExtra("to_date");
+//             String fromDate = intent.getStringExtra("from_date");
+//             String toDate = intent.getStringExtra("to_date");
             String propertyId = intent.getStringExtra("property_id");
             if (propertyId != null) {
                 parentId = intent.getStringExtra("parent_id");
@@ -550,14 +550,45 @@ public class BookingScreen extends AppCompatActivity {
 
 // Define a method to handle button click
 private void handleBookingButtonClick() {
-    assert getIntent() != null;
-    String propertyId = getIntent().getStringExtra("property_id");
-    Intent tripDetailsIntent = new Intent(BookingScreen.this, UserTripDetails.class);
-    tripDetailsIntent.putExtra("property_id", propertyId);
-    tripDetailsIntent.putExtra("parent_id", parentId);
-    tripDetailsIntent.putExtra("from_date", fromDate);
-    tripDetailsIntent.putExtra("to_date", toDate);
-    startActivity(tripDetailsIntent);
+    // Check if fromDate and toDate are not null before using them
+//    DatabaseReference database = FirebaseDatabase.getInstance("https://renth-aca8f-default-rtdb.firebaseio.com/")
+//            .getReference("PropertyDetailsModel");
+//    database.child(fDate).addListenerForSingleValueEvent(new ValueEventListener() {
+//        @Override
+//        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//            if (dataSnapshot.exists()) {
+//                String fromDate = dataSnapshot.child("fordate").getValue(String.class);
+//                String todate = dataSnapshot.child("todate").getValue(String.class);
+                    Intent intent = getIntent();
+                    String fromDate = intent.getStringExtra("from_date");
+                    String toDate = intent.getStringExtra("to_date");
+    Toast.makeText(BookingScreen.this, fromDate+"From date is null" ,Toast.LENGTH_SHORT).show();
+    Toast.makeText(BookingScreen.this, toDate+"to date is null" ,Toast.LENGTH_SHORT).show();
+
+
+//    if (fromDate != null && toDate != null) {
+//                    // Your existing code to create intent and put extra values
+//                    Intent tripDetailsIntent = new Intent();
+//                    tripDetailsIntent.putExtra("from_date", fromDate);
+//                    tripDetailsIntent.putExtra("to_date", toDate);
+//                    // Other code...
+//                } else {
+//                    // Handle the case where fromDate or toDate is null
+//                    Toast.makeText(BookingScreen.this, "From date or to date is null", Toast.LENGTH_SHORT).show();
+//                }
+//            } else {
+//                Toast.makeText(BookingScreen.this, "failed", Toast.LENGTH_SHORT).show();
+//
+//            }
+//
+//        }
+
+//
+//        @Override
+//        public void onCancelled(@androidx.annotation.NonNull DatabaseError error) {
+//
+//        }
+//    });
 }
 
 
@@ -579,8 +610,8 @@ private void handleBookingButtonClick() {
                     String cy = dataSnapshot.child("city").getValue(String.class);
                     String pd = dataSnapshot.child("propertydiscription").getValue(String.class);
                     String addressOfProperty = dataSnapshot.child("address").getValue(String.class);
-                    String fromDate = dataSnapshot.child("fordate").getValue(String.class);
-                    String toDate = dataSnapshot.child("todate").getValue(String.class);
+                    String fromDateValue = dataSnapshot.child("fordate").getValue(String.class);
+                    String toDateValue = dataSnapshot.child("todate").getValue(String.class);
                     imageView =findViewById(R.id.proimage);
                     // Set property details in respective TextViews
                     stateofproperty = findViewById(R.id.stateofprperty);
@@ -601,21 +632,21 @@ private void handleBookingButtonClick() {
                     storageReference = FirebaseStorage.getInstance().getReference();
                     Picasso.get().load(imageUrl).into(imageView);
                     // Retrieve owner details using the parent ID
-                    retrieveOwnerDetails(parentId,propertyId);
+                    retrieveOwnerDetails(parentId, propertyId);
 
                     Intent intent = new Intent();
                     intent.putExtra("property_id", propertyId);
                     intent.putExtra("parent_id", parentId);
-                    intent.putExtra("from_date", fromDate);
-                    intent.putExtra("to_date", toDate);
-                    if (fromDate != null) {
-                        Toast.makeText(BookingScreen.this, fromDate, Toast.LENGTH_SHORT).show();
+                    intent.putExtra("from_date", fromDateValue); // Use different variable names to avoid confusion
+                    intent.putExtra("to_date", toDateValue); // Use different variable names to avoid confusion
+                    if (fromDateValue != null) {
+                        Toast.makeText(BookingScreen.this, fromDateValue, Toast.LENGTH_SHORT).show();
                     } else {
                         Log.e(TAG, "From date is null");
                     }
 
-                    if (toDate != null) {
-                        Toast.makeText(BookingScreen.this, toDate, Toast.LENGTH_SHORT).show();
+                    if (toDateValue != null) {
+                        Toast.makeText(BookingScreen.this, toDateValue, Toast.LENGTH_SHORT).show();
                     } else {
                         Log.e(TAG, "To date is null");
                     }
