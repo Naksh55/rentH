@@ -3,4 +3,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="lb_grey">#CCCCCC</color>
+    <color name="bottom_nav_color">#2196F3</color> <!-- Blue color -->
+    <color name="teal">#008080</color>
+    <color name="light_blue">#64B5F6</color>
+
 </resources>

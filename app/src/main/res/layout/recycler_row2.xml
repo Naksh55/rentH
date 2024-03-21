@@ -14,14 +14,13 @@
             android:layout_height="200sp"
             android:src="@drawable/baseline_add_box_24"
             android:id="@+id/img2"
-            android:background="#D5A2DAD3"/>
+            />
 
         <TextView
             android:id="@+id/tvItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="38sp"
-            android:background="#D5A2DAD3"
             android:gravity="center"
             android:textStyle="bold"
             android:text="House"
@@ -35,7 +34,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="38sp"
-            android:background="#D5A2DAD3"
             android:textStyle="bold"
             android:textColor="@color/black"
             android:gravity="center"

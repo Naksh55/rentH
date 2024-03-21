@@ -24,62 +24,28 @@
         android:id="@+id/paymentmenthod"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Payment Method"
+        android:text="Payment"
         android:textSize="30dp"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@+id/guide_v_11"
         app:layout_constraintStart_toEndOf="@+id/guide_v_10"/>
 
-    <TextView
-        android:id="@+id/modeofpaymentTV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Mode of payment"
-        android:textSize="25sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/pricedetails"
-        app:layout_constraintStart_toEndOf="@+id/guide_v_10"
-        android:layout_marginTop="230sp"/>
+
 
     <Button
         android:id="@+id/makepayment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/renthfee"
-        app:layout_constraintStart_toEndOf="@+id/modeofpaymentTV"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="400sp"
         android:layout_marginLeft="4sp"
         android:text="Make Payment"/>
 
-    <RadioGroup
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/modeofpaymentTV"
-        app:layout_constraintStart_toStartOf="@id/guide_v_10"
-        android:layout_marginTop="20dp"
-        android:orientation="vertical">
-        <RadioButton
-            android:id="@+id/googlepay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Google Pay"
-            app:layout_constraintTop_toBottomOf="@+id/modeofpaymentTV"
-            app:layout_constraintStart_toEndOf="@+id/guide_v_10"/>
-        <RadioButton
-            android:id="@+id/phonepe"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="PhonePe "
-            app:layout_constraintTop_toBottomOf="@+id/googlepay"
-            app:layout_constraintStart_toEndOf="@+id/guide_v_10"/>
-        <RadioButton
-            android:id="@+id/paytm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Paytm "
-            app:layout_constraintTop_toBottomOf="@+id/phonepe"
-            app:layout_constraintStart_toEndOf="@+id/guide_v_10"/>
-    </RadioGroup>
+
 
     <TextView
         android:id="@+id/pricedetails"
@@ -139,7 +105,8 @@
         app:layout_constraintTop_toBottomOf="@+id/ratepernightprice"
         app:layout_constraintStart_toEndOf="@+id/ratepernight"
         android:textSize="20sp"
-        android:text="Rate"
+        android:text="+10%"
+        android:textStyle="bold"
         android:layout_marginTop="25dp"
         android:layout_marginLeft="100sp"/>
     <TextView
@@ -149,7 +116,8 @@
         app:layout_constraintTop_toBottomOf="@+id/cleaningprice"
         app:layout_constraintStart_toEndOf="@+id/ratepernight"
         android:textSize="20sp"
-        android:text="Rate"
+        android:text="+10%"
+        android:textStyle="bold"
         android:layout_marginTop="15dp"
         android:layout_marginLeft="100sp"/>
 
@@ -159,9 +127,10 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/renthfee"
         app:layout_constraintStart_toEndOf="@+id/guide_v_10"
-        android:textSize="20sp"
+        android:textSize="25sp"
+        android:textStyle="bold"
         android:text="Total"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="30dp"
         />
 
     <TextView
@@ -170,7 +139,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/renthfeeprice"
         app:layout_constraintStart_toEndOf="@+id/ratepernight"
-        android:textSize="20sp"
+        android:textSize="25sp"
         android:text="Rate"
         android:layout_marginTop="25dp"
         android:layout_marginLeft="100sp"/>

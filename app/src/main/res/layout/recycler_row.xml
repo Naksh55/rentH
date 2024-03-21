@@ -3,7 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10sp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardBackgroundColor="#64B5F6"
+    app:cardElevation="4dp"
+    app:cardCornerRadius="8dp"
+    android:layout_margin="8dp"
     >
     <RelativeLayout
         android:layout_width="match_parent"
@@ -12,20 +16,18 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="200sp"
+            android:layout_marginTop="10dp"
             android:src="@drawable/baseline_add_box_24"
-            android:id="@+id/propertydp"
-            android:background="#D5A2DAD3"/>
-
+            android:id="@+id/propertydp" />
         <TextView
             android:id="@+id/nameofproperty"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="38sp"
-            android:background="#D5A2DAD3"
             android:gravity="center"
             android:textStyle="bold"
             android:text="House"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:layout_below="@id/propertydp"
             android:padding="10dp"
             tools:ignore="MissingConstraints" />
@@ -35,9 +37,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="38sp"
-            android:background="#D5A2DAD3"
             android:textStyle="bold"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:gravity="center"
             android:text="$120"
             android:layout_below="@id/nameofproperty"

@@ -14,6 +14,7 @@ import com.naksh.renth.Models.PropertyDetailsModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections; // Import Collections utility class
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     private Context context;
@@ -26,7 +27,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         this.list = list;
         this.mListener = listener;
     }
-    public MyAdapter(Context context, ArrayList<PropertyDetailsModel> list){
+
+    public MyAdapter(Context context, ArrayList<PropertyDetailsModel> list) {
         this.context = context;
         this.list = list;
     }
@@ -76,5 +78,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     // Interface for item click listener
     public interface OnItemClickListener {
         void onItemClick(PropertyDetailsModel item);
+    }
+
+    // Method to reverse the list
+    public void reverseList() {
+        Collections.reverse(list);
+        notifyDataSetChanged();
     }
 }

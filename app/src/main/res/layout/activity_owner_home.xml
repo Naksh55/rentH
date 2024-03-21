@@ -6,29 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".OwnerHomeActivity"
     android:background="#3366cc">
-<TextView
-    android:id="@+id/owneremail"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="email"
-    android:textSize="20sp"
-    android:layout_marginStart="150sp"/>
 
-    <TextView
-        android:id="@+id/ownerphoneno"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="phone number"
-        android:textSize="20sp"
-        android:layout_marginStart="250sp"/>
-
-    <TextView
-        android:id="@+id/ownername"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="name"
-        android:textSize="20sp"
-        android:layout_marginStart="45sp"/>
     <ImageView
         android:id="@+id/profileimg"
         android:layout_width="50sp"
@@ -57,6 +35,8 @@
         android:layout_height="70sp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="2dp"
+        app:itemIconTint="@color/bottom_nav_color"
+        app:itemTextColor="@color/bottom_nav_color"
         app:menu="@menu/bottom_navigation_menu2" />
 
 

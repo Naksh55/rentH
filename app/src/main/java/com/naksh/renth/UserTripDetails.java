@@ -52,6 +52,7 @@ public class UserTripDetails extends AppCompatActivity {
     private SeekBar seekBar;
     private TextView progressText;
     String parentId;
+    String propertyId;
 
     @SuppressLint("CutPasteId")
     @Override
@@ -69,7 +70,7 @@ public class UserTripDetails extends AppCompatActivity {
 
             Toast.makeText(UserTripDetails.this, "to date="+toDate, Toast.LENGTH_SHORT).show();
 
-            String propertyId = intent.getStringExtra("property_id");
+            propertyId = intent.getStringExtra("property_id");
             if (propertyId != null) {
                 parentId = intent.getStringExtra("parent_id");
 
@@ -145,7 +146,6 @@ public class UserTripDetails extends AppCompatActivity {
                 progressDialog.show();
                 String selectedDateStr = Objects.requireNonNull(binding.fromDate.getText()).toString();
                 Toast.makeText(UserTripDetails.this, selectedDateStr, Toast.LENGTH_SHORT).show();
-
                 int pickerValue = binding.np.getValue();
                 Log.d(TAG, "Picker value: '" + pickerValue + "'");
                 int slots = Integer.parseInt(String.valueOf(pickerValue).trim());
@@ -153,35 +153,48 @@ public class UserTripDetails extends AppCompatActivity {
                 assert intent != null;
                 String fromDate = intent.getStringExtra("from_date");
                 String toDate = intent.getStringExtra("to_date");
-                Toast.makeText(UserTripDetails.this, "everything is fine till now", Toast.LENGTH_SHORT).show();
                 // Check if the selected date falls within the booking range
                 try {
                     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
                     Date selectedDate = sdf.parse(selectedDateStr);
                     Date from = sdf.parse(fromDate);
+                    Date to = sdf.parse(toDate);
 
-                    if (selectedDate != null && from != null && selectedDate.equals(from)) {
-                        // Selected date is equal to from date
-                        Toast.makeText(UserTripDetails.this, "Selected date is equal to unavailable date", Toast.LENGTH_SHORT).show();
-                    } else {
-                        progressDialog.dismiss();
-                        // Save trip details to the TripDetailsModel node
-                        UserTripDetailsModel userTripDetailsModel = new UserTripDetailsModel(selectedDateStr, slots, guests);
-                        databaseReference.setValue(userTripDetailsModel)
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        progressDialog.dismiss(); // Dismiss the progress dialog
-                                        if (task.isSuccessful()) {
-                                            Intent intent = new Intent(UserTripDetails.this, PaymentActivity.class);
-                                            startActivity(intent);
-                                            finish(); // Finish this activity after starting the next one
-                                        } else {
-                                            Toast.makeText(UserTripDetails.this, "Failed to save trip details", Toast.LENGTH_SHORT).show();
+                    if (selectedDate != null && from != null ) {
+                        if (selectedDate.equals(from) || (selectedDate.after(from) && selectedDate.before(to)) || selectedDate.equals(to)) {
+                            // Selected date is equal to from date
+                            Toast.makeText(UserTripDetails.this, "Selected date is equal to unavailable date", Toast.LENGTH_SHORT).show();
+                            progressDialog.dismiss();
+                        } else {
+                            // Save trip details to the TripDetailsModel node
+                            UserTripDetailsModel userTripDetailsModel = new UserTripDetailsModel(selectedDateStr, slots, guests);
+                            databaseReference.child(propertyId).setValue(userTripDetailsModel)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+//                                        progressDialog.dismiss(); // Dismiss the progress dialog
+                                            if (task.isSuccessful()) {
+                                                progressDialog.dismiss();
+
+                                                Intent intent = new Intent(UserTripDetails.this, PaymentActivity.class);
+                                                intent.putExtra("property_id",propertyId);
+                                                intent.putExtra("parent_id",parentId);
+
+                                                startActivity(intent);
+                                                finish(); // Finish this activity after starting the next one
+                                            } else {
+                                                progressDialog.dismiss(); // Dismiss the progress dialog
+
+                                                Toast.makeText(UserTripDetails.this, "Failed to save trip details", Toast.LENGTH_SHORT).show();
+                                            }
                                         }
-                                    }
-                                });
+                                    });
+                        }
                     }
+                    else{
+                            Toast.makeText(UserTripDetails.this, "Date must not be null", Toast.LENGTH_SHORT).show();
+
+                        }
                 }
                     catch (ParseException e) {
                         e.printStackTrace();
@@ -232,8 +245,7 @@ public class UserTripDetails extends AppCompatActivity {
     }
 
     private void retrieveDetailsFromDatabase(String propertyId,String parentId) {
-        DatabaseReference database = FirebaseDatabase.getInstance("https://renth-aca8f-default-rtdb.firebaseio.com/")
-                .getReference("PropertyDetailsModel");
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference("PropertyDetailsModel");
 
         database.child(propertyId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -241,13 +253,16 @@ public class UserTripDetails extends AppCompatActivity {
                 if (dataSnapshot.exists()) {
                     // Retrieve property details
                     Long priceLong = dataSnapshot.child("priceofproperty").getValue(Long.class);
+//                    Toast.makeText(UserTripDetails.this, Math.toIntExact(priceLong), Toast.LENGTH_SHORT).show();
                     int pop = priceLong != null ? priceLong.intValue() : 0; // Default value if priceLong is null
+
                     TextView priceOfPropertyTextView = findViewById(R.id.priceofprperty);
-                    String priceString = "Price: <b>₹" + pop + "</b>"; // Assuming pop is the price
+                    String priceString = "Price: <b>₹" + pop + ".00"+"</b>"; // Assuming pop is the price
+                    Toast.makeText(UserTripDetails.this, priceString, Toast.LENGTH_SHORT).show();
                     CharSequence styledText = Html.fromHtml(priceString);
                     priceOfPropertyTextView.setText(styledText);
 
-//
+//b
                 } else {
                     // Handle the case where no property details are found
                     Toast.makeText(UserTripDetails.this, "No property details found", Toast.LENGTH_SHORT).show();

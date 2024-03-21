@@ -53,6 +53,7 @@ public class PropertyRecyclerActivityForUser extends AppCompatActivity {
                 retrieveParentInfoFromDatabase(propertyName, item.getPropertyId()); // Pass propertyId as well
             }
         });
+
         recyclerView.setAdapter(myAdapter);
 
         database.addValueEventListener(new ValueEventListener() {
@@ -63,6 +64,7 @@ public class PropertyRecyclerActivityForUser extends AppCompatActivity {
                     PropertyDetailsModel testingModel = dataSnapshot.getValue(PropertyDetailsModel.class);
                     list.add(testingModel);
                 }
+                myAdapter.reverseList(); // Call this method to reverse the list
                 myAdapter.notifyDataSetChanged();
             }
 
