@@ -100,9 +100,9 @@ String ownerId;
         Bundle args = getArguments();
         if (args != null && args.containsKey("id")) {
             ownerId = args.getString("id");
-            Toast.makeText(getContext(), ownerId, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getContext(), ownerId, Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(getContext(), "Owner ID is not available", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getContext(), "Owner ID is not available", Toast.LENGTH_SHORT).show();
         }
 
         DatabaseReference propertyRef = FirebaseDatabase.getInstance().getReference().child("PropertyDetailsModel").child("id");

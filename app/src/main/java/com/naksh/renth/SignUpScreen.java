@@ -122,14 +122,16 @@ public class SignUpScreen extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference usersRef;
     private ProgressDialog progressDialog;
+    EditText email;
+    EditText password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivitySignUpScreenBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        etemail = findViewById(R.id.etemail);
-        etPassword = findViewById(R.id.etPassword);
+        email = findViewById(R.id.etemail);
+        password = findViewById(R.id.etPassword);
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         progressDialog = new ProgressDialog(this);
@@ -142,6 +144,10 @@ public class SignUpScreen extends AppCompatActivity {
             public void onClick(View v) {
                 int selectedId = binding.person2.getCheckedRadioButtonId();
                 if (selectedId != -1) {
+                    if (!validation()) {
+                        return; // Return if validation fails
+                    }
+
                     progressDialog.show(); // Show progress dialog
                     mAuth.createUserWithEmailAndPassword(binding.etemail.getText().toString(), binding.etPassword.getText().toString())
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -184,5 +190,15 @@ public class SignUpScreen extends AppCompatActivity {
                 }
             }
         });
+    }
+    public boolean validation() {
+        String eMail = email.getText().toString().trim();
+        String userPassword = password.getText().toString().trim();
+        if (eMail.isEmpty()||userPassword.isEmpty()){
+            Toast.makeText(this, "All fields must be filled out", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+
     }
 }

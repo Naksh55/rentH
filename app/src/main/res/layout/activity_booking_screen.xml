@@ -95,7 +95,7 @@
             android:id="@+id/sepline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="              ________________________________________________________"
+            android:text="          ________________________________________________________"
             android:textColor="@color/black"
             app:layout_constraintTop_toBottomOf="@+id/prodiscription"
             app:layout_constraintStart_toStartOf="parent"
@@ -150,7 +150,7 @@
             android:text="Owner E-mail id"
             app:layout_constraintTop_toBottomOf="@+id/opnumber"
             app:layout_constraintStart_toEndOf="@+id/guide_v_10"
-            android:textSize="25sp"
+            android:textSize="20sp"
             android:layout_marginTop="25sp"/>
         <TextView
             android:id="@+id/sepline2"

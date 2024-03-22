@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -31,6 +32,7 @@ public class UserPersonalDetails extends AppCompatActivity {
     ProgressDialog progressDialog;
     DatabaseReference usersRef;
     RadioGroup genderRadioGroup;
+    EditText name,age,gernder,phoneno;
 
 
     @Override
@@ -43,6 +45,9 @@ public class UserPersonalDetails extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         usersRef = database.getReference("UserPersonalDetailsModel"); // Initialize usersRef
+        name=findViewById(R.id.onameet);
+        age=findViewById(R.id.oageet);
+        phoneno=findViewById(R.id.phonenoet);
 
         progressDialog = new ProgressDialog(UserPersonalDetails.this);
         progressDialog.setTitle("Saving personal details");
@@ -52,6 +57,14 @@ public class UserPersonalDetails extends AppCompatActivity {
         binding.nextbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                int selectedId = binding.person.getCheckedRadioButtonId();
+//                if (selectedId != -1) {
+//                    if (!validation()) {
+//                        return; // Return if validation fails
+//                    }
+                if (!validation()) {
+                    return; // Return if validation fails
+                }
                 progressDialog.show();
                 String name = Objects.requireNonNull(binding.onameet.getText()).toString();
                 int age = Integer.parseInt(Objects.requireNonNull(binding.oageet.getText()).toString());
@@ -68,7 +81,7 @@ public class UserPersonalDetails extends AppCompatActivity {
                             public void onComplete(@NonNull Task<Void> task) {
                                 progressDialog.dismiss(); // Dismiss the progress dialog
                                 if (task.isSuccessful()) {
-                                    Intent intent = new Intent(UserPersonalDetails.this, LoginScreen.class);
+                                    Intent intent = new Intent(UserPersonalDetails.this, PropertyRecyclerActivityForUser.class);
                                     startActivity(intent);
                                     finish(); // Finish this activity after starting the next one
                                 } else {
@@ -77,17 +90,33 @@ public class UserPersonalDetails extends AppCompatActivity {
                             }
                         });
             }
+
+
         });
     }
-
     private String getSelectedGender() {
-        int selectedId = genderRadioGroup.getCheckedRadioButtonId();
-        RadioButton selectedRadioButton = findViewById(selectedId);
-        if (selectedRadioButton != null) {
-            return selectedRadioButton.getText().toString();
-        } else {
-            Toast.makeText(UserPersonalDetails.this, "Select gender", Toast.LENGTH_SHORT).show();
-            return ""; // Return an empty string or handle the case where no gender is selected
+            int selectedId = genderRadioGroup.getCheckedRadioButtonId();
+            RadioButton selectedRadioButton = findViewById(selectedId);
+            if (selectedRadioButton != null) {
+                return selectedRadioButton.getText().toString();
+            } else {
+//                Toast.makeText(UserPersonalDetails.this, "Select gender", Toast.LENGTH_SHORT).show();
+                return ""; // Return an empty string or handle the case where no gender is selected
+            }
         }
+
+
+
+    public boolean validation() {
+        int selectedId = genderRadioGroup.getCheckedRadioButtonId();
+        String uname = name.getText().toString().trim();
+        String uage = age.getText().toString().trim();
+        String uphoneno = phoneno.getText().toString().trim();
+        if (uname.isEmpty() || uage.isEmpty() || uphoneno.isEmpty()||selectedId==-1) {
+            Toast.makeText(this, "All fields must be filled out", Toast.LENGTH_SHORT).show();
+            return false;
+
+        }
+        return true;
     }
 }

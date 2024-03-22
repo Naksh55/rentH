@@ -150,46 +150,7 @@ public class TripDetails extends AppCompatActivity {
             }
         });
 
-//        binding.bookingbutton.setOnClickListener(v -> {
-//            progressDialog.show();
-//            if (selectedImageUri != null) {
-//                uploadImageToFirebaseStorage(selectedImageUri);
-//            } else {
-//                storePropertyDetails(null);
-//            }
-//        });
 //
-//        binding.bookingbutton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                progressDialog.show();
-//                String fromDate = Objects.requireNonNull(binding.fromDate.getText()).toString();
-//                int pickerValue = binding.np.getValue();
-//                Log.d(TAG, "Picker value: '" + pickerValue + "'");
-//                int slots = Integer.parseInt(String.valueOf(pickerValue).trim());
-//                int guests = Integer.parseInt(Objects.requireNonNull(binding.guests.getText()).toString());
-//
-//
-//                // Generate a unique user ID (e.g., using push() method)
-//                String userId = databaseReference.push().getKey();
-//                TripDetailsModel tripDetailsModel = new TripDetailsModel(fromDate, slots, guests);
-//                assert userId != null;
-//                databaseReference.child(userId).setValue(tripDetailsModel)
-//                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                            @Override
-//                            public void onComplete(@NonNull Task<Void> task) {
-//                                progressDialog.dismiss(); // Dismiss the progress dialog
-//                                if (task.isSuccessful()) {
-//                                    Intent intent = new Intent(TripDetails.this, LoginScreen.class);
-//                                    startActivity(intent);
-//                                    finish(); // Finish this activity after starting the next one
-//                                } else {
-//                                    Toast.makeText(TripDetails.this, "Failed to save trip details", Toast.LENGTH_SHORT).show();
-//                                }
-//                            }
-//                        });
-//            }
-//        });
         binding.bookingbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

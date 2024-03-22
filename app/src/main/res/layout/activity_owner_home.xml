@@ -11,7 +11,8 @@
         android:id="@+id/profileimg"
         android:layout_width="50sp"
         android:layout_height="50sp"
-        android:src="@drawable/baseline_account_circle_24"/>
+        android:src="@drawable/baseline_account_circle_24"
+        android:layout_marginTop="10dp"/>
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="770dp"

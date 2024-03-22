@@ -166,9 +166,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/signuptext"
-            android:layout_marginStart="200sp"
-            android:layout_marginEnd="200sp"
-            android:layout_marginBottom="20dp"
+
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -107,8 +107,8 @@ public class PropertyRecyclerActivityForUser extends AppCompatActivity {
                         Intent intent = new Intent(PropertyRecyclerActivityForUser.this, BookingScreen.class);
                         intent.putExtra("property_id", propertyId);
                         intent.putExtra("parent_id", parentId);
-                        Toast.makeText(PropertyRecyclerActivityForUser.this, "Property ID: " + propertyId, Toast.LENGTH_SHORT).show();
-                        Toast.makeText(PropertyRecyclerActivityForUser.this, "Parent ID: " + parentId, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(PropertyRecyclerActivityForUser.this, "Property ID: " + propertyId, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(PropertyRecyclerActivityForUser.this, "Parent ID: " + parentId, Toast.LENGTH_SHORT).show();
 
                         startActivity(intent);
                         break;

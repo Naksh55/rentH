@@ -30,7 +30,7 @@ public class OwnerHomeActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("id")) {
             ownerId = intent.getStringExtra("id");
-            Toast.makeText(OwnerHomeActivity.this, ownerId, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(OwnerHomeActivity.this, ownerId, Toast.LENGTH_SHORT).show();
 
             // Pass the ID to the fragment
             loadHomeFragmentWithOwnerId(ownerId);
@@ -41,7 +41,7 @@ public class OwnerHomeActivity extends AppCompatActivity {
                 public boolean onNavigationItemSelected(MenuItem item) {
                     if (item.getItemId() == R.id.addproperty) {
                         if (ownerId != null) {
-                            Toast.makeText(OwnerHomeActivity.this, ownerId, Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(OwnerHomeActivity.this, ownerId, Toast.LENGTH_SHORT).show();
 
                             // Create the intent to start PropertyDetails activity
                             Intent intent = new Intent(OwnerHomeActivity.this, PropertyDetails.class);

@@ -487,8 +487,8 @@ public class BookingScreen extends AppCompatActivity {
         if (intent != null) {
              String fromDate = intent.getStringExtra("from_date");
              String toDate = intent.getStringExtra("to_date");
-            Toast.makeText(this, "from date="+fromDate, Toast.LENGTH_SHORT).show();
-            Toast.makeText(this, "to date="+toDate, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "from date="+fromDate, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "to date="+toDate, Toast.LENGTH_SHORT).show();
 
 
             propertyId = intent.getStringExtra("property_id");
@@ -519,7 +519,7 @@ public class BookingScreen extends AppCompatActivity {
                         if (dataSnapshot.exists()) {
                             String fromDate = dataSnapshot.child("fordate").getValue(String.class);
                             String todate = dataSnapshot.child("todate").getValue(String.class);
-                            Toast.makeText(BookingScreen.this, "From:"+fromDate+"    To: "+todate, Toast.LENGTH_LONG).show();
+//                            Toast.makeText(BookingScreen.this, "From:"+fromDate+"    To: "+todate, Toast.LENGTH_LONG).show();
 
 //                Intent intent = getIntent();
 //                if (intent != null) {
@@ -605,7 +605,7 @@ private void handleBookingButtonClick(String propertyId) {
             if (dataSnapshot.exists()) {
                 String fromDate = dataSnapshot.child("fordate").getValue(String.class);
                 String todate = dataSnapshot.child("todate").getValue(String.class);
-                Toast.makeText(BookingScreen.this, "From:"+fromDate+"    To: "+todate, Toast.LENGTH_LONG).show();
+//                Toast.makeText(BookingScreen.this, "From:"+fromDate+"    To: "+todate, Toast.LENGTH_LONG).show();
 
 //                Intent intent = getIntent();
 //                if (intent != null) {
@@ -703,13 +703,13 @@ private void handleBookingButtonClick(String propertyId) {
                     intent.putExtra("from_date", fromDateValue); // Use different variable names to avoid confusion
                     intent.putExtra("to_date", toDateValue); // Use different variable names to avoid confusion
                     if (fromDateValue != null) {
-                        Toast.makeText(BookingScreen.this, fromDateValue, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(BookingScreen.this, fromDateValue, Toast.LENGTH_SHORT).show();
                     } else {
                         Log.e(TAG, "From date is null");
                     }
 
                     if (toDateValue != null) {
-                        Toast.makeText(BookingScreen.this, toDateValue, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(BookingScreen.this, toDateValue, Toast.LENGTH_SHORT).show();
                     } else {
                         Log.e(TAG, "To date is null");
                     }

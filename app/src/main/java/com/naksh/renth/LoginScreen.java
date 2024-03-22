@@ -2,15 +2,12 @@ package com.naksh.renth;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
 
-import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -27,10 +24,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.naksh.renth.Models.Users;
 import com.naksh.renth.databinding.ActivityLoginScreenBinding;
 
-import java.security.acl.Owner;
 import java.util.Objects;
 
 
@@ -39,7 +34,9 @@ public class LoginScreen extends AppCompatActivity {
     ProgressDialog progressDialog;
     FirebaseAuth auth;
     DatabaseReference reference;
-    EditText emailet;
+    EditText email;
+    EditText password;
+
     private String ownerId; // Declare ownerId variable
     // Method to check ownerId from "OwnerPersonalDetails" node
     private void checkOwnerPersonalDetails(String currentUserEmail) {
@@ -63,9 +60,6 @@ public class LoginScreen extends AppCompatActivity {
                             return; // Exit the loop after finding the matching email
                         }
                     }
-                } else {
-                    // Email not found in OwnerPersonalDetailsActivity node
-                    Toast.makeText(LoginScreen.this, "Owner data not found", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -76,31 +70,6 @@ public class LoginScreen extends AppCompatActivity {
             }
         });
     }
-//    private void checkOwnerPersonalDetails(String currentUserUid) {
-//        DatabaseReference ownerRef = FirebaseDatabase.getInstance().getReference().child("OwnerPersonalDetailsModel").child(currentUserUid);
-//
-//        ownerRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                if (dataSnapshot.exists()) {
-//                    // Owner personal details found, retrieve and process the data
-//                    String ownerId = dataSnapshot.child("id").getValue(String.class);
-//                    Toast.makeText(LoginScreen.this, "Owner data  found", Toast.LENGTH_SHORT).show();
-//
-//                    // Retrieve other owner details as needed
-//                } else {
-//                    // Owner personal details not found
-//                    Toast.makeText(LoginScreen.this, "Owner data not found", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                // Handle potential database error
-//                Toast.makeText(LoginScreen.this, "Database error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,7 +80,8 @@ public class LoginScreen extends AppCompatActivity {
         progressDialog = new ProgressDialog(LoginScreen.this);
         progressDialog.setTitle("Log in");
         progressDialog.setMessage("Logging in....");
-        emailet = findViewById(R.id.emailet);
+        email = findViewById(R.id.emailet);
+        password=findViewById(R.id.etPassword);
         TextView signuptext = findViewById(R.id.signuptext);
         signuptext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,6 +96,9 @@ public class LoginScreen extends AppCompatActivity {
             public void onClick(View v) {
                 // Get current user's email
                 FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                if (!validation()) {
+                    return; // Return if validation fails
+                }
                 if (currentUser != null) {
                     String currentUserEmail = currentUser.getEmail();
                     // Call the method to check owner details
@@ -144,6 +117,8 @@ public class LoginScreen extends AppCompatActivity {
                 // Getting the selected radio button and user type
                 RadioButton selectedRadioButton = findViewById(selectedId);
                 String userType = selectedRadioButton.getText().toString();
+
+                validation();
 
                 // Showing progress dialog
                 progressDialog.show();
@@ -167,6 +142,8 @@ public class LoginScreen extends AppCompatActivity {
                                             // If user type is User, navigate to UserHomeActivity
                                             startActivity(new Intent(LoginScreen.this, PropertyRecyclerActivityForUser.class));
                                             finish(); // Finish the current activity
+                                            return; // Return to prevent further execution
+
                                         } else if (userType.equals("Owner")) {
                                             // If user type is Owner, check OwnerPersonalDetails
                                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
@@ -184,8 +161,13 @@ public class LoginScreen extends AppCompatActivity {
                                     } else {
                                         // Handle the case where the user data doesn't exist
                                         Toast.makeText(LoginScreen.this, "User data not found", Toast.LENGTH_SHORT).show();
+
                                     }
+                                    // Display toast message for incorrect category selection
+//                                    Toast.makeText(LoginScreen.this, "Please select correct category", Toast.LENGTH_SHORT).show();
                                 }
+
+
 
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError error) {
@@ -194,7 +176,7 @@ public class LoginScreen extends AppCompatActivity {
                             });
 
                         } else {
-                            Toast.makeText(LoginScreen.this, "Login failed", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginScreen.this, "Login failed,please put correct credentials", Toast.LENGTH_LONG).show();
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -205,114 +187,18 @@ public class LoginScreen extends AppCompatActivity {
                     }
                 });
             }
+
         });
+    }
+    public boolean validation() {
+        String eMail = email.getText().toString().trim();
+        String userPassword = password.getText().toString().trim();
+    if (eMail.isEmpty()||userPassword.isEmpty()){
+        Toast.makeText(this, "All fields must be filled out", Toast.LENGTH_SHORT).show();
+        return false;
+    }
+        return true;
+
     }
 }
 
-
-
-
-//public class LoginScreen extends AppCompatActivity {
-//    // Declare variables
-//    private ActivityLoginScreenBinding binding;
-//    private ProgressDialog progressDialog;
-//    private FirebaseAuth auth;
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        binding = ActivityLoginScreenBinding.inflate(getLayoutInflater());
-//        setContentView(binding.getRoot());
-//
-//        // Initialize Firebase authentication
-//        auth = FirebaseAuth.getInstance();
-//        progressDialog = new ProgressDialog(LoginScreen.this);
-//        progressDialog.setTitle("Log in");
-//        progressDialog.setMessage("Logging in....");
-//        TextView signuptext = findViewById(R.id.signuptext);
-//                            signuptext.setOnClickListener(new View.OnClickListener() {
-//                                @Override
-//                                public void onClick(View v) {
-//                                    Intent loginIntent = new Intent(LoginScreen.this, SignUpScreen.class);
-//                                    startActivity(loginIntent);
-//                                }
-//                            });
-//        // Set onClickListener for login button
-//        binding.loginbtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // Get selected radio button ID
-//                int selectedId = binding.person.getCheckedRadioButtonId();
-//                if (selectedId == -1) {
-//                    Toast.makeText(LoginScreen.this, "Please select a category", Toast.LENGTH_SHORT).show();
-//                    return; // Return without attempting to sign in
-//                }
-//
-//                // Get the selected radio button and user type
-//                RadioButton selectedRadioButton = findViewById(selectedId);
-//                String userType = selectedRadioButton.getText().toString();
-//
-//                // Show progress dialog
-//                progressDialog.show();
-//
-//                // Attempt to sign in with email and password
-//                auth.signInWithEmailAndPassword(binding.emailet.getText().toString(), binding.etPassword.getText().toString())
-//                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-//                            @Override
-//                            public void onComplete(@NonNull Task<AuthResult> task) {
-//                                progressDialog.dismiss(); // Dismiss progress dialog
-//                                if (task.isSuccessful()) {
-//                                    // If sign in is successful, proceed with user validation
-//                                    validateUser(userType);
-//                                } else {
-//                                    // If sign in fails, display a message to the user.
-//                                    Toast.makeText(LoginScreen.this, "Authentication failed.",
-//                                            Toast.LENGTH_SHORT).show();
-//                                }
-//                            }
-//                        });
-//            }
-//        });
-//    }
-//
-//    // Method to validate user and proceed accordingly
-//    private void validateUser(String userType) {
-//        // Get current user's UID
-//        String currentUserUid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
-//
-//        // Check if the user is an owner
-//        if (userType.equals("Owner")) {
-//            // Retrieve ownerId from OwnerPersonalDetailsModel
-//            DatabaseReference ownerRef = FirebaseDatabase.getInstance().getReference()
-//                    .child("OwnerPersonalDetailsModel").child(currentUserUid);
-//            ownerRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                    if (dataSnapshot.exists()) {
-//                        // Owner exists, retrieve ownerId and start OwnerHomeActivity
-//                        String ownerId = dataSnapshot.child("id").getValue(String.class);
-//                        startOwnerHomeActivity(ownerId);
-//                    } else {
-//                        // Owner does not exist
-//                        Toast.makeText(LoginScreen.this, "Owner data not found", Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//
-//                @Override
-//                public void onCancelled(@NonNull DatabaseError error) {
-//                    // Handle database error
-//                }
-//            });
-//        } else {
-//            // Start UserHomeActivity for regular users
-//            startActivity(new Intent(LoginScreen.this, PropertyRecyclerActivityForUser.class));
-//        }
-//    }
-//
-//    // Method to start OwnerHomeActivity with ownerId
-//    private void startOwnerHomeActivity(String ownerId) {
-//        Intent intent = new Intent(LoginScreen.this, OwnerHomeActivity.class);
-//        intent.putExtra("id", ownerId);
-//        startActivity(intent);
-//    }
-//}

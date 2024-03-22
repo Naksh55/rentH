@@ -64,23 +64,17 @@ public class UserTripDetails extends AppCompatActivity {
 //        TextView selectedDate = findViewById(R.id.fromDate);
         Intent intent = getIntent();
         if (intent != null) {
+
             String fromDate = intent.getStringExtra("from_date");
             String toDate = intent.getStringExtra("to_date");
-            Toast.makeText(UserTripDetails.this,"from date="+fromDate, Toast.LENGTH_SHORT).show();
-
-            Toast.makeText(UserTripDetails.this, "to date="+toDate, Toast.LENGTH_SHORT).show();
-
             propertyId = intent.getStringExtra("property_id");
             if (propertyId != null) {
                 parentId = intent.getStringExtra("parent_id");
 
-//                // Retrieve booking dates from intent extras
-//                String fromDate = intent.getStringExtra("from_date");
-//                String toDate = intent.getStringExtra("to_date");
                 retrieveDetailsFromDatabase(propertyId, parentId);
-                // Perform any necessary operations with fromDate and toDate
+
             } else {
-                // Handle the case where propertyId is null
+
                 Toast.makeText(this, "Property ID is null", Toast.LENGTH_SHORT).show();
             }
         } else {
@@ -88,7 +82,6 @@ public class UserTripDetails extends AppCompatActivity {
             Toast.makeText(this, "Intent is null", Toast.LENGTH_SHORT).show();
         }
 
-        // Your existing code for setting up UI components and listeners goes here...
 
         fromDate = findViewById(R.id.fromDate);
         fromDate.setOnClickListener(v -> showDatePickerDialog(fromDate));
@@ -122,7 +115,7 @@ public class UserTripDetails extends AppCompatActivity {
                 month = month + 1;
                 Log.d(TAG, "onDateSet:date: " + dayOfMonth + "/" + month + "/" + year);
                 String date = dayOfMonth + "/" + month + "/" + year;
-                Toast.makeText(UserTripDetails.this, date, Toast.LENGTH_SHORT).show();
+                Toast.makeText(UserTripDetails.this, "Selected date"+date, Toast.LENGTH_SHORT).show();
 
                 fromDate.setText(date);
 
@@ -149,6 +142,7 @@ public class UserTripDetails extends AppCompatActivity {
                 int pickerValue = binding.np.getValue();
                 Log.d(TAG, "Picker value: '" + pickerValue + "'");
                 int slots = Integer.parseInt(String.valueOf(pickerValue).trim());
+                Toast.makeText(UserTripDetails.this, "slot when clicked="+slots, Toast.LENGTH_SHORT).show();
                 int guests = Integer.parseInt(Objects.requireNonNull(binding.guests.getText()).toString());
                 assert intent != null;
                 String fromDate = intent.getStringExtra("from_date");
@@ -177,6 +171,8 @@ public class UserTripDetails extends AppCompatActivity {
                                                 progressDialog.dismiss();
 
                                                 Intent intent = new Intent(UserTripDetails.this, PaymentActivity.class);
+                                                intent.putExtra("slot",slots);
+                                                Toast.makeText(UserTripDetails.this, "slot="+slots, Toast.LENGTH_SHORT).show();
                                                 intent.putExtra("property_id",propertyId);
                                                 intent.putExtra("parent_id",parentId);
 
@@ -206,30 +202,6 @@ public class UserTripDetails extends AppCompatActivity {
         String selectedDate = fromDate.getText().toString();
 
     }
-// Method to check if the selected date falls within the booking range
-//private void isDateWithinRange(String selectedDateStr, String fromDate, String toDate) {
-    // Parse the fromDate and toDate strings into Date objects for comparison
-//    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-//    try {
-//        Date selected = sdf.parse(selectedDateStr);
-//        Date from = sdf.parse(fromDate);
-//        Date to = sdf.parse(toDate);
-//
-//        // Check if the selected date falls within the range
-//        assert selected != null;
-//        return !selected.before(from) && !selected.after(to);
-//    } catch (ParseException e) {
-//        e.printStackTrace();
-//        return false; // Handle parsing error, return false as default
-
-//}
-
-
-
-
-
-
-
     private void showDatePickerDialog(TextView textView) {
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
@@ -258,7 +230,7 @@ public class UserTripDetails extends AppCompatActivity {
 
                     TextView priceOfPropertyTextView = findViewById(R.id.priceofprperty);
                     String priceString = "Price: <b>₹" + pop + ".00"+"</b>"; // Assuming pop is the price
-                    Toast.makeText(UserTripDetails.this, priceString, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(UserTripDetails.this, priceString, Toast.LENGTH_SHORT).show();
                     CharSequence styledText = Html.fromHtml(priceString);
                     priceOfPropertyTextView.setText(styledText);
 

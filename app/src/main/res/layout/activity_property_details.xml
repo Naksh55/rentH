@@ -222,24 +222,24 @@
             android:layout_marginTop="20sp"
             android:background="@drawable/image_edges" />
 
-        <Button
-            android:id="@+id/choosebtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Choose Image"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/propertydp"
-            android:layout_marginTop="20sp"/>
+<!--        <Button-->
+<!--            android:id="@+id/choosebtn"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Choose Image"-->
+<!--            android:layout_centerHorizontal="true"-->
+<!--            android:layout_below="@id/propertydp"-->
+<!--            android:layout_marginTop="20sp"/>-->
 
-        <TextView
-            android:id="@+id/moreimages"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Choose more images"
-            android:textSize="25dp"
-            android:layout_below="@+id/choosebtn"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20sp"/>
+<!--        <TextView-->
+<!--            android:id="@+id/moreimages"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Choose more images"-->
+<!--            android:textSize="25dp"-->
+<!--            android:layout_below="@+id/choosebtn"-->
+<!--            android:layout_centerHorizontal="true"-->
+<!--            android:layout_marginTop="20sp"/>-->
 
 
         <Button
@@ -247,9 +247,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Next"
-            android:layout_below="@+id/choosebtn"
+            android:layout_below="@+id/propertydp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="130sp" />
+            android:layout_marginTop="100sp" />
 
     </RelativeLayout>
 </ScrollView>
