@@ -12,39 +12,58 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.naksh.renth.Models.PropertyDetailsModel;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MyAdapter2 extends RecyclerView.Adapter<MyAdapter2.ViewHolder> {
     private LayoutInflater mInflater;
-    Context context;
-    ArrayList<String> list2;
-    // Constructor
-    private MyAdapter.OnItemClickListener mListener;
+    private Context context;
+    private MyAdapter2.OnItemClickListener mListener;
+    private ArrayList<PropertyDetailsModel> list2;
 
-    public MyAdapter2(Context context, ArrayList<String> list2, MyAdapter.OnItemClickListener listener) {
-        this.context = context;
-        this.list2= list2;
-        this.mListener = listener;
-        this.mInflater = LayoutInflater.from(context); // Initialize mInflater
-    }
-    public MyAdapter2(Context context, ArrayList<String> list2) {
+
+    public MyAdapter2(Context context, ArrayList<PropertyDetailsModel> list2, MyAdapter2.OnItemClickListener listener) {
         this.context = context;
         this.list2 = list2;
-        this.mInflater = LayoutInflater.from(context); // Initialize mInflater
+        this.mListener = listener;
     }
+
+    public MyAdapter2(Context context, ArrayList<PropertyDetailsModel> list2) {
+        this.context = context;
+        this.list2 = list2;
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.recycler_row2, parent, false);
+        LayoutInflater inflater = LayoutInflater.from(context);
+
+        View view = inflater.inflate(R.layout.recycler_row2, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String item = list2.get(position);
-//        holder.textView.setText(item);
+        PropertyDetailsModel property = list2.get(position);
+        holder.tvItem.setText(property.getNameofproperty());
+        holder.tvItem1.setText(String.valueOf(property.getPriceofproperty()));
+        Picasso.get().load(property.getImageUrl()).into(holder.img2);
+        // Bind property details to views in ViewHolder
+        // For example:
+        // holder.textView.setText(property.getPropertyName());
+        // holder.imageView.setImageResource(property.getPropertyImageResourceId());
+
+        // Set click listener
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mListener != null) {
+                    mListener.onItemClick(property);
+                }
+            }
+        });
     }
 
     @Override
@@ -52,33 +71,23 @@ public class MyAdapter2 extends RecyclerView.Adapter<MyAdapter2.ViewHolder> {
         return list2.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        ImageView myImageView;
-        //        TextView tvItem;
-        ImageView myImageView2;
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        TextView tvItem, tvItem1;
+        ImageView img2;
 
         ViewHolder(View itemView) {
             super(itemView);
-//            myImageView = itemView.findViewById(R.id.img2);
-////            // Set click listener to the ImageView
-//            myImageView.setOnClickListener(this);
+            tvItem = itemView.findViewById(R.id.tvItem);
+            tvItem1 = itemView.findViewById(R.id.tvItem1);
+            img2 = itemView.findViewById(R.id.img2);
+            // Initialize your views here
+            // For example:
+            // myImageView = itemView.findViewById(R.id.img2);
         }
+    }
 
-        @Override
-        public void onClick(View v) {
-            // Get the position of the item clicked
-            int position = getAdapterPosition();
-            // Ensure the position is valid
-            if (position != RecyclerView.NO_POSITION) {
-                // Get the item at the position
-                String item = list2.get(position);
-                // Create an intent to navigate to the desired activity
-//                Intent intent = new Intent(myContext, UpdateOwnerPropertyDetails.class);
-//                // Optionally, pass data to the destination activity
-//                intent.putExtra("ITEM_NAME", item);
-//                // Start the activity
-//                myContext.startActivity(intent);
-            }
-        }
+    // Interface for item click listener
+    public interface OnItemClickListener {
+        void onItemClick(PropertyDetailsModel property);
     }
 }

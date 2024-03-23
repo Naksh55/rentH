@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.naksh.renth.Models.PropertyDetailsModel;
 import com.naksh.renth.R;
@@ -41,10 +43,12 @@ import java.util.Objects;
 public class OwnerHomeFragment extends Fragment {
     private RecyclerView recyclerView2;
 //    DatabaseReference databaseReference;
-    MyAdapter myAdapter2;
+    MyAdapter2 myAdapter2;
     LinearLayoutManager linearLayoutManager;
-    ArrayList<String>list;
-String ownerId;
+    ArrayList<PropertyDetailsModel> list;
+
+    String ownerId;
+    DatabaseReference propertyRef;
 
     private com.naksh.renth.MyAdapter2 adapter;
     // TODO: Rename parameter arguments, choose names that match
@@ -90,60 +94,166 @@ String ownerId;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_owner_home_fragment, container, false);
 
-//        assert getArguments() != null;
-//         ownerId = getArguments().getString("id");
+        recyclerView2 = view.findViewById(R.id.recyclerView2);
+        list = new ArrayList<>();
+        myAdapter2 = new MyAdapter2(getActivity(), list, new MyAdapter2.OnItemClickListener() {
+            @Override
+            public void onItemClick(PropertyDetailsModel item) {
+                String propertyName = item.getNameofproperty(); // Accessing the nameofproperty directly from the clicked item
+                retrieveParentInfoFromDatabase(propertyName, item.getPropertyId()); // Pass propertyId as well
+            }
+        });
 
-//        Toast.makeText(getContext(), ownerId, Toast.LENGTH_SHORT).show();
-        Bundle args = getArguments();
-        if (args != null && args.containsKey("id")) {
-            ownerId = args.getString("id");
-//            Toast.makeText(getContext(), ownerId, Toast.LENGTH_SHORT).show();
-        } else {
-//            Toast.makeText(getContext(), "Owner ID is not available", Toast.LENGTH_SHORT).show();
-        }
+        recyclerView2.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView2.setAdapter(myAdapter2);
 
-        DatabaseReference propertyRef = FirebaseDatabase.getInstance().getReference().child("PropertyDetailsModel").child("id");
+        // Here, you should use propertyRef to query properties belonging to the owner
+        Query query = FirebaseDatabase.getInstance().getReference()
+                .child("PropertyDetailsModel")
+                .orderByChild("id")
+                .equalTo(ownerId);
 
-//        ImageView imageView = view.findViewById(R.id.addpropertyimg);
-//        imageView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // Check if getArguments() is not null and contains "id" key
-//                Bundle args = getArguments();
-//                if (args != null && args.containsKey("id")) {
-//                    String ownerId = args.getString("id");
-//                    Toast.makeText(getContext(), ownerId, Toast.LENGTH_SHORT).show();
-//                    // Open PropertyDetails activity and pass the property ID
-//                    Intent intent = new Intent(getActivity(), PropertyDetails.class);
-//                    intent.putExtra("id", ownerId);
-//                    startActivity(intent);
-//                } else {
-//                    // Handle the case where ownerId is not available
-//                    Toast.makeText(getContext(), "Owner ID is not available", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                list.clear(); // Clear the list before adding new data
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    PropertyDetailsModel testingModel = dataSnapshot.getValue(PropertyDetailsModel.class);
+                    list.add(testingModel);
+                }
+                myAdapter2.notifyDataSetChanged();
+            }
 
-
-
-        ArrayList<String> data = new ArrayList<>();
-        data.add("House 1");
-
-        // Initialize RecyclerView and adapter
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerView2);
-        MyAdapter2 adapter = new MyAdapter2(getActivity(), data);
-
-        // Set the layout manager for the RecyclerView
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        // Set the adapter to the RecyclerView
-        recyclerView.setAdapter(adapter);
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("OwnerHomeFragment", "Database error: " + error.getMessage());
+            }
+        });
 
         return view;
-
-
     }
+
+
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+//                             Bundle savedInstanceState) {
+//        // Inflate the layout for this fragment
+//        View view = inflater.inflate(R.layout.fragment_owner_home_fragment, container, false);
+//
+////        assert getArguments() != null;
+////         ownerId = getArguments().getString("id");
+//
+////        Toast.makeText(getContext(), ownerId, Toast.LENGTH_SHORT).show();
+//        Bundle args = getArguments();
+//        if (args != null && args.containsKey("id")) {
+//            ownerId = args.getString("id");
+////            Toast.makeText(getContext(), ownerId, Toast.LENGTH_SHORT).show();
+//        } else {
+////            Toast.makeText(getContext(), "Owner ID is not available", Toast.LENGTH_SHORT).show();
+//        }
+//
+//         propertyRef = FirebaseDatabase.getInstance().getReference().child("PropertyDetailsModel").child("id");
+//
+////        ImageView imageView = view.findViewById(R.id.addpropertyimg);
+////        imageView.setOnClickListener(new View.OnClickListener() {
+////            @Override
+////            public void onClick(View v) {
+////                // Check if getArguments() is not null and contains "id" key
+////                Bundle args = getArguments();
+////                if (args != null && args.containsKey("id")) {
+////                    String ownerId = args.getString("id");
+////                    Toast.makeText(getContext(), ownerId, Toast.LENGTH_SHORT).show();
+////                    // Open PropertyDetails activity and pass the property ID
+////                    Intent intent = new Intent(getActivity(), PropertyDetails.class);
+////                    intent.putExtra("id", ownerId);
+////                    startActivity(intent);
+////                } else {
+////                    // Handle the case where ownerId is not available
+////                    Toast.makeText(getContext(), "Owner ID is not available", Toast.LENGTH_SHORT).show();
+////                }
+////            }
+////        });
+//
+//
+//
+//        list= new ArrayList<>();
+//        myAdapter2 = new MyAdapter(this, list, new MyAdapter.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(PropertyDetailsModel item) {
+//                String propertyName = item.getNameofproperty(); // Accessing the nameofproperty directly from the clicked item
+//                retrieveParentInfoFromDatabase(propertyName, item.getPropertyId()); // Pass propertyId as well
+//            }
+//        });
+//
+//
+//        // Initialize RecyclerView and adapter
+//        RecyclerView recyclerView = view.findViewById(R.id.recyclerView2);
+//        MyAdapter2 adapter = new MyAdapter2(getActivity(), list);
+//
+//        // Set the layout manager for the RecyclerView
+//        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+//
+//        // Set the adapter to the RecyclerView
+//        recyclerView.setAdapter(adapter);
+//        propertyRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                list.clear(); // Clear the list before adding new data
+//                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+//                    PropertyDetailsModel testingModel = dataSnapshot.getValue(PropertyDetailsModel.class);
+//                    list.add(testingModel);
+//                }
+//                myAdapter2.reverseList(); // Call this method to reverse the list
+//                myAdapter2.notifyDataSetChanged();
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                Log.e("PropertyRecyclerActivity", "Database error: " + error.getMessage());
+//            }
+//        });
+//
+//        return view;
+//
+//
+//    }
+
+
+
+    private void retrieveParentInfoFromDatabase(String propertyName, String propertyId) {
+        DatabaseReference parentRef = FirebaseDatabase.getInstance("https://renth-aca8f-default-rtdb.firebaseio.com/").getReference("PropertyDetailsModel");
+        Query query = parentRef.orderByChild("nameofproperty").equalTo(propertyName);
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @SuppressLint("LongLogTag")
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        String parentId = snapshot.getKey();
+                        String propertyId = snapshot.getKey();
+
+                        Intent intent = new Intent(requireContext(), BookingScreen.class);
+                        intent.putExtra("property_id", propertyId);
+                        intent.putExtra("parent_id", parentId);
+//                        Toast.makeText(PropertyRecyclerActivityForUser.this, "Property ID: " + propertyId, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(PropertyRecyclerActivityForUser.this, "Parent ID: " + parentId, Toast.LENGTH_SHORT).show();
+
+                        startActivity(intent);
+                        break;
+                    }
+                } else {
+                    Log.e("PropertyRecyclerActivity", "No parent found for property: " + propertyName);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("PropertyRecyclerActivity", "Database query cancelled.", databaseError.toException());
+            }
+        });
+    }
+
 }
