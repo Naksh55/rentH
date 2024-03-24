@@ -106,7 +106,6 @@ public class OwnerProfileFragment extends Fragment {
             TextView textView1= view.findViewById(R.id.owneremail);
             TextView textView2 = view.findViewById(R.id.username);
             TextView textView3 = view.findViewById(R.id.ownerphoneno);
-
             Bundle bundle = getArguments();
 
             if (bundle != null) {
@@ -128,7 +127,13 @@ public class OwnerProfileFragment extends Fragment {
                             // Handle logout action
                             Toast.makeText(requireContext(), "Logging out...", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(requireContext(), LoginScreen.class);
+
                             startActivity(intent);
+
+                            // Clear previous owner's details
+                            textView1.setText("");
+                            textView2.setText("");
+                            textView3.setText("");
                         }
                     })
                     .setNegativeButton("No", null);

@@ -13,6 +13,30 @@
         android:layout_height="50sp"
         android:src="@drawable/baseline_account_circle_24"
         android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/owneremail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="email"
+        android:textSize="20sp"
+        android:layout_marginStart="150sp"/>
+
+    <TextView
+        android:id="@+id/ownerphoneno"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="phone number"
+        android:textSize="20sp"
+        android:layout_marginStart="250sp"/>
+
+    <TextView
+        android:id="@+id/ownername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="name"
+        android:textSize="20sp"
+        android:layout_marginStart="45sp"/>
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="770dp"

@@ -29,6 +29,7 @@ import com.naksh.renth.databinding.ActivityLoginScreenBinding;
 import java.util.Objects;
 
 
+
 public class LoginScreen extends AppCompatActivity {
     private ActivityLoginScreenBinding binding;
     ProgressDialog progressDialog;
@@ -36,8 +37,8 @@ public class LoginScreen extends AppCompatActivity {
     DatabaseReference reference;
     EditText email;
     EditText password;
+    String ownerId;
 
-    private String ownerId; // Declare ownerId variable
     // Method to check ownerId from "OwnerPersonalDetails" node
     private void checkOwnerPersonalDetails(String currentUserEmail) {
         DatabaseReference ownerRef = FirebaseDatabase.getInstance().getReference()
@@ -60,6 +61,9 @@ public class LoginScreen extends AppCompatActivity {
                             return; // Exit the loop after finding the matching email
                         }
                     }
+                } else {
+                    // Email not found in OwnerPersonalDetailsActivity node
+                    Toast.makeText(LoginScreen.this, "Owner data not found", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -91,105 +95,167 @@ public class LoginScreen extends AppCompatActivity {
             }
         });
 
+
+
         binding.loginbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Get current user's email
-                FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
                 if (!validation()) {
                     return; // Return if validation fails
-                }
-                if (currentUser != null) {
-                    String currentUserEmail = currentUser.getEmail();
-                    // Call the method to check owner details
-                    checkOwnerPersonalDetails(currentUserEmail);
-                } else {
-                    // Handle the case where the current user is null
-                    Toast.makeText(LoginScreen.this, "Current user is null", Toast.LENGTH_SHORT).show();
                 }
 
                 int selectedId = binding.person.getCheckedRadioButtonId();
                 if (selectedId == -1) {
                     Toast.makeText(LoginScreen.this, "Please select a category", Toast.LENGTH_SHORT).show();
-                    return; // Return without attempting to sign in
+                    return; // Return without attempting to sign in if no category is selected
                 }
 
                 // Getting the selected radio button and user type
                 RadioButton selectedRadioButton = findViewById(selectedId);
                 String userType = selectedRadioButton.getText().toString();
 
-                validation();
-
                 // Showing progress dialog
                 progressDialog.show();
-                auth.signInWithEmailAndPassword(binding.emailet.getText().toString(), binding.etPassword.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        progressDialog.dismiss();
-                        if (task.isSuccessful()) {
-                            // Retrieving user role from the database
-                            String currentUserUid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
 
-                            // Check user details from "Users" node
+                // Attempting to sign in with email and password
+                auth.signInWithEmailAndPassword(binding.emailet.getText().toString(), binding.etPassword.getText().toString())
+                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                progressDialog.dismiss(); // Dismiss the progress dialog
+
+                                if (task.isSuccessful()) {
+                                    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                                    if (currentUser != null) {
+                                        // Redirecting based on user type
+                                        if (userType.equals("User")) {
+                                            checkUserDetails(currentUser.getEmail(), selectedRadioButton);
+                                        } else if (userType.equals("Owner")) {
+                                            checkOwnerPersonalDetails(currentUser.getEmail(), selectedRadioButton);
+                                        }
+                                    } else {
+                                        // Current user is null
+                                        Toast.makeText(LoginScreen.this, "Current user is null", Toast.LENGTH_SHORT).show();
+                                    }
+                                } else {
+                                    // Sign-in failed
+                                    Toast.makeText(LoginScreen.this, "Login failed. Please check your credentials.", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                // Handle authentication failure
+                                progressDialog.dismiss(); // Dismiss the progress dialog
+                                Log.e("Firebase", "Error signing in", e);
+//                                Toast.makeText(LoginScreen.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
+        });
+
+    }
+
+    // Method to check ownerId from "OwnerPersonalDetails" node
+    private void checkOwnerPersonalDetails(String currentUserEmail, RadioButton selectedRadioButton) {
+        DatabaseReference ownerRef = FirebaseDatabase.getInstance().getReference()
+                .child("OwnerPersonalDetailsModel");
+
+        ownerRef.orderByChild("email").equalTo(currentUserEmail).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        String ownerId = snapshot.child("id").getValue(String.class);
+
+                        if (ownerId != null) {
                             DatabaseReference userRef = FirebaseDatabase.getInstance().getReference()
-                                    .child("Users")
-                                    .child(currentUserUid);
-                            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    .child("Users");
+
+                            userRef.orderByChild("category").addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     if (dataSnapshot.exists()) {
-                                        if (userType.equals("User")) {
-                                            // If user type is User, navigate to UserHomeActivity
-                                            startActivity(new Intent(LoginScreen.this, PropertyRecyclerActivityForUser.class));
-                                            finish(); // Finish the current activity
-                                            return; // Return to prevent further execution
+                                        for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                                            String userTypeFromDatabase = userSnapshot.child("category").getValue(String.class); // Retrieve userType from the database
+                                            String userType = selectedRadioButton.getText().toString();
 
-                                        } else if (userType.equals("Owner")) {
-                                            // If user type is Owner, check OwnerPersonalDetails
-                                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                                String ownerId = snapshot.child("id").getValue(String.class);
-                                                if (ownerId != null) {
-                                                    // Pass the ownerId to OwnerHomeActivity
-                                                    Intent intent = new Intent(LoginScreen.this, OwnerHomeActivity.class);
-                                                    intent.putExtra("id", ownerId);
-                                                    startActivity(intent);
-                                                    finish(); // Finish the current activity
-                                                    return; // Exit the loop after finding the matching email
-                                                }
+                                            Toast.makeText(LoginScreen.this, userTypeFromDatabase + " " + userType, Toast.LENGTH_SHORT).show();
+
+                                            if (userType.equals(userTypeFromDatabase)) {
+                                                // User type matches, redirect to OwnerHomeActivity
+                                                Intent intent = new Intent(LoginScreen.this, OwnerHomeActivity.class);
+                                                intent.putExtra("id", ownerId);
+                                                startActivity(intent);
+                                                finish(); // Finish the current activity
+                                                return;
+                                            } else {
+                                                // User type doesn't match
+                                                 Toast.makeText(LoginScreen.this, "Role mismatch", Toast.LENGTH_SHORT).show();
                                             }
                                         }
                                     } else {
-                                        // Handle the case where the user data doesn't exist
+                                        // No user found with the specified category
                                         Toast.makeText(LoginScreen.this, "User data not found", Toast.LENGTH_SHORT).show();
-
                                     }
-                                    // Display toast message for incorrect category selection
-//                                    Toast.makeText(LoginScreen.this, "Please select correct category", Toast.LENGTH_SHORT).show();
                                 }
-
-
 
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError error) {
                                     // Handle database error
                                 }
                             });
-
-                        } else {
-                            Toast.makeText(LoginScreen.this, "Login failed,please put correct credentials", Toast.LENGTH_LONG).show();
                         }
                     }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // Handle failure
-                        Log.e("Firebase", "Error signing in", e);
-                    }
-                });
+                } else {
+                    // Email not found in OwnerPersonalDetails node
+                    Toast.makeText(LoginScreen.this, "Owner data not found", Toast.LENGTH_SHORT).show();
+                }
             }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle database error
+            }
         });
     }
+
+
+    // Method to check if the current user is a user
+    private void checkUserDetails(String currentUserEmail, RadioButton selectedRadioButton) {
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference()
+                .child("Users");
+
+        userRef.orderByChild("email").equalTo(currentUserEmail).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // User found in the database
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        String userTypeFromDatabase = snapshot.child("category").getValue(String.class); // Retrieve userType from the database
+                        String userType = selectedRadioButton.getText().toString();
+                        if (userType.equals(userTypeFromDatabase)) {
+                            // User type matches, redirect to PropertyRecyclerActivityForUser
+                            startActivity(new Intent(LoginScreen.this, PropertyRecyclerActivityForUser.class));
+                        } else {
+                            // User type doesn't match
+                            Toast.makeText(LoginScreen.this, "Role mismatch", Toast.LENGTH_SHORT).show();
+                        }
+                        return; // Exit the loop after finding the matching email
+                    }
+                } else {
+                    // Email not found in UserPersonalDetails node
+                    Toast.makeText(LoginScreen.this, "User data not found", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle database error
+            }
+        });
+    }
+
     public boolean validation() {
         String eMail = email.getText().toString().trim();
         String userPassword = password.getText().toString().trim();
