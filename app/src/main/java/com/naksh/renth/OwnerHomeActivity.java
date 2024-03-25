@@ -2,6 +2,8 @@ package com.naksh.renth;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
@@ -17,13 +19,19 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.naksh.renth.Models.PropertyDetailsModel;
 import com.naksh.renth.OwnerHomeFragment;
 import com.naksh.renth.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class OwnerHomeActivity extends AppCompatActivity {
     TextView owneremail;
     TextView ownername;
     //    TextView ownerphoneno;
+    private RecyclerView recyclerView2;
+
     BottomNavigationView bottomNavigationView2;
     OwnerProfileFragment ownerProfile = new OwnerProfileFragment();
     OwnerHomeFragment ownerHome = new OwnerHomeFragment();
@@ -37,6 +45,8 @@ public class OwnerHomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_owner_home);
+        recyclerView2 = findViewById(R.id.recyclerView2);
+
 
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("id")) {
@@ -44,7 +54,9 @@ public class OwnerHomeActivity extends AppCompatActivity {
 //            Toast.makeText(OwnerHomeActivity.this, ownerId, Toast.LENGTH_SHORT).show();
             // Pass the ID to the fragment
             loadHomeFragmentWithOwnerId(ownerId);
-            retrieveDetailsFromDatabase(ownerId);
+            retrievePropertiesForOwner(ownerId);
+
+
 
         }
         else{
@@ -73,6 +85,7 @@ public class OwnerHomeActivity extends AppCompatActivity {
                     }
 
                     return false;
+
                 }
             });
 
@@ -107,37 +120,46 @@ public class OwnerHomeActivity extends AppCompatActivity {
                 .commit();
     }
 
-    private void retrieveDetailsFromDatabase( String ownerId) {
-        DatabaseReference database = FirebaseDatabase.getInstance("https://renth-aca8f-default-rtdb.firebaseio.com/")
-                .getReference("OwnerPersonalDetailsModel");
+    private void retrievePropertiesForOwner(String ownerId) {
+        DatabaseReference propertiesRef = FirebaseDatabase.getInstance().getReference()
+                .child("PropertyDetailsModel");
 
-        database.child(ownerId).addListenerForSingleValueEvent(new ValueEventListener() {
+        // Query properties for the specific owner
+        propertiesRef.orderByChild("id").equalTo(ownerId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    String ownerName = snapshot.child("oname").getValue(String.class);
-                    String ownerPhoneNumber = snapshot.child("ophoneno").getValue(String.class);
-                    String ownerEmail = snapshot.child("email").getValue(String.class);
-                    // Set owner details in respective TextViews
-                    ownerNameTextView = findViewById(R.id.ownername);
-                    ownerPhoneNumberTextView = findViewById(R.id.ownerphoneno);
-                    ownerEmailTextView = findViewById(R.id.owneremail);
-                    ownerphoneno = ownerPhoneNumber;
-                    ownerNameTextView.setText(ownerName);
-                    ownerPhoneNumberTextView.setText(ownerPhoneNumber);
-                    ownerEmailTextView.setText(ownerEmail);
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    ArrayList<PropertyDetailsModel> propertyList = new ArrayList<>();
 
+                    // Iterate through each property and extract details
+                    for (DataSnapshot propertySnapshot : dataSnapshot.getChildren()) {
+                        // Extract property details
+                        String propertyName = propertySnapshot.child("nameofproperty").getValue(String.class);
+                        String propertyType = propertySnapshot.child("typeofproperty").getValue(String.class);
+                        int propertyPrice = propertySnapshot.child("priceofproperty").getValue(Integer.class);
+
+                        // Add property to the list
+                        PropertyDetailsModel property = new PropertyDetailsModel(propertyName, propertyType, propertyPrice);
+                        propertyList.add(property);
+                    }
+
+                    // Initialize RecyclerView adapter
+                    MyAdapter2 myAdapter2 = new MyAdapter2(OwnerHomeActivity.this, propertyList);
+
+                    // Set adapter to RecyclerView
+                    recyclerView2.setAdapter(myAdapter2);
                 } else {
-                    // Handle the case where no owner details are found
-                    Toast.makeText(OwnerHomeActivity.this, "No owner details found", Toast.LENGTH_SHORT).show();
+                    // Handle the case where no properties are found for the owner
+                    Toast.makeText(OwnerHomeActivity.this, "No properties found for this owner", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onCancelled(@android.support.annotation.NonNull DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
                 // Handle database error
-                Toast.makeText(OwnerHomeActivity.this, "Database error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(OwnerHomeActivity.this, "Failed to retrieve properties: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
+
 }

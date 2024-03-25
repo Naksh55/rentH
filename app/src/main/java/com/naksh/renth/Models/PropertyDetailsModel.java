@@ -51,6 +51,12 @@ public class PropertyDetailsModel {
         this.fromdate=fromdate;
         this.todate=todate;
     }
+
+    public PropertyDetailsModel( String propertyName, String typeOfProperty, int propertyPrice) {
+        this.nameofproperty=propertyName;
+        this.typeofproperty=typeOfProperty;
+        this.priceofproperty=propertyPrice;
+    }
 //    public PropertyDetailsModel(String nameofproperty, String typeofproperty, String address, String city, String state, String propertydiscription, String fromdate, String todate, int priceofproperty,String imageUrl) {
 ////        this.nameofproperty = nameofproperty;
 //////        this.typeofproperty = typeofproperty;
