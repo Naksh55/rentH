@@ -9,13 +9,19 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class SplashActivity extends AppCompatActivity {
+    FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ImageView renthLogo1 = findViewById(R.id.renthlogo);
+        auth = FirebaseAuth.getInstance();
+
+
         // Scale animation for the logo
 //        Animation scaleAnimation = AnimationUtils.loadAnimation(this, R.anim.scale_animation);
 //        renthLogo1.startAnimation(scaleAnimation);

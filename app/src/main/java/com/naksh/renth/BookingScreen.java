@@ -460,7 +460,7 @@ public class BookingScreen extends AppCompatActivity {
 
 //    String fromDate;
 //    String toDate;
-
+String userId;
 
 
     @Override
@@ -487,7 +487,8 @@ public class BookingScreen extends AppCompatActivity {
         if (intent != null) {
              String fromDate = intent.getStringExtra("from_date");
              String toDate = intent.getStringExtra("to_date");
-//            Toast.makeText(this, "from date="+fromDate, Toast.LENGTH_SHORT).show();
+             userId=intent.getStringExtra("user_id");
+            Toast.makeText(this, "======="+userId, Toast.LENGTH_SHORT).show();
 //            Toast.makeText(this, "to date="+toDate, Toast.LENGTH_SHORT).show();
 
 
@@ -526,6 +527,9 @@ public class BookingScreen extends AppCompatActivity {
                             Intent intent = new Intent(BookingScreen.this, UserTripDetails.class);
                             intent.putExtra("from_date",fromDate);
                             intent.putExtra("to_date",todate);
+                            intent.putExtra("user_id",userId);
+                            Toast.makeText(BookingScreen.this, "userId=="+userId, Toast.LENGTH_SHORT).show();
+
                             startActivity(intent);
 //                    Toast.makeText(BookingScreen.this, fDate + "From date is null", Toast.LENGTH_SHORT).show();
 //                    Toast.makeText(BookingScreen.this, tDate + "to date is null", Toast.LENGTH_SHORT).show();
@@ -533,6 +537,9 @@ public class BookingScreen extends AppCompatActivity {
 //                    Toast.makeText(BookingScreen.this, "Intent is null", Toast.LENGTH_SHORT).show();
 //
 //                }
+                        }
+                        else{
+                            Toast.makeText(BookingScreen.this, "snapshot dosent exist", Toast.LENGTH_SHORT).show();
                         }
                     }
 
@@ -613,6 +620,8 @@ private void handleBookingButtonClick(String propertyId) {
                     intent.putExtra("from_date",fromDate);
                     intent.putExtra("to_date",todate);
                     intent.putExtra("property_id",propertyId);
+                    intent.putExtra("user_id",userId);
+                    Toast.makeText(BookingScreen.this, "id="+userId, Toast.LENGTH_SHORT).show();
                     startActivity(intent);
 //                    Toast.makeText(BookingScreen.this, fDate + "From date is null", Toast.LENGTH_SHORT).show();
 //                    Toast.makeText(BookingScreen.this, tDate + "to date is null", Toast.LENGTH_SHORT).show();

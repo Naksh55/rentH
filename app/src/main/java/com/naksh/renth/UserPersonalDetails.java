@@ -73,7 +73,7 @@ public class UserPersonalDetails extends AppCompatActivity {
 
                 // Generate a unique user ID (e.g., using push() method)
                 String userId = usersRef.push().getKey();
-                UserPersonalDetailsModel userPersonalDetailsModel = new UserPersonalDetailsModel(name, age, gender, phoneNumber);
+                UserPersonalDetailsModel userPersonalDetailsModel = new UserPersonalDetailsModel(name, age, gender,userId, phoneNumber);
                 assert userId != null;
                 usersRef.child(userId).setValue(userPersonalDetailsModel)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -82,6 +82,7 @@ public class UserPersonalDetails extends AppCompatActivity {
                                 progressDialog.dismiss(); // Dismiss the progress dialog
                                 if (task.isSuccessful()) {
                                     Intent intent = new Intent(UserPersonalDetails.this, PropertyRecyclerActivityForUser.class);
+                                    intent.putExtra("user_id",userId);
                                     startActivity(intent);
                                     finish(); // Finish this activity after starting the next one
                                 } else {

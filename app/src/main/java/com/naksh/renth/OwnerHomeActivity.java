@@ -35,9 +35,12 @@ public class OwnerHomeActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView2;
     OwnerProfileFragment ownerProfile = new OwnerProfileFragment();
     OwnerHomeFragment ownerHome = new OwnerHomeFragment();
+    NotificationFragment notificationFragment = new NotificationFragment();
+
     String ownerId;
     String propertyId,parentId;
     String ownerphoneno;
+    String notificationMessage;
 
     TextView ownerNameTextView, ownerPhoneNumberTextView, ownerEmailTextView;
 
@@ -51,7 +54,8 @@ public class OwnerHomeActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("id")) {
             ownerId = intent.getStringExtra("id");
-//            Toast.makeText(OwnerHomeActivity.this, ownerId, Toast.LENGTH_SHORT).show();
+            notificationMessage=intent.getStringExtra("notification_message");
+            Toast.makeText(OwnerHomeActivity.this, "notification="+notificationMessage, Toast.LENGTH_SHORT).show();
             // Pass the ID to the fragment
             loadHomeFragmentWithOwnerId(ownerId);
             retrievePropertiesForOwner(ownerId);
@@ -82,6 +86,12 @@ public class OwnerHomeActivity extends AppCompatActivity {
                     } else if (item.getItemId() == R.id.ohome) {
                         getSupportFragmentManager().beginTransaction().replace(R.id.container, ownerHome).commit();
                         return true;
+                    } else if (item.getItemId()==R.id.onotifications) {
+                        NotificationFragment notificationFragment = NotificationFragment.newInstance(ownerId, null, notificationMessage);
+                        Toast.makeText(OwnerHomeActivity.this, "notification message="+notificationMessage, Toast.LENGTH_SHORT).show();
+                        // Replace the fragment container with the NotificationFragment
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, notificationFragment).commit();
+
                     }
 
                     return false;

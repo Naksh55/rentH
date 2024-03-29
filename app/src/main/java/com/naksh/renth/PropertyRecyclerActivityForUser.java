@@ -33,6 +33,7 @@ public class PropertyRecyclerActivityForUser extends AppCompatActivity {
 
     ArrayList<PropertyDetailsModel> list;
     BottomNavigationView bottomNavigationView;
+    String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +45,15 @@ public class PropertyRecyclerActivityForUser extends AppCompatActivity {
         databaseReference = FirebaseDatabase.getInstance("https://renth-aca8f-default-rtdb.firebaseio.com/").getReference("OwnerPersonalDetailsModel");
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        Intent i=getIntent();
+        if(i!=null) {
+           userId=  i.getStringExtra("user_id");
+            Toast.makeText(this, userId, Toast.LENGTH_SHORT).show();
 
+        }
+        else{
+            Toast.makeText(this, "intent is null", Toast.LENGTH_SHORT).show();
+        }
         list = new ArrayList<>();
         myAdapter = new MyAdapter(this, list, new MyAdapter.OnItemClickListener() {
             @Override
@@ -107,7 +116,8 @@ public class PropertyRecyclerActivityForUser extends AppCompatActivity {
                         Intent intent = new Intent(PropertyRecyclerActivityForUser.this, BookingScreen.class);
                         intent.putExtra("property_id", propertyId);
                         intent.putExtra("parent_id", parentId);
-//                        Toast.makeText(PropertyRecyclerActivityForUser.this, "Property ID: " + propertyId, Toast.LENGTH_SHORT).show();
+                        intent.putExtra("user_id",userId);
+                        Toast.makeText(PropertyRecyclerActivityForUser.this, "userId= " + userId, Toast.LENGTH_SHORT).show();
 //                        Toast.makeText(PropertyRecyclerActivityForUser.this, "Parent ID: " + parentId, Toast.LENGTH_SHORT).show();
 
                         startActivity(intent);

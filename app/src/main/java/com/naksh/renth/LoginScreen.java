@@ -25,7 +25,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.naksh.renth.databinding.ActivityLoginScreenBinding;
-
+import android.content.Context;
+import android.content.SharedPreferences;
 import java.util.Objects;
 
 
@@ -38,6 +39,20 @@ public class LoginScreen extends AppCompatActivity {
     EditText email;
     EditText password;
     String ownerId;
+//    private static final String PREF_NAME = "last_screen_pref";
+//    private static final String LAST_SCREEN_KEY = "last_screen";
+//    private void saveLastScreen(String screenName) {
+//        SharedPreferences sharedPreferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        editor.putString(LAST_SCREEN_KEY, screenName);
+//        editor.apply();
+//    }
+
+    // Method to get the last visited screen from SharedPreferences
+//    private String getLastScreen() {
+//        SharedPreferences sharedPreferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+//        return sharedPreferences.getString(LAST_SCREEN_KEY, null);
+//    }
 
     // Method to check ownerId from "OwnerPersonalDetails" node
     private void checkOwnerPersonalDetails(String currentUserEmail) {
@@ -81,11 +96,15 @@ public class LoginScreen extends AppCompatActivity {
         binding = ActivityLoginScreenBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         auth = FirebaseAuth.getInstance();
+        Intent i=getIntent();
+        if(i!=null){
+            i.getStringExtra("notification_message");
+        }
         progressDialog = new ProgressDialog(LoginScreen.this);
         progressDialog.setTitle("Log in");
         progressDialog.setMessage("Logging in....");
         email = findViewById(R.id.emailet);
-        password=findViewById(R.id.etPassword);
+        password = findViewById(R.id.etPassword);
         TextView signuptext = findViewById(R.id.signuptext);
         signuptext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,7 +113,6 @@ public class LoginScreen extends AppCompatActivity {
                 startActivity(loginIntent);
             }
         });
-
 
 
         binding.loginbtn.setOnClickListener(new View.OnClickListener() {
@@ -154,7 +172,36 @@ public class LoginScreen extends AppCompatActivity {
             }
         });
 
+//        if (auth.getCurrentUser() != null) {
+//            // Get the last visited screen
+//            String lastScreen = getLastScreen();
+//            if (lastScreen != null) {
+//                // Open the last visited screen
+//                Intent intent = null;
+//                try {
+//                    intent = new Intent(LoginScreen.this, Class.forName(lastScreen));
+//                } catch (ClassNotFoundException e) {
+//                    throw new RuntimeException(e);
+//                }
+//                startActivity(intent);
+//                finish(); // Finish the current activity
+//            } else {
+//                // If last screen is not available, open default screen
+//                startActivity(new Intent(LoginScreen.this, OwnerHomeActivity.class));
+//                finish(); // Finish the current activity
+//            }
+//        }
     }
+
+//        @Override
+//        protected void onPause() {
+//            super.onPause();
+//            // Save the current screen to SharedPreferences when the activity is paused
+//            saveLastScreen(LoginScreen.class.getName());
+//        }
+
+
+
 
     // Method to check ownerId from "OwnerPersonalDetails" node
     private void checkOwnerPersonalDetails(String currentUserEmail, RadioButton selectedRadioButton) {
@@ -186,6 +233,9 @@ public class LoginScreen extends AppCompatActivity {
                                                 // User type matches, redirect to OwnerHomeActivity
                                                 Intent intent = new Intent(LoginScreen.this, OwnerHomeActivity.class);
                                                 intent.putExtra("id", ownerId);
+                                                String notificationMessage = "Your property (ID: " + ownerId + ") has been booked by a user.";
+
+                                                intent.putExtra("notification_message",notificationMessage);
                                                 startActivity(intent);
                                                 finish(); // Finish the current activity
                                                 return;

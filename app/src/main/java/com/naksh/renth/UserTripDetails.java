@@ -53,7 +53,7 @@ public class UserTripDetails extends AppCompatActivity {
     private TextView progressText;
     String parentId;
     String propertyId;
-
+    String userId;
     @SuppressLint("CutPasteId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +67,8 @@ public class UserTripDetails extends AppCompatActivity {
 
             String fromDate = intent.getStringExtra("from_date");
             String toDate = intent.getStringExtra("to_date");
+            userId=intent.getStringExtra("user_id");
+            Toast.makeText(this, "userId:"+userId, Toast.LENGTH_SHORT).show();
             propertyId = intent.getStringExtra("property_id");
             if (propertyId != null) {
                 parentId = intent.getStringExtra("parent_id");
@@ -175,7 +177,8 @@ public class UserTripDetails extends AppCompatActivity {
                                                 Toast.makeText(UserTripDetails.this, "slot="+slots, Toast.LENGTH_SHORT).show();
                                                 intent.putExtra("property_id",propertyId);
                                                 intent.putExtra("parent_id",parentId);
-
+                                                intent.putExtra("user_id",userId);
+                                                Toast.makeText(UserTripDetails.this, "userId="+userId, Toast.LENGTH_SHORT).show();
                                                 startActivity(intent);
                                                 finish(); // Finish this activity after starting the next one
                                             } else {
