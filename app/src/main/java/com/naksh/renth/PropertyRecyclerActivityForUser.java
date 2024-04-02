@@ -34,6 +34,8 @@ public class PropertyRecyclerActivityForUser extends AppCompatActivity {
     ArrayList<PropertyDetailsModel> list;
     BottomNavigationView bottomNavigationView;
     String userId;
+    String userName;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +50,10 @@ public class PropertyRecyclerActivityForUser extends AppCompatActivity {
         Intent i=getIntent();
         if(i!=null) {
            userId=  i.getStringExtra("user_id");
-            Toast.makeText(this, userId, Toast.LENGTH_SHORT).show();
+            userName=  i.getStringExtra("userName");
+//            Toast.makeText(this, userId, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, userName, Toast.LENGTH_SHORT).show();
+
 
         }
         else{
@@ -117,6 +122,8 @@ public class PropertyRecyclerActivityForUser extends AppCompatActivity {
                         intent.putExtra("property_id", propertyId);
                         intent.putExtra("parent_id", parentId);
                         intent.putExtra("user_id",userId);
+                        intent.putExtra("userName",userName);
+
                         Toast.makeText(PropertyRecyclerActivityForUser.this, "userId= " + userId, Toast.LENGTH_SHORT).show();
 //                        Toast.makeText(PropertyRecyclerActivityForUser.this, "Parent ID: " + parentId, Toast.LENGTH_SHORT).show();
 

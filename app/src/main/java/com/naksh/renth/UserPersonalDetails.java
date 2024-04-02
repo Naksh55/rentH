@@ -32,7 +32,7 @@ public class UserPersonalDetails extends AppCompatActivity {
     ProgressDialog progressDialog;
     DatabaseReference usersRef;
     RadioGroup genderRadioGroup;
-    EditText name,age,gernder,phoneno;
+    EditText name,age,gernder,phoneno,email;
 
 
     @Override
@@ -48,6 +48,7 @@ public class UserPersonalDetails extends AppCompatActivity {
         name=findViewById(R.id.onameet);
         age=findViewById(R.id.oageet);
         phoneno=findViewById(R.id.phonenoet);
+        email=findViewById(R.id.emailet);
 
         progressDialog = new ProgressDialog(UserPersonalDetails.this);
         progressDialog.setTitle("Saving personal details");
@@ -70,10 +71,11 @@ public class UserPersonalDetails extends AppCompatActivity {
                 int age = Integer.parseInt(Objects.requireNonNull(binding.oageet.getText()).toString());
                 String gender = getSelectedGender();
                 String phoneNumber = binding.phonenoet.getText().toString();
+                String userEmail = binding.emailet.getText().toString();
 
                 // Generate a unique user ID (e.g., using push() method)
                 String userId = usersRef.push().getKey();
-                UserPersonalDetailsModel userPersonalDetailsModel = new UserPersonalDetailsModel(name, age, gender,userId, phoneNumber);
+                UserPersonalDetailsModel userPersonalDetailsModel = new UserPersonalDetailsModel(name, age, gender,userId, phoneNumber,userEmail);
                 assert userId != null;
                 usersRef.child(userId).setValue(userPersonalDetailsModel)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -113,7 +115,8 @@ public class UserPersonalDetails extends AppCompatActivity {
         String uname = name.getText().toString().trim();
         String uage = age.getText().toString().trim();
         String uphoneno = phoneno.getText().toString().trim();
-        if (uname.isEmpty() || uage.isEmpty() || uphoneno.isEmpty()||selectedId==-1) {
+        String uemail=email.getText().toString().trim();
+        if (uname.isEmpty() || uage.isEmpty() || uphoneno.isEmpty()||uemail.isEmpty()||selectedId==-1) {
             Toast.makeText(this, "All fields must be filled out", Toast.LENGTH_SHORT).show();
             return false;
 

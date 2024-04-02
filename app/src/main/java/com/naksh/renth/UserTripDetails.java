@@ -54,6 +54,8 @@ public class UserTripDetails extends AppCompatActivity {
     String parentId;
     String propertyId;
     String userId;
+    String userName;
+
     @SuppressLint("CutPasteId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +70,11 @@ public class UserTripDetails extends AppCompatActivity {
             String fromDate = intent.getStringExtra("from_date");
             String toDate = intent.getStringExtra("to_date");
             userId=intent.getStringExtra("user_id");
+            userName=intent.getStringExtra("userName");
+
             Toast.makeText(this, "userId:"+userId, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "userName:"+userName, Toast.LENGTH_SHORT).show();
+
             propertyId = intent.getStringExtra("property_id");
             if (propertyId != null) {
                 parentId = intent.getStringExtra("parent_id");
@@ -178,7 +184,9 @@ public class UserTripDetails extends AppCompatActivity {
                                                 intent.putExtra("property_id",propertyId);
                                                 intent.putExtra("parent_id",parentId);
                                                 intent.putExtra("user_id",userId);
-                                                Toast.makeText(UserTripDetails.this, "userId="+userId, Toast.LENGTH_SHORT).show();
+                                                intent.putExtra("userName",userName);
+
+                                                Toast.makeText(UserTripDetails.this, "userId="+userId+"userName="+userName, Toast.LENGTH_SHORT).show();
                                                 startActivity(intent);
                                                 finish(); // Finish this activity after starting the next one
                                             } else {

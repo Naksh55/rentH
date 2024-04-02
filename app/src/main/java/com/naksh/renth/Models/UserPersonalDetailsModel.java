@@ -1,7 +1,7 @@
 package com.naksh.renth.Models;
 
 public class UserPersonalDetailsModel {
-    private String name,gender,phoneno,userId;
+    private String name,gender,phoneno,userId,uemail;
     int age;
 
     public UserPersonalDetailsModel(){}
@@ -12,12 +12,13 @@ public class UserPersonalDetailsModel {
         this.phoneno = phoneno;
     }
 
-    public UserPersonalDetailsModel(String name, int age,String gender, String userId,String phoneno) {
+    public UserPersonalDetailsModel(String name, int age,String gender, String userId,String phoneno,String uemail) {
         this.name = name;
         this.gender = gender;
         this.phoneno = phoneno;
         this.userId = userId;
         this.age = age;
+        this.uemail=uemail;
     }
 
     public String getName() {
@@ -58,5 +59,21 @@ public class UserPersonalDetailsModel {
 
     public void setId(String id) {
         this.userId = userId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getUemail() {
+        return uemail;
+    }
+
+    public void setUemail(String uemail) {
+        this.uemail = uemail;
     }
 }

@@ -131,12 +131,33 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:id="@+id/emailtv"
+        android:layout_width="350sp"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toBottomOf="@id/phonenotv"
+        app:layout_constraintStart_toEndOf="@+id/guide_v_10"
+        android:hint="Enter E-mail address"
+        android:layout_marginTop="20sp"
+        >
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/emailet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/phonenotv"
+        app:layout_constraintStart_toEndOf="@+id/guide_v_10"
+        android:layout_marginTop="30sp"
+        android:inputType="textEmailAddress"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
         <Button
             android:id="@+id/nextbtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30sp"
-            app:layout_constraintTop_toBottomOf="@id/phonenotv"
+            app:layout_constraintTop_toBottomOf="@id/emailtv"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:text="Next" />

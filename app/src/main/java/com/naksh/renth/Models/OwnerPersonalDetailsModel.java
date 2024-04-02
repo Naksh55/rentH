@@ -1,26 +1,26 @@
 package com.naksh.renth.Models;
 
 public class OwnerPersonalDetailsModel {
-    private String oname, ogender, ophoneno,email,id;
+    private String oname, ogender, ophoneno,oemail,id;
     private int oage;
 
     public OwnerPersonalDetailsModel() {
     }
 
-    public OwnerPersonalDetailsModel(String oname, int oage, String ogender, String ophoneno,String email) {
+    public OwnerPersonalDetailsModel(String oname, int oage, String ogender, String ophoneno,String oemail) {
         this.oname = oname;
         this.oage = oage;
         this.ogender = ogender;
         this.ophoneno = ophoneno;
-        this.email=email;
+        this.oemail=oemail;
     }
 
-    public OwnerPersonalDetailsModel(String oname, int oage, String ogender, String ophoneno,String email,String id) {
+    public OwnerPersonalDetailsModel(String oname, int oage, String ogender, String ophoneno,String oemail,String id) {
         this.oname = oname;
         this.oage = oage;
         this.ogender = ogender;
         this.ophoneno = ophoneno;
-        this.email=email;
+        this.oemail=oemail;
         this.id=id;
     }
     public String getOname() {
@@ -55,12 +55,12 @@ public class OwnerPersonalDetailsModel {
         this.oage = oage;
     }
 
-    public String getEmail() {
-        return email;
+    public String getOemail() {
+        return oemail;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setOemail(String oemail) {
+        this.oemail = oemail;
     }
 
     public String getId() {

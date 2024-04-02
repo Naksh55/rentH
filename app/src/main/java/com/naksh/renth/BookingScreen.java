@@ -457,6 +457,7 @@ public class BookingScreen extends AppCompatActivity {
     StorageReference storageReference;
     String ownerphoneno;
     private String propertyId;
+    String userName;
 
 //    String fromDate;
 //    String toDate;
@@ -488,7 +489,10 @@ String userId;
              String fromDate = intent.getStringExtra("from_date");
              String toDate = intent.getStringExtra("to_date");
              userId=intent.getStringExtra("user_id");
+             userName=intent.getStringExtra("userName");
             Toast.makeText(this, "======="+userId, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "======="+userName, Toast.LENGTH_SHORT).show();
+
 //            Toast.makeText(this, "to date="+toDate, Toast.LENGTH_SHORT).show();
 
 
@@ -528,7 +532,11 @@ String userId;
                             intent.putExtra("from_date",fromDate);
                             intent.putExtra("to_date",todate);
                             intent.putExtra("user_id",userId);
+                            intent.putExtra("userName",userName);
+
                             Toast.makeText(BookingScreen.this, "userId=="+userId, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(BookingScreen.this, "userName=="+userName, Toast.LENGTH_SHORT).show();
+
 
                             startActivity(intent);
 //                    Toast.makeText(BookingScreen.this, fDate + "From date is null", Toast.LENGTH_SHORT).show();
@@ -621,7 +629,9 @@ private void handleBookingButtonClick(String propertyId) {
                     intent.putExtra("to_date",todate);
                     intent.putExtra("property_id",propertyId);
                     intent.putExtra("user_id",userId);
-                    Toast.makeText(BookingScreen.this, "id="+userId, Toast.LENGTH_SHORT).show();
+                intent.putExtra("userName",userName);
+
+                Toast.makeText(BookingScreen.this, "id="+userId+"userName="+userName, Toast.LENGTH_SHORT).show();
                     startActivity(intent);
 //                    Toast.makeText(BookingScreen.this, fDate + "From date is null", Toast.LENGTH_SHORT).show();
 //                    Toast.makeText(BookingScreen.this, tDate + "to date is null", Toast.LENGTH_SHORT).show();

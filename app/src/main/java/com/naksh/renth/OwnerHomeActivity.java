@@ -41,6 +41,8 @@ public class OwnerHomeActivity extends AppCompatActivity {
     String propertyId,parentId;
     String ownerphoneno;
     String notificationMessage;
+    String userName;
+    String userId;
 
     TextView ownerNameTextView, ownerPhoneNumberTextView, ownerEmailTextView;
 
@@ -54,13 +56,13 @@ public class OwnerHomeActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("id")) {
             ownerId = intent.getStringExtra("id");
+            userId=intent.getStringExtra("user_id");
             notificationMessage=intent.getStringExtra("notification_message");
+            userName=intent.getStringExtra("userName");
             Toast.makeText(OwnerHomeActivity.this, "notification="+notificationMessage, Toast.LENGTH_SHORT).show();
             // Pass the ID to the fragment
             loadHomeFragmentWithOwnerId(ownerId);
             retrievePropertiesForOwner(ownerId);
-
-
 
         }
         else{
@@ -87,7 +89,7 @@ public class OwnerHomeActivity extends AppCompatActivity {
                         getSupportFragmentManager().beginTransaction().replace(R.id.container, ownerHome).commit();
                         return true;
                     } else if (item.getItemId()==R.id.onotifications) {
-                        NotificationFragment notificationFragment = NotificationFragment.newInstance(ownerId, null, notificationMessage);
+                        NotificationFragment notificationFragment = NotificationFragment.newInstance(ownerId, null, notificationMessage,userId,userName);
                         Toast.makeText(OwnerHomeActivity.this, "notification message="+notificationMessage, Toast.LENGTH_SHORT).show();
                         // Replace the fragment container with the NotificationFragment
                         getSupportFragmentManager().beginTransaction().replace(R.id.container, notificationFragment).commit();

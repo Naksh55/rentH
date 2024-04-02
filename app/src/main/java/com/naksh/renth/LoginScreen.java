@@ -38,7 +38,10 @@ public class LoginScreen extends AppCompatActivity {
     DatabaseReference reference;
     EditText email;
     EditText password;
+    String notificationMessage;
     String ownerId;
+    String userId;
+    String userName;
 //    private static final String PREF_NAME = "last_screen_pref";
 //    private static final String LAST_SCREEN_KEY = "last_screen";
 //    private void saveLastScreen(String screenName) {
@@ -98,7 +101,11 @@ public class LoginScreen extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         Intent i=getIntent();
         if(i!=null){
-            i.getStringExtra("notification_message");
+            notificationMessage =i.getStringExtra("notification_message");
+            userId=i.getStringExtra("user_id");
+            userName=i.getStringExtra("userName");
+//            Toast.makeText(this, "id="+userId, Toast.LENGTH_SHORT).show();
+
         }
         progressDialog = new ProgressDialog(LoginScreen.this);
         progressDialog.setTitle("Log in");
@@ -208,7 +215,7 @@ public class LoginScreen extends AppCompatActivity {
         DatabaseReference ownerRef = FirebaseDatabase.getInstance().getReference()
                 .child("OwnerPersonalDetailsModel");
 
-        ownerRef.orderByChild("email").equalTo(currentUserEmail).addListenerForSingleValueEvent(new ValueEventListener() {
+        ownerRef.orderByChild("oemail").equalTo(currentUserEmail).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
@@ -233,15 +240,18 @@ public class LoginScreen extends AppCompatActivity {
                                                 // User type matches, redirect to OwnerHomeActivity
                                                 Intent intent = new Intent(LoginScreen.this, OwnerHomeActivity.class);
                                                 intent.putExtra("id", ownerId);
-                                                String notificationMessage = "Your property (ID: " + ownerId + ") has been booked by a user.";
+//                                                String notificationMessage = "Your property (ID: " + ownerId + ") has been booked by a user.";
 
                                                 intent.putExtra("notification_message",notificationMessage);
+//                                                Toast.makeText(LoginScreen.this, notificationMessage, Toast.LENGTH_SHORT).show();
+                                                intent.putExtra("user_id",userId);
+                                                intent.putExtra("userName",userName);
                                                 startActivity(intent);
                                                 finish(); // Finish the current activity
                                                 return;
                                             } else {
                                                 // User type doesn't match
-                                                 Toast.makeText(LoginScreen.this, "Role mismatch", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(LoginScreen.this, "Role mismatch", Toast.LENGTH_SHORT).show();
                                             }
                                         }
                                     } else {
@@ -274,47 +284,84 @@ public class LoginScreen extends AppCompatActivity {
     // Method to check if the current user is a user
     private void checkUserDetails(String currentUserEmail, RadioButton selectedRadioButton) {
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference()
-                .child("Users");
+                .child("UserPersonalDetailsModel");
 
-        userRef.orderByChild("email").equalTo(currentUserEmail).addListenerForSingleValueEvent(new ValueEventListener() {
+        userRef.orderByChild("uemail").equalTo(currentUserEmail).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     // User found in the database
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        String userTypeFromDatabase = snapshot.child("category").getValue(String.class); // Retrieve userType from the database
-                        String userType = selectedRadioButton.getText().toString();
-                        if (userType.equals(userTypeFromDatabase)) {
-                            // User type matches, redirect to PropertyRecyclerActivityForUser
-                            startActivity(new Intent(LoginScreen.this, PropertyRecyclerActivityForUser.class));
+                        String userId = snapshot.child("id").getValue(String.class);
+                        String username=snapshot.child("name").getValue(String.class);
+                        if (userId != null) {
+                            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference()
+                                    .child("Users");
+
+                            userRef.orderByChild("category").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    if (dataSnapshot.exists()) {
+                                        for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+
+                                            String userTypeFromDatabase = userSnapshot.child("category").getValue(String.class); // Retrieve userType from the database
+                                            String userType = selectedRadioButton.getText().toString();
+                                            Toast.makeText(LoginScreen.this, userTypeFromDatabase + " " + userType, Toast.LENGTH_SHORT).show();
+
+                                            if (userType.equals(userTypeFromDatabase)) {
+                                                Intent intent = new Intent(LoginScreen.this, PropertyRecyclerActivityForUser.class);
+                                                intent.putExtra("user_id", userId);
+                                                intent.putExtra("notification_message", notificationMessage);
+                                                intent.putExtra("userName", username);
+                                                Toast.makeText(LoginScreen.this, "userId="+userId, Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(LoginScreen.this, "userName="+username, Toast.LENGTH_SHORT).show();
+
+                                                startActivity(intent);
+                                                // User type matches, redirect to PropertyRecyclerActivityForUser
+                                            } else {
+                                                // User type doesn't match
+                                                Toast.makeText(LoginScreen.this, "Role mismatch", Toast.LENGTH_SHORT).show();
+                                            }
+                                            return; // Exit the loop after finding the matching email
+                                        }
+                                    } else {
+                                        // Email not found in UserPersonalDetails node
+                                        Toast.makeText(LoginScreen.this, "User data not found", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
                         } else {
-                            // User type doesn't match
-                            Toast.makeText(LoginScreen.this, "Role mismatch", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginScreen.this, "UserId is null", Toast.LENGTH_SHORT).show();
                         }
-                        return; // Exit the loop after finding the matching email
                     }
                 } else {
-                    // Email not found in UserPersonalDetails node
-                    Toast.makeText(LoginScreen.this, "User data not found", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginScreen.this, "user not found", Toast.LENGTH_SHORT).show();
+
                 }
+
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                // Handle database error
+
             }
         });
     }
 
-    public boolean validation() {
-        String eMail = email.getText().toString().trim();
-        String userPassword = password.getText().toString().trim();
-    if (eMail.isEmpty()||userPassword.isEmpty()){
-        Toast.makeText(this, "All fields must be filled out", Toast.LENGTH_SHORT).show();
-        return false;
-    }
-        return true;
 
-    }
-}
+                    public boolean validation () {
+                        String eMail = email.getText().toString().trim();
+                        String userPassword = password.getText().toString().trim();
+                        if (eMail.isEmpty() || userPassword.isEmpty()) {
+                            Toast.makeText(this, "All fields must be filled out", Toast.LENGTH_SHORT).show();
+                            return false;
+                        }
+                        return true;
 
+                    }
+                }

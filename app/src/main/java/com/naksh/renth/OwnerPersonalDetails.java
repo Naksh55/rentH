@@ -148,13 +148,13 @@ public class OwnerPersonalDetails extends AppCompatActivity {
                 int age = Integer.parseInt(Objects.requireNonNull(binding.ageet.getText()).toString());
                 String gender = getSelectedGender();
                 String phoneNumber = binding.ophonenoet.getText().toString();
-                String email = binding.oemailet.getText().toString();
+                String oemail = binding.oemailet.getText().toString();
 
                 // Generate a unique user ID
                 String ownerId = usersRef.push().getKey(); // Generate a unique user ID
 
                 // Set the id in the model
-                OwnerPersonalDetailsModel ownerPersonalDetailsModel = new OwnerPersonalDetailsModel(name,age, gender, phoneNumber, email,ownerId);
+                OwnerPersonalDetailsModel ownerPersonalDetailsModel = new OwnerPersonalDetailsModel(name,age, gender, phoneNumber, oemail,ownerId);
 
                 // Save the data to Firebase using the generated userId
                 usersRef.child(ownerId).setValue(ownerPersonalDetailsModel)

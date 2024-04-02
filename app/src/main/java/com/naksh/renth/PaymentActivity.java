@@ -66,6 +66,8 @@ String userId;
             if (propertyId != null) {
                 parentId = intent.getStringExtra("parent_id");
                 userId=intent.getStringExtra("user_id");
+                username=intent.getStringExtra("userName");
+
                 Toast.makeText(this, "userId="+userId, Toast.LENGTH_SHORT).show();
                 retrieveDetailsFromDatabase(propertyId, parentId);
                 retrieveOwnerIDs();
@@ -155,10 +157,15 @@ String userId;
                         if (dataSnapshot.exists()) {
                             String userName = dataSnapshot.child("name").getValue(String.class);
                             String userId=dataSnapshot.child("id").getValue(String.class);
+                            Toast.makeText(PaymentActivity.this, "name="+userName, Toast.LENGTH_SHORT).show();
                             if (userName != null) {
                                 String notificationMessage = "Your property (ID: " + propertyId + ") has been booked by " + userName;
+                                Toast.makeText(PaymentActivity.this, "userName="+userName, Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(PaymentActivity.this, LoginScreen.class);
                                 intent.putExtra("notification_message", notificationMessage);
+                                intent.putExtra("user_id",userId);
+                                intent.putExtra("userName",userName);
+                                Toast.makeText(PaymentActivity.this, "userName="+userName, Toast.LENGTH_SHORT).show();
                                 startActivity(intent);
                             } else {
                                 Toast.makeText(PaymentActivity.this, "User name not found", Toast.LENGTH_SHORT).show();
