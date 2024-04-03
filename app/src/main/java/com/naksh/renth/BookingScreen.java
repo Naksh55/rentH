@@ -759,7 +759,7 @@ private void handleBookingButtonClick(String propertyId) {
                     // Retrieve owner details
                     String ownerName = dataSnapshot.child("oname").getValue(String.class);
                     String ownerPhoneNumber = dataSnapshot.child("ophoneno").getValue(String.class);
-                    String ownerEmail = dataSnapshot.child("email").getValue(String.class);
+                    String ownerEmail = dataSnapshot.child("oemail").getValue(String.class);
                     // Set owner details in respective TextViews
                     ownerNameTextView = findViewById(R.id.oname);
                     ownerPhoneNumberTextView = findViewById(R.id.opnumber);

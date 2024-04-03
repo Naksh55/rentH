@@ -33,6 +33,7 @@ public class UserPersonalDetails extends AppCompatActivity {
     DatabaseReference usersRef;
     RadioGroup genderRadioGroup;
     EditText name,age,gernder,phoneno,email;
+    String userName;
 
 
     @Override

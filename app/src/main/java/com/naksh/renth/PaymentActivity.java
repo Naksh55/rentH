@@ -165,6 +165,7 @@ String userId;
                                 intent.putExtra("notification_message", notificationMessage);
                                 intent.putExtra("user_id",userId);
                                 intent.putExtra("userName",userName);
+                                intent.putExtra("property_id",propertyId);
                                 Toast.makeText(PaymentActivity.this, "userName="+userName, Toast.LENGTH_SHORT).show();
                                 startActivity(intent);
                             } else {

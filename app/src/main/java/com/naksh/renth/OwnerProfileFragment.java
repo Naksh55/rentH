@@ -184,7 +184,7 @@ public class OwnerProfileFragment extends Fragment {
                     if (dataSnapshot.exists()) {
                         // Retrieve owner details
                         String ownerName = dataSnapshot.child("oname").getValue(String.class);
-                        String ownerEmail = dataSnapshot.child("email").getValue(String.class);
+                        String ownerEmail = dataSnapshot.child("oemail").getValue(String.class);
                         String ownerPhoneNo = dataSnapshot.child("ophoneno").getValue(String.class);
 
                         // Set owner details to TextViews
