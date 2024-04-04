@@ -90,12 +90,21 @@ public class OwnerHomeActivity extends AppCompatActivity {
                     } else if (item.getItemId() == R.id.ohome) {
                         getSupportFragmentManager().beginTransaction().replace(R.id.container, ownerHome).commit();
                         return true;
-                    } else if (item.getItemId()==R.id.onotifications) {
-                        NotificationFragment notificationFragment = NotificationFragment.newInstance(ownerId, null, notificationMessage,userId,userName);
-                        Toast.makeText(OwnerHomeActivity.this, "notification message="+notificationMessage, Toast.LENGTH_SHORT).show();
-                        // Replace the fragment container with the NotificationFragment
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, notificationFragment).commit();
+                    } else if (item.getItemId() == R.id.onotifications) {
+                        // Create the NotificationFragment instance with the necessary data
+                        NotificationFragment notificationFragment = NotificationFragment.newInstance(ownerId, null, notificationMessage, userId, userName);
 
+                        // Check if notificationFragment is not null
+                        if (notificationFragment != null) {
+                            // Call addNotification method to add the received notification message
+                            notificationFragment.addNotification(notificationMessage);
+
+                            // Replace the fragment container with the NotificationFragment
+                            getSupportFragmentManager().beginTransaction().replace(R.id.container, notificationFragment).commit();
+                        } else {
+                            // Handle the case where notificationFragment is null
+                            Toast.makeText(OwnerHomeActivity.this, "Failed to create NotificationFragment", Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     return false;

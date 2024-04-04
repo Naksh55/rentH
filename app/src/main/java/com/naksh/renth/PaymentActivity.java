@@ -40,10 +40,10 @@ import java.util.Map;
 import java.util.Objects;
 
 public class PaymentActivity extends AppCompatActivity {
-String propertyId,parentId;
+    String propertyId,parentId;
     private static final String CHANNEL_ID = "ButtonNotificationChannel";
     String username; // Declare username as a class member variable
-String userId;
+    String userId;
 
     int slots;
 
@@ -188,7 +188,7 @@ String userId;
 
 
 
-        private void sendNotificationToOwner( String propertyId) {
+    private void sendNotificationToOwner( String propertyId) {
         // Retrieve owner's device token from the database based on ownerId
         // Construct notification message
         String notificationMessage = "Your property (ID: " + propertyId + ") has been booked by a user.";
@@ -272,7 +272,7 @@ String userId;
 
                     }
                 }
-                    else {
+                else {
                     // Handle the case where no property details are found
                     Toast.makeText(PaymentActivity.this, "No property details found", Toast.LENGTH_SHORT).show();
                 }

@@ -1,15 +1,19 @@
 package com.naksh.renth;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,8 +32,9 @@ public class NotificationFragment extends Fragment {
     private static final String ARG_USERNAME = "userName";
     private static final String ARG_PROPERTYID = "property_id";
 
-
-
+    private RecyclerView recyclerView;
+    private List<String> notificationMessages;
+    private NotificationAdapter adapter;
 
 
     // TODO: Rename and change types of parameters
@@ -101,6 +106,9 @@ public void onCreate(Bundle savedInstanceState) {
         Toast.makeText(getContext(), "userName=" + userName, Toast.LENGTH_SHORT).show();
         Toast.makeText(getContext(), "userId=" + userId, Toast.LENGTH_SHORT).show();
         Toast.makeText(getContext(), "propertyId=" + propertyId, Toast.LENGTH_SHORT).show();
+            // Your existing code...
+//            notificationMessages = new ArrayList<>();
+//            adapter = new NotificationAdapter(getContext(), notificationMessages); // Initialize the adapter
 
 
     }
@@ -112,16 +120,28 @@ public void onCreate(Bundle savedInstanceState) {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_notification, container, false);
-        TextView textView = view.findViewById(R.id.onotifications);
 
         // Retrieve owner ID associated with this fragment
         Bundle args = getArguments();
         String propertyId = args != null ? args.getString(ARG_OWNER_ID) : null;
 
+        // Initialize the RecyclerView
+        // Assuming you have a list of notification messages
+        recyclerView = view.findViewById(R.id.recyclerViewNotifications); // Initialize the RecyclerView object
+        // Assuming you have a list of notification messages
+        List<String> notificationMessages = new ArrayList<>();
+        notificationMessages.add(notificationMessage);
+
+        // Set up RecyclerView adapter
+        adapter = new NotificationAdapter(getContext(), notificationMessages);
+        recyclerView.setAdapter(adapter);
+
+        // Set RecyclerView layout manager (e.g., LinearLayoutManager)
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
         // Check if the owner ID matches
 //        if (propertyId != null && propertyId.equals(ownerId)) {
             // Display the notification message
-            textView.setText(notificationMessage);
 //        } else {
             // Hide the TextView or show a message indicating no notification
 //            textView.setVisibility(View.GONE);
@@ -129,6 +149,18 @@ public void onCreate(Bundle savedInstanceState) {
 
         return view;
     }
+    // Method to add a new notification message
+    // Method to add a new notification message
+    // Method to add a new notification message
+    public void addNotification(String notificationMessage) {
+        if (adapter != null) {
+            notificationMessages.add(notificationMessage);
+            adapter.notifyDataSetChanged();
+        } else {
+            Log.e("NotificationFragment", "Adapter is null");
+        }
+    }
+
 
 //    @Override
 //    public View onCreateView(LayoutInflater inflater, ViewGroup container,
