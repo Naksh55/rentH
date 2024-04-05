@@ -33,7 +33,7 @@ public class NotificationFragment extends Fragment {
     private static final String ARG_PROPERTYID = "property_id";
 
     private RecyclerView recyclerView;
-    private List<String> notificationMessages;
+    private static List<String> notificationMessages; // List to hold notification messages
     private NotificationAdapter adapter;
 
 
@@ -60,10 +60,29 @@ public class NotificationFragment extends Fragment {
      * @param id Parameter 1.
      * @param param2 Parameter 2.
      * @param  notificationMessage Parameter 3.
+     * @param  userName Parameter 3.
+     * @param  userId Parameter 3.
+     *
      * @return A new instance of fragment NotificationFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static NotificationFragment newInstance(String id, String param2,String notificationMessage,String userId,String userName) {
+//    public static NotificationFragment newInstance(String id, String param2,String notificationMessage,String userId,String userName) {
+//        NotificationFragment fragment = new NotificationFragment();
+//        Bundle args = new Bundle();
+//        args.putString(ARG_PARAM1, id);
+//        args.putString(ARG_PARAM2, param2);
+//        args.putString(ARG_OWNER_ID, ownerId);
+//        args.putString(ARG_NOTIFICATION_MESSAGE, notificationMessage);
+//        args.putString(ARG_USER_ID, userId);
+//        args.putString(ARG_USERNAME, userName);
+//        args.putString(ARG_PROPERTYID, propertyId);
+//        args.putStringArrayList(ARG_NOTIFICATION_MESSAGE, (ArrayList<String>) notificationMessages);
+//
+//        fragment.setArguments(args);
+//        return fragment;
+//    }
+
+    public static NotificationFragment newInstance(String id, String param2, String notificationMessage, String userId, String userName) {
         NotificationFragment fragment = new NotificationFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, id);
@@ -72,13 +91,17 @@ public class NotificationFragment extends Fragment {
         args.putString(ARG_NOTIFICATION_MESSAGE, notificationMessage);
         args.putString(ARG_USER_ID, userId);
         args.putString(ARG_USERNAME, userName);
-        args.putString(ARG_PROPERTYID, propertyId);
-
+        args.putString(ARG_PROPERTYID, propertyId); // Assuming propertyId is also static
+//        ArrayList<String> notificationMessages = new ArrayList<>();
+//        notificationMessages.add(notificationMessage); // Add the notification message to the list
+//
+//        args.putStringArrayList(ARG_NOTIFICATION_MESSAGE, notificationMessages);
         fragment.setArguments(args);
         return fragment;
     }
 
-//    @Override
+
+    //    @Override
 //    public void onCreate(Bundle savedInstanceState) {
 //        super.onCreate(savedInstanceState);
 //        if (getArguments() != null) {
@@ -98,6 +121,7 @@ public void onCreate(Bundle savedInstanceState) {
         mParam1 = getArguments().getString(ARG_PARAM1);
         mParam2 = getArguments().getString(ARG_PARAM2);
         ownerId = getArguments().getString(ARG_OWNER_ID);
+        notificationMessage = getArguments().getString(ARG_NOTIFICATION_MESSAGE);
         notificationMessage = getArguments().getString(ARG_NOTIFICATION_MESSAGE);
         userId = getArguments().getString(ARG_USER_ID);
         userName = getArguments().getString(ARG_USERNAME);
@@ -129,7 +153,9 @@ public void onCreate(Bundle savedInstanceState) {
         // Assuming you have a list of notification messages
         recyclerView = view.findViewById(R.id.recyclerViewNotifications); // Initialize the RecyclerView object
         // Assuming you have a list of notification messages
-        List<String> notificationMessages = new ArrayList<>();
+//        List<String> notificationMessages = new ArrayList<>();
+        notificationMessages = new ArrayList<>();
+
         notificationMessages.add(notificationMessage);
 
         // Set up RecyclerView adapter

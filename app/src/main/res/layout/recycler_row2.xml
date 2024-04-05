@@ -42,5 +42,31 @@
             android:padding="10dp"
             tools:ignore="MissingConstraints"
             android:layout_marginBottom="20sp"/>
+
+        <Button
+            android:id="@+id/updatebtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvItem1"
+            android:text="Update"
+            android:backgroundTint="@color/white"
+            android:textColor="@color/black"
+        />
+
+        <Button
+            android:id="@+id/deletebtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvItem1"
+            android:text="Delete"
+            android:layout_marginHorizontal="300dp"
+            android:backgroundTint="@color/white"
+            android:textColor="@color/black"
+            />
+
+
+
+
+
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

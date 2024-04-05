@@ -21,6 +21,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.RemoteMessage;
+import com.naksh.renth.NotificationFragment;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -147,6 +148,7 @@ public class PaymentActivity extends AppCompatActivity {
         payment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 DatabaseReference userRef = FirebaseDatabase.getInstance().getReference()
                         .child("UserPersonalDetailsModel")
                         .child(userId); // Assuming you have the userId available
@@ -163,6 +165,15 @@ public class PaymentActivity extends AppCompatActivity {
                                 Toast.makeText(PaymentActivity.this, "userName="+userName, Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(PaymentActivity.this, LoginScreen.class);
                                 intent.putExtra("notification_message", notificationMessage);
+//                                NotificationFragment notificationFragment = new NotificationFragment();
+//                                notificationFragment.addNotification("notification_message");
+// Assuming you have a reference to the NotificationFragment
+                                String param2 = "";
+                                String id="";
+                                NotificationFragment notificationFragment = NotificationFragment.newInstance(id, param2, notificationMessage, userId, userName);
+
+                                notificationFragment.addNotification("notification_message");
+
                                 intent.putExtra("user_id",userId);
                                 intent.putExtra("userName",userName);
                                 intent.putExtra("property_id",propertyId);

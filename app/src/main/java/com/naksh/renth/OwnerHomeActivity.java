@@ -88,23 +88,20 @@ public class OwnerHomeActivity extends AppCompatActivity {
                             Toast.makeText(OwnerHomeActivity.this, "Intent or ownerId is null", Toast.LENGTH_SHORT).show();
                         }
                     } else if (item.getItemId() == R.id.ohome) {
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, ownerHome).commit();
+                        OwnerHomeFragment ownerHomeFragment = OwnerHomeFragment.newInstance(ownerId, null);
+
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, ownerHomeFragment).commit();
                         return true;
                     } else if (item.getItemId() == R.id.onotifications) {
                         // Create the NotificationFragment instance with the necessary data
                         NotificationFragment notificationFragment = NotificationFragment.newInstance(ownerId, null, notificationMessage, userId, userName);
 
                         // Check if notificationFragment is not null
-                        if (notificationFragment != null) {
-                            // Call addNotification method to add the received notification message
-                            notificationFragment.addNotification(notificationMessage);
+                        // Call addNotification method to add the received notification message
+                        notificationFragment.addNotification(notificationMessage);
 
-                            // Replace the fragment container with the NotificationFragment
-                            getSupportFragmentManager().beginTransaction().replace(R.id.container, notificationFragment).commit();
-                        } else {
-                            // Handle the case where notificationFragment is null
-                            Toast.makeText(OwnerHomeActivity.this, "Failed to create NotificationFragment", Toast.LENGTH_SHORT).show();
-                        }
+                        // Replace the fragment container with the NotificationFragment
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, notificationFragment).commit();
                     }
 
                     return false;

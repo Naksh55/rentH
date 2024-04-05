@@ -12,6 +12,9 @@
         android:theme="@style/Theme.RentH"
         tools:targetApi="31">
         <activity
+            android:name=".UpdateOwnerPropertyDetails"
+            android:exported="false" />
+        <activity
             android:name=".PropertyRecyclerActivityForOwner"
             android:exported="false" />
         <activity

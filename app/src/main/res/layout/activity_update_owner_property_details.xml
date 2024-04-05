@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" >
+    <androidx.constraintlayout.widget.ConstraintLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".UpdateOwnerPropertyDetails">
+        <androidx.constraintlayout.widget.Guideline
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintGuide_percent=".1"
+            android:orientation="vertical"
+            android:id="@+id/guide_v_10"/>
+
+        <TextView
+            android:id="@+id/titleTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Owner Property Details"
+            android:textSize="30sp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <ImageView
+            android:id="@+id/proimage"
+            android:layout_width="404dp"
+            android:layout_height="331dp"
+            android:src="@drawable/ic_image"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="55sp"/>
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:id="@+id/nameofpTV"
+            android:layout_width="350sp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/proimage"
+            app:layout_constraintStart_toEndOf="@+id/guide_v_10"
+            android:hint="Name of property"
+            android:layout_marginTop="50sp"
+            >
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/nameofpET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/tv"
+                app:layout_constraintStart_toEndOf="@+id/guide_v_10"
+                android:layout_marginTop="30sp"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:id="@+id/propertyDescriptionTV"
+            android:layout_width="350sp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/nameofpTV"
+            app:layout_constraintStart_toEndOf="@+id/guide_v_10"
+            android:hint="Property Description"
+            android:layout_marginTop="50sp"
+            >
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/propertyDescriptionET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/propertyDescriptionTV"
+                app:layout_constraintStart_toEndOf="@+id/guide_v_10"
+                android:layout_marginTop="30sp"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:id="@+id/priceTV"
+            android:layout_width="350sp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/propertyDescriptionTV"
+            app:layout_constraintStart_toEndOf="@+id/guide_v_10"
+            android:hint="Price"
+            android:layout_marginTop="50sp"
+            >
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/priceET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/tv"
+                app:layout_constraintStart_toEndOf="@+id/guide_v_10"
+                android:layout_marginTop="30sp"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+        <Button
+            android:id="@+id/update"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Update"
+            app:layout_constraintTop_toBottomOf="@+id/priceTV"
+            app:layout_constraintStart_toEndOf="@+id/guide_v_10"
+            android:layout_marginTop="20sp"
+            android:layout_marginLeft="50sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

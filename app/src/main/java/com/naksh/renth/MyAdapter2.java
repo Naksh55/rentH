@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -54,7 +55,15 @@ public class MyAdapter2 extends RecyclerView.Adapter<MyAdapter2.ViewHolder> {
         // For example:
         // holder.textView.setText(property.getPropertyName());
         // holder.imageView.setImageResource(property.getPropertyImageResourceId());
-
+        holder.btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Navigate to the next screen here
+                // For example:
+                Intent intent = new Intent(context, UpdateOwnerPropertyDetails.class);
+                context.startActivity(intent);
+            }
+        });
         // Set click listener
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +75,7 @@ public class MyAdapter2 extends RecyclerView.Adapter<MyAdapter2.ViewHolder> {
         });
     }
 
+
     @Override
     public int getItemCount() {
         return list2.size();
@@ -74,12 +84,16 @@ public class MyAdapter2 extends RecyclerView.Adapter<MyAdapter2.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvItem, tvItem1;
         ImageView img2;
+        Button btn;
+
 
         ViewHolder(View itemView) {
             super(itemView);
             tvItem = itemView.findViewById(R.id.tvItem);
             tvItem1 = itemView.findViewById(R.id.tvItem1);
             img2 = itemView.findViewById(R.id.img2);
+            btn = itemView.findViewById(R.id.updatebtn); // Replace "your_button_id" with the actual ID of your button
+
             // Initialize your views here
             // For example:
             // myImageView = itemView.findViewById(R.id.img2);

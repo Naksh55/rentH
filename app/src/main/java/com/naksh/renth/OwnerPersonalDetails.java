@@ -123,8 +123,7 @@ public class OwnerPersonalDetails extends AppCompatActivity {
     ProgressDialog progressDialog;
     DatabaseReference usersRef;
     RadioGroup genderRadioGroup2;
-    String id;
-
+    String ownerId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,7 +150,7 @@ public class OwnerPersonalDetails extends AppCompatActivity {
                 String oemail = binding.oemailet.getText().toString();
 
                 // Generate a unique user ID
-                String ownerId = usersRef.push().getKey(); // Generate a unique user ID
+                 ownerId = usersRef.push().getKey(); // Generate a unique user ID
 
                 // Set the id in the model
                 OwnerPersonalDetailsModel ownerPersonalDetailsModel = new OwnerPersonalDetailsModel(name,age, gender, phoneNumber, oemail,ownerId);
