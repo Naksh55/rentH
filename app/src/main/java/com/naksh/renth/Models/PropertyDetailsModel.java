@@ -195,7 +195,15 @@ public class PropertyDetailsModel {
         this.id = id;
     }
 
-        private String randomPropertyId;
+    public String getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
+    }
+
+    private String randomPropertyId;
 
 //        public PropertyDetailsModel() {
 //            // Default constructor required for Firebase Realtime Database

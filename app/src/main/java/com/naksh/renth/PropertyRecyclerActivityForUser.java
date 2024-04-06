@@ -34,6 +34,8 @@ public class PropertyRecyclerActivityForUser extends AppCompatActivity {
     ArrayList<PropertyDetailsModel> list;
     BottomNavigationView bottomNavigationView;
     String userId;
+    String ownerId;
+
     String userName;
 
 
@@ -51,6 +53,8 @@ public class PropertyRecyclerActivityForUser extends AppCompatActivity {
         if(i!=null) {
            userId=  i.getStringExtra("user_id");
             userName=  i.getStringExtra("userName");
+            ownerId=  i.getStringExtra("id");
+
 //            Toast.makeText(this, userId, Toast.LENGTH_SHORT).show();
 //            Toast.makeText(this, userName, Toast.LENGTH_SHORT).show();
 
@@ -70,25 +74,63 @@ public class PropertyRecyclerActivityForUser extends AppCompatActivity {
 
         recyclerView.setAdapter(myAdapter);
 
-        database.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                list.clear(); // Clear the list before adding new data
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    PropertyDetailsModel testingModel = dataSnapshot.getValue(PropertyDetailsModel.class);
-                    list.add(testingModel);
-                }
-                myAdapter.reverseList(); // Call this method to reverse the list
-                myAdapter.notifyDataSetChanged();
-            }
+//        Query query = database.orderByChild("ownerId").equalTo(ownerId);
+//
+//        query.addValueEventListener(new ValueEventListener() {
+//                                        @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                list.clear(); // Clear the list before adding new data
+//                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+//                    PropertyDetailsModel testingModel = dataSnapshot.getValue(PropertyDetailsModel.class);
+//                    list.add(testingModel);
+//                }
+//                myAdapter.reverseList(); // Call this method to reverse the list
+//                myAdapter.notifyDataSetChanged();
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                Log.e("PropertyRecyclerActivity", "Database error: " + error.getMessage());
+//            }
+//        });
+//                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                                            list.clear(); // Clear the list before adding new data
+//                                            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+//                                                PropertyDetailsModel testingModel = dataSnapshot.getValue(PropertyDetailsModel.class);
+//                                                list.add(testingModel);
+//                                            }
+//
+//                                            // Log the number of properties retrieved
+//                                            Log.d("PropertyRecyclerActivity", "Number of properties retrieved: " + list.size());
+//
+//                                            myAdapter.reverseList(); // Call this method to reverse the list
+//                                            myAdapter.notifyDataSetChanged();
+//                                        }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("PropertyRecyclerActivity", "Database error: " + error.getMessage());
-            }
-        });
+                                      database.addValueEventListener(new ValueEventListener() {
+                                           @Override
+                                           public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                               list.clear(); // Clear the list before adding new data
+                                               for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                                                   PropertyDetailsModel testingModel = dataSnapshot.getValue(PropertyDetailsModel.class);
+                                                   list.add(testingModel);
+                                               }
+                                               myAdapter.reverseList(); // Call this method to reverse the list
+                                               myAdapter.notifyDataSetChanged();
+                                           }
 
-        bottomNavigationView = findViewById(R.id.bottomnavigation);
+                                           @Override
+                                           public void onCancelled(@NonNull DatabaseError error) {
+
+                                           }
+                                       });
+            bottomNavigationView = findViewById(R.id.bottomnavigation);
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
