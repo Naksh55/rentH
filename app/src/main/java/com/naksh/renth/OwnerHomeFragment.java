@@ -55,12 +55,16 @@ public class OwnerHomeFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private static final String ARG_OWNER_ID = "owner_id";
+    private static final String ARG_OWNER_NAME = "oname";
+
 
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
     private static String ownerId;
+    private static String ownerName;
+
 
 
     public OwnerHomeFragment() {
@@ -73,14 +77,17 @@ public class OwnerHomeFragment extends Fragment {
      *
      * @param ownerId Parameter 1.
      * @param param2 Parameter 2.
+     * @param ownerName Parameter 2.
      * @return A new instance of fragment OwnerHomeFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static OwnerHomeFragment newInstance(String ownerId, String param2) {
+    public static OwnerHomeFragment newInstance(String ownerId, String param2,String ownerName) {
         OwnerHomeFragment fragment = new OwnerHomeFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM2, param2);
         args.putString(ARG_OWNER_ID, ownerId);
+        args.putString(ARG_OWNER_NAME, ownerName);
+
 
         fragment.setArguments(args);
         return fragment;
@@ -93,6 +100,9 @@ public class OwnerHomeFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
             ownerId = getArguments().getString(ARG_OWNER_ID);
+            ownerName = getArguments().getString(ARG_OWNER_ID);
+            Toast.makeText(requireContext(), "ownerName="+ownerName, Toast.LENGTH_SHORT).show();
+
 
         }
     }
@@ -147,7 +157,7 @@ public class OwnerHomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_owner_home_fragment, container, false);
-        Toast.makeText(requireContext(), "ownerId=   "+ownerId, Toast.LENGTH_LONG).show();
+//        Toast.makeText(requireContext(), "ownerId=   "+ownerId, Toast.LENGTH_LONG).show();
         recyclerView2 = view.findViewById(R.id.recyclerView2);
         list = new ArrayList<>();
         myAdapter2 = new MyAdapter2(getActivity(), list, new MyAdapter2.OnItemClickListener() {

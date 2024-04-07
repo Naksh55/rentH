@@ -591,6 +591,7 @@ public class LoginScreen extends AppCompatActivity {
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         String ownerId = snapshot.child("id").getValue(String.class);
+                        String ownername = snapshot.child("oname").getValue(String.class);
 
                         if (ownerId != null) {
                             DatabaseReference userRef = FirebaseDatabase.getInstance().getReference()
@@ -614,6 +615,8 @@ public class LoginScreen extends AppCompatActivity {
                                                     Intent intent = new Intent(LoginScreen.this, OwnerHomeActivity.class);
                                                     intent.putExtra("user_id", userId);
                                                     intent.putExtra("id", ownerId);
+                                                    intent.putExtra("oname", ownername);
+
 
                                                     intent.putExtra("notification_message", notificationMessage);
                                                     intent.putExtra("userName", userName);

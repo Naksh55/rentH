@@ -43,6 +43,7 @@ public class OwnerHomeActivity extends AppCompatActivity {
     String notificationMessage;
     String userName;
     String userId;
+    String ownerName;
 
     TextView ownerNameTextView, ownerPhoneNumberTextView, ownerEmailTextView;
 
@@ -57,11 +58,13 @@ public class OwnerHomeActivity extends AppCompatActivity {
         if (intent != null && intent.hasExtra("id")) {
             ownerId = intent.getStringExtra("id");
             userId=intent.getStringExtra("user_id");
+            ownerName=intent.getStringExtra("oname");
+            Toast.makeText(this, ownerName, Toast.LENGTH_SHORT).show();
             notificationMessage=intent.getStringExtra("notification_message");
             userName=intent.getStringExtra("userName");
-            Toast.makeText(OwnerHomeActivity.this, "userId="+userId, Toast.LENGTH_SHORT).show();
-            Toast.makeText(OwnerHomeActivity.this, "userName="+userName, Toast.LENGTH_SHORT).show();
-            Toast.makeText(OwnerHomeActivity.this, "notification="+notificationMessage, Toast.LENGTH_LONG).show();
+//            Toast.makeText(OwnerHomeActivity.this, "userId="+userId, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(OwnerHomeActivity.this, "userName="+userName, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(OwnerHomeActivity.this, "notification="+notificationMessage, Toast.LENGTH_LONG).show();
             // Pass the ID to the fragment
             loadHomeFragmentWithOwnerId(ownerId);
             retrievePropertiesForOwner(ownerId);
@@ -81,6 +84,8 @@ public class OwnerHomeActivity extends AppCompatActivity {
                             // Create the intent to start PropertyDetails activity
                             Intent intent = new Intent(OwnerHomeActivity.this, PropertyDetails.class);
                             intent.putExtra("id", ownerId);
+                            intent.putExtra("oname", ownerName);
+
 
                             // Start the activity with the intent
                             startActivity(intent);
@@ -88,7 +93,7 @@ public class OwnerHomeActivity extends AppCompatActivity {
                             Toast.makeText(OwnerHomeActivity.this, "Intent or ownerId is null", Toast.LENGTH_SHORT).show();
                         }
                     } else if (item.getItemId() == R.id.ohome) {
-                        OwnerHomeFragment ownerHomeFragment = OwnerHomeFragment.newInstance(ownerId, null);
+                        OwnerHomeFragment ownerHomeFragment = OwnerHomeFragment.newInstance(ownerId, null,ownerName);
 
                         getSupportFragmentManager().beginTransaction().replace(R.id.container, ownerHomeFragment).commit();
                         return true;
@@ -132,7 +137,7 @@ public class OwnerHomeActivity extends AppCompatActivity {
 
     private void loadHomeFragmentWithOwnerId(String ownerId) {
         // Create a new instance of the OwnerProfileFragment
-        OwnerHomeFragment homeFragment = OwnerHomeFragment.newInstance(ownerId, null);
+        OwnerHomeFragment homeFragment = OwnerHomeFragment.newInstance(ownerId, null,ownerName);
 
         // Start a new transaction to replace the container with the fragment
         getSupportFragmentManager().beginTransaction()
@@ -170,7 +175,7 @@ public class OwnerHomeActivity extends AppCompatActivity {
                     recyclerView2.setAdapter(myAdapter2);
                 } else {
                     // Handle the case where no properties are found for the owner
-                    Toast.makeText(OwnerHomeActivity.this, "No properties found for this owner", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(OwnerHomeActivity.this, "No properties found for this owner", Toast.LENGTH_SHORT).show();
                 }
             }
 

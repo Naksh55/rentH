@@ -118,8 +118,11 @@ public class PropertyRecyclerActivityForUser extends AppCompatActivity {
                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
                                                list.clear(); // Clear the list before adding new data
                                                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                                                   PropertyDetailsModel testingModel = dataSnapshot.getValue(PropertyDetailsModel.class);
-                                                   list.add(testingModel);
+//                                                   PropertyDetailsModel testingModel = dataSnapshot.getValue(PropertyDetailsModel.class);
+                                                   PropertyDetailsModel propertyDetailsModel = dataSnapshot.getValue(PropertyDetailsModel.class);
+                                                   if (propertyDetailsModel != null && propertyDetailsModel.getId() != null) {
+                                                       list.add(propertyDetailsModel);
+                                                   }
                                                }
                                                myAdapter.reverseList(); // Call this method to reverse the list
                                                myAdapter.notifyDataSetChanged();

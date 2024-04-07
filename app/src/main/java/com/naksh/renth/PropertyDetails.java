@@ -232,6 +232,7 @@
     import android.os.Bundle;
     import android.provider.MediaStore;
     import android.widget.ArrayAdapter;
+    import android.widget.EditText;
     import android.widget.Spinner;
     import android.widget.TextView;
     import android.widget.Toast;
@@ -265,6 +266,8 @@
         private DatePickerDialog.OnDateSetListener mDateSetListener2;
         String id;
         String ownerId;
+        String oName;
+        EditText ownername;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -296,7 +299,24 @@
             progressDialog = new ProgressDialog(PropertyDetails.this);
             progressDialog.setTitle("Saving property details");
             progressDialog.setMessage("Going to home...");
+            ownername = findViewById(R.id.oNAME);
+            Intent i=getIntent();
+            if(i!=null) {
+               oName= i.getStringExtra("oname");
 
+                Toast.makeText(this, oName, Toast.LENGTH_LONG).show();
+
+            }
+            else{
+                Toast.makeText(this, "intent is null", Toast.LENGTH_SHORT).show();
+
+            }
+             if(oName!=null){
+                ownername.setText(oName);
+            }
+            else{
+                Toast.makeText(this, "oName is null", Toast.LENGTH_SHORT).show();
+            }
             binding.propertydp.setOnClickListener(v -> openGallery());
 
             binding.nextbutton.setOnClickListener(v -> {
@@ -370,9 +390,9 @@
             PropertyDetailsModel propertyDetailsModel;
 
             if (imageUrl != null) {
-                propertyDetailsModel = new PropertyDetailsModel(nameofproperty, priceofproperty, typeofproperty, address, state, city, propertydiscription, ownerId, imageUrl, fromDateString, toDateString);
+                propertyDetailsModel = new PropertyDetailsModel(nameofproperty, priceofproperty, typeofproperty, address, state, city, propertydiscription, ownerId, imageUrl, fromDateString, toDateString,oName);
             } else {
-                propertyDetailsModel = new PropertyDetailsModel(nameofproperty, priceofproperty, typeofproperty, address, state, city, propertydiscription, ownerId, imageUrl, fromDateString, toDateString);
+                propertyDetailsModel = new PropertyDetailsModel(nameofproperty, priceofproperty, typeofproperty, address, state, city, propertydiscription, ownerId, imageUrl, fromDateString, toDateString,oName);
             }
     //        Toast.makeText(PropertyDetails.this, ownerId, Toast.LENGTH_SHORT).show();
             assert ownerId != null;
@@ -382,7 +402,7 @@
                     .addOnCompleteListener(task -> {
                         progressDialog.dismiss();
                         if (task.isSuccessful()) {
-                            Toast.makeText(this, ownerId, Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(this, ownerId, Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(PropertyDetails.this, OwnerHomeActivity.class);
                             intent.putExtra("id", ownerId);
                             startActivity(intent);

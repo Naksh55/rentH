@@ -164,9 +164,14 @@ public class OwnerPersonalDetails extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     // Data saved successfully
                                     // Proceed with your logic
+                                    // Retrieve owner name from the model
+                                    String ownerName = ownerPersonalDetailsModel.getOname();
+
                                     Toast.makeText(OwnerPersonalDetails.this, ownerId, Toast.LENGTH_SHORT).show();
                                     Intent intent=new Intent(OwnerPersonalDetails.this,PropertyDetails.class);
-                                    intent.putExtra("id", ownerId); // Pass ownerId to PropertyDetails activity
+                                    intent.putExtra("id", ownerId);
+                                    intent.putExtra("oname",ownerName);
+                                    // Pass ownerId to PropertyDetails activity
                                     startActivity(intent);
                                     // Proceed to the next activity or perform other actions
                                 } else {

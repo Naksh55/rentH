@@ -11,10 +11,12 @@ public class PropertyDetailsModel {
     int priceofproperty;
     private String propertydp; // Assuming imageUrl is the URL of the image
     String ownerId;
+    String oName;
+
 
     public PropertyDetailsModel(){}
 
-    public PropertyDetailsModel(String nameofproperty,  String typeofproperty, String address, String city, String state, String propertydiscription, int priceofproperty, String propertydp) {
+    public PropertyDetailsModel(String nameofproperty,  String typeofproperty, String address, String city, String state, String propertydiscription, int priceofproperty, String propertydp,String oName){
         this.nameofproperty = nameofproperty;
         this.typeofproperty = typeofproperty;
         this.address = address;
@@ -23,6 +25,8 @@ public class PropertyDetailsModel {
         this.propertydiscription = propertydiscription;
         this.priceofproperty = priceofproperty;
         this.propertydp = propertydp;
+        this.oName=oName;
+
     }
 
 //    public PropertyDetailsModel(String nameofproperty, String typeofproperty, String address, String city, String state, String propertydiscription, String fromdate, String todate, int priceofproperty, String propertydp, String randomPropertyId) {
@@ -53,7 +57,7 @@ public class PropertyDetailsModel {
 //        this.todate=todate;
 //    }
 
-    public PropertyDetailsModel(String nameofproperty, int priceofproperty, String typeofproperty, String address, String state, String city, String propertydiscription, String ownerId, String imageUrl, String fromDateString, String toDateString) {
+    public PropertyDetailsModel(String nameofproperty, int priceofproperty, String typeofproperty, String address, String state, String city, String propertydiscription, String ownerId, String imageUrl, String fromDateString, String toDateString,String oName) {
         this.nameofproperty = nameofproperty;
         this.priceofproperty = priceofproperty;
         this.typeofproperty = typeofproperty;
@@ -65,6 +69,7 @@ public class PropertyDetailsModel {
         this.propertydp = imageUrl;
         this.fromdate = fromDateString;
         this.todate = toDateString;
+        this.oName=oName;
     }
 
     public PropertyDetailsModel( String propertyName, String typeOfProperty, int propertyPrice) {
@@ -233,4 +238,11 @@ public class PropertyDetailsModel {
         this.propertyId = propertyId;
     }
 
+    public String getoName() {
+        return oName;
+    }
+
+    public void setoName(String oName) {
+        this.oName = oName;
+    }
 }
