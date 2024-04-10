@@ -113,26 +113,22 @@ public class PropertyRecyclerActivityForUser extends AppCompatActivity {
 //            }
 //        });
 
-                                      database.addValueEventListener(new ValueEventListener() {
-                                           @Override
-                                           public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                               list.clear(); // Clear the list before adding new data
-                                               for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-//                                                   PropertyDetailsModel testingModel = dataSnapshot.getValue(PropertyDetailsModel.class);
-                                                   PropertyDetailsModel propertyDetailsModel = dataSnapshot.getValue(PropertyDetailsModel.class);
-                                                   if (propertyDetailsModel != null && propertyDetailsModel.getId() != null) {
-                                                       list.add(propertyDetailsModel);
-                                                   }
-                                               }
-                                               myAdapter.reverseList(); // Call this method to reverse the list
-                                               myAdapter.notifyDataSetChanged();
-                                           }
+        database.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                list.clear(); // Clear the list before adding new data
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    PropertyDetailsModel testingModel = dataSnapshot.getValue(PropertyDetailsModel.class);
+                    list.add(testingModel);
+                    myAdapter.reverseList(); // Call this method to reverse the list
+                    myAdapter.notifyDataSetChanged();
+                }
+            }
 
-                                           @Override
-                                           public void onCancelled(@NonNull DatabaseError error) {
-
-                                           }
-                                       });
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
+                });
             bottomNavigationView = findViewById(R.id.bottomnavigation);
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override

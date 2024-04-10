@@ -1,22 +1,29 @@
 package com.naksh.renth;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.FirebaseDatabase;
 import com.naksh.renth.Models.PropertyDetailsModel;
+import com.orhanobut.dialogplus.DialogPlus;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MyAdapter2 extends RecyclerView.Adapter<MyAdapter2.ViewHolder> {
     private LayoutInflater mInflater;
@@ -46,24 +53,70 @@ public class MyAdapter2 extends RecyclerView.Adapter<MyAdapter2.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        PropertyDetailsModel property = list2.get(position);
+    public void onBindViewHolder(@NonNull ViewHolder holder,  int position) {
+        PropertyDetailsModel  property = list2.get(holder.getAdapterPosition());
         holder.tvItem.setText(property.getNameofproperty());
         holder.tvItem1.setText(String.valueOf(property.getPriceofproperty()));
         Picasso.get().load(property.getImageUrl()).into(holder.img2);
-        // Bind property details to views in ViewHolder
-        // For example:
-        // holder.textView.setText(property.getPropertyName());
-        // holder.imageView.setImageResource(property.getPropertyImageResourceId());
+
         holder.btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Navigate to the next screen here
-                // For example:
-                Intent intent = new Intent(context, UpdateOwnerPropertyDetails.class);
-                context.startActivity(intent);
+
+                final DialogPlus dialogPlus = DialogPlus.newDialog(holder.img2.getContext())
+                        .setContentHolder(new com.orhanobut.dialogplus.ViewHolder(R.layout.update_popup))
+                        .setExpanded(true, 1200)
+                        .create();
+                View v = dialogPlus.getHolderView();
+                EditText name = v.findViewById(R.id.nameofpET);
+                EditText discription = v.findViewById(R.id.descriptionofpET);
+                EditText price = v.findViewById(R.id.priceofpET);
+                EditText image = v.findViewById(R.id.imageurlET);
+                Button btnupdate = v.findViewById(R.id.btnupdate);
+
+                name.setText(property.getNameofproperty());
+                discription.setText(property.getPropertydiscription());
+                price.setText(String.valueOf(property.getPriceofproperty()));
+                image.setText(property.getImageUrl());
+                dialogPlus.show();
+
+                btnupdate.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                            Map<String, Object> map = new HashMap<>();
+                            map.put("nameofproperty", name.getText().toString());
+                            map.put("propertydiscription", discription.getText().toString());
+                            map.put("priceofproperty", price.getText().toString());
+                            map.put("imageUrl", image.getText().toString());
+                            FirebaseDatabase.getInstance().getReference().child("PropertyDetailsModel")
+                                    .child("id").updateChildren(map)
+
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            Toast.makeText(name.getContext(), "Date updated successfully.", Toast.LENGTH_SHORT).show();
+                                            dialogPlus.dismiss();
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Toast.makeText(name.getContext(), "Date updation failed.", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+
+                        }
+                    
+
+
+                });
             }
+
+
         });
+
+
         // Set click listener
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,7 +137,7 @@ public class MyAdapter2 extends RecyclerView.Adapter<MyAdapter2.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvItem, tvItem1;
         ImageView img2;
-        Button btn;
+        Button btn,btn2;
 
 
         ViewHolder(View itemView) {
@@ -92,7 +145,9 @@ public class MyAdapter2 extends RecyclerView.Adapter<MyAdapter2.ViewHolder> {
             tvItem = itemView.findViewById(R.id.tvItem);
             tvItem1 = itemView.findViewById(R.id.tvItem1);
             img2 = itemView.findViewById(R.id.img2);
-            btn = itemView.findViewById(R.id.updatebtn); // Replace "your_button_id" with the actual ID of your button
+            btn = (Button)itemView.findViewById(R.id.updatebtn); // Replace "your_button_id" with the actual ID of your button
+            btn2 = (Button)itemView.findViewById(R.id.deletebtn); // Replace "your_button_id" with the actual ID of your button
+
 
             // Initialize your views here
             // For example:

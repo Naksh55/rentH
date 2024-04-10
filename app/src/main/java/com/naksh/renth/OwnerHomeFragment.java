@@ -100,8 +100,9 @@ public class OwnerHomeFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
             ownerId = getArguments().getString(ARG_OWNER_ID);
-            ownerName = getArguments().getString(ARG_OWNER_ID);
-            Toast.makeText(requireContext(), "ownerName="+ownerName, Toast.LENGTH_SHORT).show();
+            ownerName = getArguments().getString(ARG_OWNER_NAME);
+            Toast.makeText(requireContext(), "ownerId="+ownerId, Toast.LENGTH_SHORT).show();
+
 
 
         }
@@ -172,48 +173,60 @@ public class OwnerHomeFragment extends Fragment {
         recyclerView2.setAdapter(myAdapter2);
 
         // Query to fetch all properties
-        Query query = FirebaseDatabase.getInstance().getReference()
-                .child("PropertyDetailsModel");
+        Query query = FirebaseDatabase.getInstance().getReference().child("PropertyDetailsModel");
 
         query.addValueEventListener(new ValueEventListener() {
             @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                list.clear(); // Clear the list before adding new data
-//
-//                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-//                    PropertyDetailsModel testingModel = dataSnapshot.getValue(PropertyDetailsModel.class);
-//                    // Check if the property belongs to the owner
-//                    assert testingModel != null;
-//                    if (testingModel.getPropertyId().equals(ownerId)) {
-//                        list.add(testingModel);
-//                    }
-//                    else{
-//                        Toast.makeText(requireContext(), "null", Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//                myAdapter2.notifyDataSetChanged();
-//            }
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 list.clear(); // Clear the list before adding new data
+
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    PropertyDetailsModel testingModel = dataSnapshot.getValue(PropertyDetailsModel.class);
-                    // Check if the ownerId retrieved from the PropertyDetailsModel is not null
-                    if (testingModel != null && testingModel.getId() != null) {
-                        // Check if the ownerId matches the ownerId of the current user
-                        if (ownerId != null && ownerId.equals(testingModel.getId())) {
-                            list.add(testingModel);
+                    PropertyDetailsModel propertyModel = dataSnapshot.getValue(PropertyDetailsModel.class);
+                    if (propertyModel != null) {
+                        // Check if the property belongs to the desired owner
+                        String propertyOwnerName = propertyModel.getoName();
+                        Toast.makeText(requireContext(), "ownerName="+ownerName, Toast.LENGTH_SHORT).show();
+
+                        Toast.makeText(requireContext(), "name==="+propertyOwnerName, Toast.LENGTH_SHORT).show();
+                        if (propertyOwnerName != null && propertyOwnerName.equals(ownerName)) {
+                            list.add(propertyModel);
+                        }
+                        else{
+                            Toast.makeText(requireContext(), "null", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
                 myAdapter2.notifyDataSetChanged();
             }
 
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("OwnerHomeFragment", "Database error: " + error.getMessage());
+                // Handle onCancelled event
             }
         });
+
+
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                list.clear(); // Clear the list before adding new data
+//                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+//                    PropertyDetailsModel testingModel = dataSnapshot.getValue(PropertyDetailsModel.class);
+//                    // Check if the ownerId retrieved from the PropertyDetailsModel is not null
+//                    if (testingModel != null && testingModel.getId() != null) {
+//                        // Check if the ownerId matches the ownerId of the current user
+//                        if (ownerId != null && ownerId.equals(testingModel.getId())) {
+//                            list.add(testingModel);
+//                        }
+//                    }
+//                }
+//                myAdapter2.notifyDataSetChanged();
+//            }
+//
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                Log.e("OwnerHomeFragment", "Database error: " + error.getMessage());
+//            }
+//        });
 
         return view;
     }

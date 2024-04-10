@@ -397,12 +397,17 @@
     //        Toast.makeText(PropertyDetails.this, ownerId, Toast.LENGTH_SHORT).show();
             assert ownerId != null;
 //            propertiesRef.child(ownerId).push().setValue(propertyDetailsModel)
-            propertiesRef.child(ownerId).setValue(propertyDetailsModel)
+            String propertyId = propertiesRef.push().getKey();
 
+// Set the owner ID within the propertyDetailsModel
+            propertyDetailsModel.setOwnerId(ownerId);
+
+// Set the property details under the generated key
+            assert propertyId != null;
+            propertiesRef.child(propertyId).setValue(propertyDetailsModel)
                     .addOnCompleteListener(task -> {
                         progressDialog.dismiss();
                         if (task.isSuccessful()) {
-//                            Toast.makeText(this, ownerId, Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(PropertyDetails.this, OwnerHomeActivity.class);
                             intent.putExtra("id", ownerId);
                             startActivity(intent);

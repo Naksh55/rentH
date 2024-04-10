@@ -12,6 +12,8 @@ public class PropertyDetailsModel {
     private String propertydp; // Assuming imageUrl is the URL of the image
     String ownerId;
     String oName;
+    private String key; // Assuming key is a String
+
 
 
     public PropertyDetailsModel(){}
@@ -225,6 +227,14 @@ public class PropertyDetailsModel {
         public void setRandomPropertyId(String randomPropertyId) {
             this.randomPropertyId = randomPropertyId;
         }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
 
 
     private String propertyId;
