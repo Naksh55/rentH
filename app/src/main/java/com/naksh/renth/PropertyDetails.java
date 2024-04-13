@@ -268,6 +268,7 @@
         String ownerId;
         String oName;
         EditText ownername;
+        String propertyId;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -376,7 +377,7 @@
 
         private void storePropertyDetails(String ownerId, String imageUrl) {
             String nameofproperty = Objects.requireNonNull(binding.nameofproperty.getText()).toString();
-            int priceofproperty = Integer.parseInt(Objects.requireNonNull(binding.priceofproperty.getText()).toString());
+            String priceofproperty = String.valueOf(Integer.parseInt(Objects.requireNonNull(binding.priceofproperty.getText()).toString()));
             String typeofproperty = ((Spinner) findViewById(R.id.spinner)).getSelectedItem().toString();
             String address = Objects.requireNonNull(binding.addressEditText.getText()).toString();
             String state = Objects.requireNonNull(binding.stateEditText.getText()).toString();
@@ -384,20 +385,20 @@
             String propertydiscription = Objects.requireNonNull(binding.propertyDescriptionEditText.getText()).toString();
             String fromDateString = Objects.requireNonNull(binding.fromdate.getText()).toString();
             String toDateString = Objects.requireNonNull(binding.todate.getText()).toString();
+            propertyId = propertiesRef.push().getKey();
 
 
             // Explicitly set the propertyId in the PropertyDetailsModel
             PropertyDetailsModel propertyDetailsModel;
 
             if (imageUrl != null) {
-                propertyDetailsModel = new PropertyDetailsModel(nameofproperty, priceofproperty, typeofproperty, address, state, city, propertydiscription, ownerId, imageUrl, fromDateString, toDateString,oName);
+                propertyDetailsModel = new PropertyDetailsModel(nameofproperty, priceofproperty, typeofproperty, address, state, city, propertydiscription, ownerId, imageUrl, fromDateString, toDateString,oName,propertyId);
             } else {
-                propertyDetailsModel = new PropertyDetailsModel(nameofproperty, priceofproperty, typeofproperty, address, state, city, propertydiscription, ownerId, imageUrl, fromDateString, toDateString,oName);
+                propertyDetailsModel = new PropertyDetailsModel(nameofproperty, priceofproperty, typeofproperty, address, state, city, propertydiscription, ownerId, imageUrl, fromDateString, toDateString,oName,propertyId);
             }
     //        Toast.makeText(PropertyDetails.this, ownerId, Toast.LENGTH_SHORT).show();
             assert ownerId != null;
 //            propertiesRef.child(ownerId).push().setValue(propertyDetailsModel)
-            String propertyId = propertiesRef.push().getKey();
 
 // Set the owner ID within the propertyDetailsModel
             propertyDetailsModel.setOwnerId(ownerId);
@@ -410,6 +411,8 @@
                         if (task.isSuccessful()) {
                             Intent intent = new Intent(PropertyDetails.this, OwnerHomeActivity.class);
                             intent.putExtra("id", ownerId);
+                            intent.putExtra("propertyId", propertyId);
+
                             startActivity(intent);
                         } else {
                             Toast.makeText(PropertyDetails.this, "Failed to store property details", Toast.LENGTH_SHORT).show();

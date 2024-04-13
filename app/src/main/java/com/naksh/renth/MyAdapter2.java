@@ -2,6 +2,7 @@ package com.naksh.renth;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +17,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.naksh.renth.Models.PropertyDetailsModel;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.squareup.picasso.Picasso;
@@ -54,7 +58,7 @@ public class MyAdapter2 extends RecyclerView.Adapter<MyAdapter2.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder,  int position) {
-        PropertyDetailsModel  property = list2.get(holder.getAdapterPosition());
+        PropertyDetailsModel property = list2.get(holder.getAdapterPosition());
         holder.tvItem.setText(property.getNameofproperty());
         holder.tvItem1.setText(String.valueOf(property.getPriceofproperty()));
         Picasso.get().load(property.getImageUrl()).into(holder.img2);
@@ -83,38 +87,42 @@ public class MyAdapter2 extends RecyclerView.Adapter<MyAdapter2.ViewHolder> {
                 btnupdate.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        PropertyDetailsModel property = list2.get(holder.getAdapterPosition());
 
-                            Map<String, Object> map = new HashMap<>();
-                            map.put("nameofproperty", name.getText().toString());
-                            map.put("propertydiscription", discription.getText().toString());
-                            map.put("priceofproperty", price.getText().toString());
-                            map.put("imageUrl", image.getText().toString());
-                            FirebaseDatabase.getInstance().getReference().child("PropertyDetailsModel")
-                                    .child("id").updateChildren(map)
-
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void unused) {
-                                            Toast.makeText(name.getContext(), "Date updated successfully.", Toast.LENGTH_SHORT).show();
-                                            dialogPlus.dismiss();
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Toast.makeText(name.getContext(), "Date updation failed.", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-
-                        }
-                    
+                        String propertyId = property.getPropertyId();
+//
+                        Map<String, Object> map = new HashMap<>();
+                        map.put("nameofproperty", name.getText().toString());
+                        map.put("propertydiscription", discription.getText().toString());
+                        map.put("priceofproperty", price.getText().toString());
+                        map.put("imageUrl", image.getText().toString());
 
 
+                        FirebaseDatabase.getInstance().getReference().child("PropertyDetailsModel").child(
+                                        propertyId).updateChildren(map)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        Toast.makeText(name.getContext(), "Data updated successfully.", Toast.LENGTH_SHORT).show();
+                                        dialogPlus.dismiss();
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(name.getContext(), "Data update failed.", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    }
                 });
             }
-
-
         });
+
+
+
+
+
+
 
 
         // Set click listener

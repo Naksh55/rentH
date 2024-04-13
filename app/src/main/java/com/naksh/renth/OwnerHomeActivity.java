@@ -162,7 +162,7 @@ public class OwnerHomeActivity extends AppCompatActivity {
                         // Extract property details
                         String propertyName = propertySnapshot.child("nameofproperty").getValue(String.class);
                         String propertyType = propertySnapshot.child("typeofproperty").getValue(String.class);
-                        int propertyPrice = propertySnapshot.child("priceofproperty").getValue(Integer.class);
+                        String propertyPrice = propertySnapshot.child("priceofproperty").getValue(String.class);
 
                         // Add property to the list
                         PropertyDetailsModel property = new PropertyDetailsModel(propertyName, propertyType, propertyPrice);

@@ -181,8 +181,12 @@ public class OwnerHomeFragment extends Fragment {
                 list.clear(); // Clear the list before adding new data
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Log.d("DataSnapshot", "Value: " + dataSnapshot.getValue());
+
                     PropertyDetailsModel propertyModel = dataSnapshot.getValue(PropertyDetailsModel.class);
                     if (propertyModel != null) {
+                        Log.d("PropertyModel", "Name: " + propertyModel.getNameofproperty() + ", Price: " + propertyModel.getPriceofproperty());
+
                         // Check if the property belongs to the desired owner
                         String propertyOwnerName = propertyModel.getoName();
                         Toast.makeText(requireContext(), "ownerName="+ownerName, Toast.LENGTH_SHORT).show();
