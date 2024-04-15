@@ -231,6 +231,8 @@
     import android.net.Uri;
     import android.os.Bundle;
     import android.provider.MediaStore;
+    import android.view.View;
+    import android.widget.AdapterView;
     import android.widget.ArrayAdapter;
     import android.widget.EditText;
     import android.widget.Spinner;
@@ -250,6 +252,8 @@
     import java.text.SimpleDateFormat;
     import java.util.Calendar;
     import java.util.Date;
+    import java.util.HashMap;
+    import java.util.Map;
     import java.util.Objects;
     import java.util.UUID;
 
@@ -279,14 +283,898 @@
             // Retrieve ownerId from intent extras
              ownerId = getIntent().getStringExtra("id");
     //        Toast.makeText(PropertyDetails.this, ownerId, Toast.LENGTH_SHORT).show();
+
+
+
             Spinner typeOfPropertySpinner = findViewById(R.id.spinner);
+            Spinner cityspinner = findViewById(R.id.spinnercity);
+            Spinner statespinner = findViewById(R.id.spinnerstate);
             typeOfPropertySpinner.setPrompt("");
+            cityspinner.setPrompt("");
+            statespinner.setPrompt("");
+
+
 
             String[] typeofpropertyoptions = {"House", "Flat", "Villa", "Bungalow", "Cottage", "Penthouse"};
+            String[] citiesInAndhraPradesh = {
+                    "Visakhapatnam",
+                    "Vijayawada",
+                    "Guntur",
+                    "Nellore",
+                    "Kurnool",
+                    "Kakinada",
+                    "Rajamahendravaram",
+                    "Kadapa",
+                    "Mangalagiri-Tadepalli",
+                    "Tirupati",
+                    "Anantapuram",
+                    "Vizianagaram",
+                    "Ongole",
+                    "Eluru",
+                    "Proddatur",
+                    "Nandyal",
+                    "Adoni",
+                    "Madanapalle",
+                    "Machilipatnam",
+                    "Tenali",
+                    "Chittoor",
+                    "Hindupur",
+                    "Srikakulam",
+                    "Bhimavaram",
+                    "Tadepalligudem",
+                    "Guntakal",
+                    "Dharmavaram",
+                    "Gudivada",
+                    "Narasaraopet",
+                    "Tadipatri",
+                    "Chilakaluripet"
+            };
+            
+            String[] citiesInArunachalPradesh = {
+                    "Aalo",
+                    "Along",
+                    "Anini",
+                    "Basar",
+                    "Bhalukpong",
+                    "Bomdila",
+                    "Changlang",
+                    "Daporijo",
+                    "Itanagar",
+                    "Khonsa",
+                    "Naharlagun",
+                    "Namsai",
+                    "Palin",
+                    "Pasighat",
+                    "Roing",
+                    "Seppa",
+                    "Tezu",
+                    "Tawang",
+                    "Yingkiong",
+                    "Ziro"
+            };
+
+            String[] citiesInAssam = {
+                    "Barpeta",
+                    "Bongaigaon",
+                    "Dhubri",
+                    "Dibrugarh",
+                    "Diphu",
+                    "Goalpara",
+                    "Golaghat",
+                    "Guwahati",
+                    "Haflong",
+                    "Jorhat",
+                    "Karimganj",
+                    "Kokrajhar",
+                    "Mangaldoi",
+                    "Nagaon",
+                    "Nalbari",
+                   " North Lakhimpur",
+                    "Sibsagar",
+                    "Silchar",
+                    "Tezpur",
+                    "Tinsukia"
+
+            };
+
+            String[] citiesInBihar = {
+                    "Ara",
+                    "Arrah",
+                    "Bagaha",
+                    "Begusarai",
+                    "Bettiah",
+                    "Bihar Sharif",
+                    "Buxar",
+                    "Chapra",
+                    "Darbhanga",
+                    "Dehri",
+                    "Gaya",
+                    "Hajipur",
+                    "Jamalpur",
+                    "Katihar",
+                    "Madhubani",
+                    "Motihari",
+                    "Munger",
+                    "Muzaffarpur",
+                    "Nawada",
+                    "Patna",
+                    "Purnia",
+                    "Saharsa",
+                    "Samastipur",
+                    "Sasaram",
+                    "Sitamarhi",
+                    "Siwan"
+
+            };
+
+            String[] citiesInChhattisgarh = {
+
+                    "Ambikapur",
+                    "Bhilai",
+                    "Bilaspur",
+                    "Dhamtari",
+                    "Durg",
+                    "Jagdalpur",
+                    "Korba",
+                    "Raigarh",
+                    "Raipur",
+                    "Rajnandgaon"
+
+            };
+
+            String[] citiesInGoa = {
+                    "Bicholim",
+                    "Calangute",
+                    "Curchorem",
+                    "Mapusa",
+                    "Margao",
+                    "Mormugao",
+                    "Panaji" ,
+                    "Pernem",
+                    "Ponda",
+                    "Sanquelim",
+                    "Valpoi"
+            };
+
+            String[] citiesInGujarat = {
+                    "Ahmedabad",
+                    "Amreli",
+                    "Anand",
+                    "Ankleshwar",
+                    "Bharuch",
+                    "Bhavnagar",
+                    "Bhuj",
+                    "Dahod",
+                    "Gandhidham",
+                    "Gandhinagar" ,
+                    "Godhra",
+                    "Jamnagar",
+                    "Junagadh",
+                    "Kandla",
+                    "Mehsana",
+                    "Morbi",
+                    "Nadiad",
+                    "Navsari",
+                    "Palanpur",
+                    "Patan",
+                    "Porbandar",
+                    "Rajkot",
+                    "Surat",
+                    "Surendranagar",
+                    "Valsad"
+
+            };
+
+            String[] citiesInHaryana = {
+                    "Ambala",
+                    "Bahadurgarh",
+                    "Bhiwani",
+                    "Charkhi Dadri",
+                    "Faridabad",
+                    "Fatehabad",
+                    "Gurugram" ,
+                    "Hansi",
+                    "Hisar",
+                    "Jagadhri",
+                    "Jind",
+                    "Kaithal",
+                    "Karnal",
+                    "Kurukshetra",
+                    "Mahendragarh",
+                    "Narnaul",
+                    "Palwal",
+                    "Panchkula",
+                    "Panipat",
+                    "Rewari",
+                    "Rohtak",
+                    "Sirsa",
+                    "Sonipat",
+                    "Yamunanagar"
+            };
+
+            String[] citiesInHimachal = {
+                    "Baijnath",
+                    "Baddi",
+                    "Bilaspur",
+                    "Chamba",
+                    "Dalhousie",
+                    "Dharamshala",
+                    "Hamirpur",
+                    "Kangra",
+                    "Kasauli",
+                    "Kullu",
+                    "Mandi",
+                    "Manali",
+                    "Nahan",
+                    "Paonta Sahib",
+                    "Parwanoo",
+                    "Rampur",
+                    "Shimla",
+                    "Solan",
+                    "Una"
+            };
+
+            String[] citiesInJharkhand = {
+                    "Bokaro",
+                    "Chaibasa",
+                    "Chirkunda",
+                    "Deoghar",
+                    "Dhanbad",
+                    "Dumka",
+                    "Giridih",
+                    "Gumla",
+                    "Hazaribagh",
+                    "Jamshedpur",
+                    "Jamtara",
+                    "Jharia",
+                    "Jhumri Telaiya",
+                    "Koderma",
+                    "Medininagar",
+                    "Phusro",
+                    "Ramgarh",
+                    "Ranchi",
+                    "Sahibganj",
+                    "Seraikela",
+                    "Simdega"
+            };
+
+            String[] citiesInKarnataka = {
+                    "Bagalkot",
+                    "Ballari",
+                    "Belagavi",
+                    "Bengaluru",
+                    "Bidar",
+                    "Chikkamagaluru",
+                    "Davanagere",
+                    "Dharwad",
+                    "Gadag",
+                    "Hassan",
+                    "Haveri",
+                    "Hubballi-Dharwad",
+                    "Kalaburagi",
+                    "Kolar",
+                    "Koppal",
+                    "Mandya",
+                    "Mangaluru",
+                    "Mysuru",
+                    "Raichur",
+                    "Shivamogga",
+                    "Tumakuru",
+                    "Udupi",
+                    "Vijayapura",
+                    "Yadgir"
+
+            };
+
+            String[] citiesInKerela = {
+                   " Adoor",
+                    "Alappuzha",
+                    "Angamaly",
+                    "Attingal",
+                    "Chalakudy",
+                    "Changanassery",
+                    "Cherthala",
+                    "Chittur-Thathamangalam",
+                    "Ernakulam",
+                    "Guruvayur",
+                    "Irinjalakuda",
+                    "Kalamassery",
+                    "Kannur",
+                    "Kasaragod",
+                    "Kattappana",
+                    "Kayamkulam",
+                    "Kollam",
+                    "Kottayam",
+                    "Kozhikode",
+                    "Kunnamkulam",
+                    "Malappuram",
+                    "Manjeri",
+                    "Neyyattinkara",
+                    "Nileshwaram",
+                    "Ottappalam",
+                    "Palakkad",
+                    "Payyannur",
+                    "Perinthalmanna",
+                    "Ponnani",
+                    "Thalassery",
+                    "Thiruvananthapuram",
+                    "Thrissur",
+                    "Tirur",
+                    "Vadakara"
+            };
+
+            String[] citiesInMP = {
+                    "Balaghat",
+                    "Barwani",
+                    "Betul",
+                    "Bhind",
+                    "Bhopal",
+                    "Burhanpur",
+                    "Chhindwara",
+                    "Damoh",
+                    "Datia",
+                    "Dewas",
+                    "Dhar",
+                    "Guna",
+                    "Gwalior",
+                    "Harda",
+                    "Hoshangabad",
+                    "Indore",
+                    "Itarsi",
+                    "Jabalpur",
+                    "Khandwa",
+                    "Khargone",
+                    "Mandsaur",
+                    "Morena",
+                    "Murwara",
+                    "Nagda",
+                    "Neemuch",
+                    "Pithampur",
+                    "Ratlam",
+                    "Rewa",
+                    "Sagar",
+                    "Satna",
+                    "Sehore",
+                    "Seoni",
+                    "Shahdol",
+                    "Shivpuri",
+                    "Singrauli",
+                    "Ujjain",
+                    "Vidisha"
+            };
+
+            String[] citiesInMaharashtra = {
+                    "Ahmednagar",
+                    "Akola",
+                    "Amravati",
+                    "Aurangabad",
+                    "Bhiwandi",
+                    "Dhule",
+                    "Ichalkaranji",
+                    "Jalgaon",
+                    "Kalyan-Dombivli",
+                    "Kolhapur",
+                    "Latur",
+                    "Malegaon",
+                    "Mumbai",
+                    "Nagpur",
+                    "Nanded",
+                    "Nashik",
+                    "Navi Mumbai",
+                    "Panvel",
+                    "Parbhani",
+                    "Pimpri-Chinchwad",
+                    "Pune",
+                    "Sangli",
+                    "Satara",
+                    "Solapur",
+                    "Thane",
+                    "Ulhasnagar",
+                    "Vasai-Virar"
+            };
+
+            String[] citiesInManipur = {
+                    "Bishnupur",
+                    "Churachandpur",
+                    "Imphal",
+                    "Kakching",
+                    "Mayang Imphal",
+                    "Moirang",
+                    "Moreh",
+                    "Thoubal",
+                    "Ukhrul"
+
+            };
+
+            String[] citiesInMeghalaya = {
+                    "Baghmara",
+                    "Cherrapunji",
+                    "Jowai",
+                    "Nongpoh",
+                    "Nongstoin",
+                    "Resubelpara",
+                    "Shillong",
+                    "Tura"
+            };
+
+            String[] citiesInMizoram = {
+                    "Aizawl",
+                    "Champhai",
+                    "Kolasib",
+                    "Lunglei",
+                    "Saiha",
+                    "Serchhip"
+            };
+
+            String[] citiesInNagaland = {
+                    "Dimapur",
+                    "Kohima (Capital)",
+                    "Mokokchung",
+                    "Mon",
+                    "Tuensang",
+                    "Wokha",
+                    "Zunheboto"
+            };
+
+            String[] citiesInOdisha = {
+                    "Angul",
+                    "Balangir",
+                    "Balasore",
+                    "Bargarh",
+                    "Baripada",
+                    "Bhadrak",
+                    "Bhubaneswar",
+                    "Brahmapur",
+                    "Cuttack",
+                    "Dhenkanal",
+                    "Jagatsinghpur",
+                    "Jajpur",
+                    "Jeypore",
+                    "Jharsuguda",
+                    "Kendrapara",
+                    "Kendujhar",
+                    "Khordha",
+                    "Koraput",
+                    "Nayagarh",
+                    "Paradip",
+                    "Puri",
+                    "Rayagada",
+                    "Rourkela",
+                    "Sambalpur",
+                    "Sundergarh",
+            };
+
+            String[] citiesInPunjab = {
+                    "Amritsar",
+                    "Barnala",
+                    "Batala",
+                    "Bathinda",
+                    "Faridkot",
+                    "Fatehgarh Sahib",
+                    "Fazilka",
+                    "Firozpur",
+                    "Gurdaspur",
+                    "Hoshiarpur",
+                    "Jagraon",
+                    "Jalandhar",
+                    "Kapurthala",
+                    "Khanna",
+                    "Ludhiana",
+                    "Malerkotla",
+                    "Moga",
+                    "Mohali",
+                    "Muktsar",
+                    "Pathankot",
+                    "Patiala",
+                    "Phagwara",
+                    "Rajpura",
+                    "Sangrur",
+                    "Sirhind-Fategarh"
+            };
+
+            String[] citiesInRajasthan = {
+                    "Abu Road",
+                    "Ajmer",
+                    "Alwar",
+                    "Banswara",
+                    "Baran",
+                    "Barmer",
+                    "Beawar",
+                    "Bharatpur",
+                    "Bhilwara",
+                    "Bhiwadi",
+                    "Bikaner",
+                    "Bundi",
+                    "Chittorgarh",
+                    "Churu",
+                    "Dausa",
+                    "Dholpur",
+                    "Hanumangarh",
+                    "Jaipur",
+                    "Jaisalmer",
+                    "Jalore",
+                    "Jhalawar",
+                    "Jhunjhunu",
+                    "Jodhpur",
+                    "Karauli",
+                    "Kota",
+                    "Nagaur",
+                    "Pali",
+                    "Pratapgarh",
+                    "Pushkar",
+                    "Rajsamand",
+                    "Sawai Madhopur",
+                    "Sikar",
+                    "Sirohi",
+                    "Sri Ganganagar",
+                    "Tonk",
+                    "Udaipur"
+            };
+
+            String[] citiesInSikkim = {
+                    "Gangtok",
+                    "Geyzing",
+                    "Mangan",
+                    "Namchi",
+                    "Singtam"
+            };
+
+            String[] citiesInTN = {
+                    "Chennai",
+                    "Coimbatore",
+                    "Cuddalore",
+                    "Dindigul",
+                    "Erode",
+                    "Hosur",
+                    "Kanchipuram",
+                    "Karur",
+                    "Krishnagiri",
+                    "Madurai",
+                    "Nagercoil",
+                    "Ooty",
+                    "Pollachi",
+                    "Pudukkottai",
+                    "Ramanathapuram",
+                    "Salem",
+                    "Sivakasi",
+                    "Thanjavur",
+                    "Thoothukudi",
+                    "Tiruchirappalli",
+                    "Tirunelveli",
+                    "Tiruppur",
+                    "Tiruvannamalai",
+                    "Vellore",
+                    "Viluppuram",
+                    "Virudhunagar"
+            };
+
+            String[] citiesInTelangana = {
+                    "Adilabad",
+                    "Bhadrachalam",
+                    "Hyderabad (Capital)",
+                    "Jagtial",
+                    "Karimnagar",
+                    "Khammam",
+                    "Kodad",
+                    "Mahabubnagar",
+                    "Mancherial",
+                    "Medak",
+                    "Miryalaguda",
+                    "Nalgonda",
+                    "Nizamabad",
+                    "Ramagundam",
+                    "Siddipet",
+                    "Suryapet",
+                    "Warangal"
+            };
+
+            String[] citiesInTripura = {
+                    "Agartala",
+                    "Belonia",
+                    "Dharmanagar",
+                    "Kailasahar",
+                    "Kamalpur",
+                    "Khowai",
+                    "Ranirbazar",
+                    "Sabroom",
+                    "Sonamura",
+                    "Udaipur"
+            };
+
+            String[] citiesInUP = {
+                    "Agra",
+                    "Aligarh",
+                    "Allahabad",
+                    "Amroha",
+                    "Ayodhya",
+                    "Azamgarh",
+                    "Banda",
+                    "Barabanki",
+                    "Bareilly",
+                    "Basti",
+                    "Bijnor",
+                    "Bulandshahr",
+                    "Chandausi",
+                    "Etawah",
+                    "Faizabad",
+                    "Farrukhabad",
+                    "Fatehpur",
+                    "Firozabad",
+                    "Ghaziabad",
+                    "Ghazipur",
+                    "Gorakhpur",
+                    "Greater Noida",
+                    "Hapur",
+                    "Hardoi",
+                    "Jaunpur",
+                    "Jhansi",
+                    "Kannauj",
+                    "Kanpur",
+                    "Lakhimpur",
+                    "Lalitpur",
+                    "Lucknow",
+                    "Mainpuri",
+                    "Mathura",
+                    "Meerut",
+                    "Mirzapur",
+                    "Moradabad",
+                    "Muzaffarnagar",
+                    "Noida",
+                    "Pilibhit",
+                    "Pratapgarh",
+                    "Rae Bareli",
+                    "Rampur",
+                    "Saharanpur",
+                    "Shahjahanpur",
+                    "Sitapur",
+                    "Sultanpur",
+                    "Unnao",
+                    "Varanasi"
+            };
+
+            String[] citiesInUttarakhand = {
+                    "Almora",
+                    "Bageshwar",
+                    "Chamoli",
+                    "Champawat",
+                    "Dehradun (Capital)",
+                    "Haldwani",
+                    "Haridwar",
+                    "Kashipur",
+                    "Khatima",
+                    "Kotdwar",
+                    "Nainital",
+                    "Pauri",
+                    "Pithoragarh",
+                    "Ramnagar",
+                    "Ranikhet",
+                    "Rishikesh",
+                    "Roorkee",
+                    "Rudrapur",
+                    "Tehri",
+                    "Udham Singh Nagar",
+                    "Uttarkashi"
+            };
+
+            String[] citiesInWestBengal = {
+                    "Alipurduar",
+                    "Asansol",
+                    "Baharampur",
+                    "Balurghat",
+                    "Bankura",
+                    "Baranagar",
+                    "Barasat",
+                    "Bardhaman (Burdwan)",
+                    "Barrackpore",
+                    "Basirhat",
+                    "Bhatpara",
+                    "Bidhannagar",
+                    "Chinsurah",
+                    "Cooch Behar",
+                    "Darjeeling",
+                    "Diamond Harbour",
+                    "Durgapur",
+                    "Haldia",
+                    "Howrah",
+                    "Islampur",
+                    "Jalpaiguri",
+                    "Kharagpur",
+                    "Kolkata (Capital)",
+                    "Krishnanagar",
+                    "Malda",
+                    "Midnapore",
+                    "Nabadwip",
+                    "Purulia",
+                    "Raiganj",
+                    "Rajpur Sonarpur",
+                    "Silliguri",
+                    "South Dumdum",
+                    "Titagarh"
+            };
+
+            String[] citiesInANA = {
+                    "Andaman and Nicobar Islands"
+            };
+
+            String[] citiesInChandigarh = {
+                    "Chandigarh"
+            };
+
+
+            String[] citiesInDNH = {
+                    "Dadra and Nagar Haveli"
+            };
+
+            String[] citiesInDD = {
+                    "Daman and Diu"
+            };
+
+            String[] citiesInDelhi = {
+                    "Delhi"
+            };
+
+            String[] citiesInLakshadweep = {
+                    "Lakshadweep"
+            };
+
+            String[] citiesInPuducherry = {
+                    "Puducherry"
+            };
+
+            String[] citiesInLadakh = {
+                    "Ladakh"
+            };
+
+            String[] citiesInJK = {
+                    "Jammu & Kashmir"
+            };
+
+// Populate cities map for Andhra Pradesh
+            Map<String, String[]> citiesMap = new HashMap<>();
+            citiesMap.put("Andhra Pradesh", citiesInAndhraPradesh);
+
+            citiesMap.put("Arunachal Pradesh", citiesInArunachalPradesh);
+
+            citiesMap.put("Assam", citiesInAssam);
+
+            citiesMap.put("Bihar", citiesInBihar);
+
+            citiesMap.put("Chhattisgarh", citiesInChhattisgarh);
+
+            citiesMap.put("Goa", citiesInGoa);
+
+            citiesMap.put("Gujarat", citiesInGujarat);
+
+            citiesMap.put("Haryana", citiesInHaryana);
+
+            citiesMap.put("Himachal Pradesh", citiesInHimachal);
+
+            citiesMap.put("Jharkhand", citiesInJharkhand);
+
+            citiesMap.put("Karnataka", citiesInKarnataka);
+
+            citiesMap.put("Kerala", citiesInKerela);
+
+            citiesMap.put("Madhya Pradesh", citiesInMP);
+
+            citiesMap.put("Maharashtra", citiesInMaharashtra);
+
+            citiesMap.put("Manipur", citiesInManipur);
+
+            citiesMap.put("Meghalaya", citiesInMeghalaya);
+
+            citiesMap.put("Mizoram", citiesInMizoram);
+
+            citiesMap.put("Nagaland", citiesInNagaland);
+
+            citiesMap.put("Odisha", citiesInOdisha);
+
+            citiesMap.put("Punjab", citiesInPunjab);
+
+            citiesMap.put("Rajasthan", citiesInRajasthan);
+
+            citiesMap.put("Sikkim", citiesInSikkim);
+
+            citiesMap.put("Tamil Nadu", citiesInTN);
+
+            citiesMap.put("Telangana", citiesInTelangana);
+
+            citiesMap.put("Tripura", citiesInTripura);
+
+            citiesMap.put("Uttar Pradesh", citiesInUP);
+
+            citiesMap.put("Uttarakhand", citiesInUttarakhand);
+
+            citiesMap.put("West Bengal", citiesInWestBengal);
+
+            citiesMap.put("Andaman and Nicobar Islands", citiesInANA);
+
+            citiesMap.put("Chandigarh", citiesInChandigarh);
+
+            citiesMap.put("Dadra and Nagar Haveli", citiesInDNH);
+
+            citiesMap.put("Daman and Diu", citiesInDD);
+
+            citiesMap.put("Delhi", citiesInDelhi);
+
+            citiesMap.put("Lakshadweep", citiesInLakshadweep);
+
+            citiesMap.put("Puducherry", citiesInPuducherry);
+
+            citiesMap.put("Ladakh", citiesInLadakh);
+
+            citiesMap.put("Jammu & Kashmir", citiesInJK);
+
+
+            String[] statesOfIndia = {
+                    "Andhra Pradesh",
+                    "Arunachal Pradesh",
+                    "Assam",
+                    "Bihar",
+                    "Chhattisgarh",
+                    "Goa",
+                    "Gujarat",
+                    "Haryana",
+                    "Himachal Pradesh",
+                    "Jharkhand",
+                    "Karnataka",
+                    "Kerala",
+                    "Madhya Pradesh",
+                    "Maharashtra",
+                    "Manipur",
+                    "Meghalaya",
+                    "Mizoram",
+                    "Nagaland",
+                    "Odisha",
+                    "Punjab",
+                    "Rajasthan",
+                    "Sikkim",
+                    "Tamil Nadu",
+                    "Telangana",
+                    "Tripura",
+                    "Uttar Pradesh",
+                    "Uttarakhand",
+                    "West Bengal",
+                    "Andaman and Nicobar Islands",
+                    "Chandigarh",
+                    "Dadra and Nagar Haveli",
+                    "Daman and Diu",
+                    "Delhi",
+                    "Lakshadweep",
+                    "Puducherry",
+                    "Ladakh",
+                    "Jammu & Kashmir"
+
+            };
+
 
             ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, typeofpropertyoptions);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             typeOfPropertySpinner.setAdapter(adapter);
+
+            ArrayAdapter<String> adapterState = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, statesOfIndia);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            statespinner.setAdapter(adapterState);
+
+            ArrayAdapter<String> cityAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, new String[]{});
+            cityspinner.setAdapter(cityAdapter);
+
+// Set listener for state spinner
+            statespinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    String selectedState = statesOfIndia[position];
+                    String[] cities = citiesMap.get(selectedState);
+                    // Update city spinner with cities corresponding to the selected state
+                    ArrayAdapter<String> cityAdapter = new ArrayAdapter<>(PropertyDetails.this, android.R.layout.simple_spinner_item, cities);
+                    cityspinner.setAdapter(cityAdapter);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    Toast.makeText(PropertyDetails.this, "please select a state", Toast.LENGTH_SHORT).show();
+                }
+            });
 
             fromdate = findViewById(R.id.fromdate);
             fromdate.setOnClickListener(v -> showDatePickerDialog(fromdate));
@@ -380,8 +1268,8 @@
             String priceofproperty = String.valueOf(Integer.parseInt(Objects.requireNonNull(binding.priceofproperty.getText()).toString()));
             String typeofproperty = ((Spinner) findViewById(R.id.spinner)).getSelectedItem().toString();
             String address = Objects.requireNonNull(binding.addressEditText.getText()).toString();
-            String state = Objects.requireNonNull(binding.stateEditText.getText()).toString();
-            String city = Objects.requireNonNull(binding.cityEditText.getText()).toString();
+            String state =  ((Spinner)findViewById(R.id.spinnerstate)).getSelectedItem().toString();
+            String city =  ((Spinner)findViewById(R.id.spinnercity)).getSelectedItem().toString();
             String propertydiscription = Objects.requireNonNull(binding.propertyDescriptionEditText.getText()).toString();
             String fromDateString = Objects.requireNonNull(binding.fromdate.getText()).toString();
             String toDateString = Objects.requireNonNull(binding.todate.getText()).toString();

@@ -106,45 +106,83 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- City -->
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:id="@+id/cityLayout"
-            android:layout_width="350sp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/addressLayout"
-            android:hint="City"
-            android:layout_marginTop="20sp"
-            android:layout_marginLeft="25sp">
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+<!--            android:id="@+id/cityLayout"-->
+<!--            android:layout_width="350sp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_below="@id/addressLayout"-->
+<!--            android:hint="City"-->
+<!--            android:layout_marginTop="20sp"-->
+<!--            android:layout_marginLeft="25sp">-->
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/cityEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </com.google.android.material.textfield.TextInputLayout>
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:id="@+id/cityEditText"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content" />-->
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
 
-        <!-- State -->
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+
+        <TextView
             android:id="@+id/stateLayout"
-            android:layout_width="350sp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/cityLayout"
-            android:hint="State"
+            android:text="Select state:"
+            android:textSize="20sp"
+            android:layout_below="@id/addressLayout"
             android:layout_marginTop="20sp"
-            android:layout_marginLeft="25sp">
+            android:layout_marginLeft="25dp"/>
+        <Spinner
+            android:id="@+id/spinnerstate"
+            android:layout_width="wrap_content"
+            android:layout_height="50sp"
+            android:background="@drawable/default_background"
+            android:layout_alignBaseline="@id/stateLayout"
+            android:layout_toEndOf="@id/stateLayout"
+            android:layout_marginStart="16dp" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/stateEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </com.google.android.material.textfield.TextInputLayout>
+        <TextView
+            android:id="@+id/cityLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select city:   "
+            android:textSize="20sp"
+            android:layout_below="@id/stateLayout"
+            android:layout_marginTop="25sp"
+            android:layout_marginLeft="25dp"/>
+        <Spinner
+            android:id="@+id/spinnercity"
+            android:layout_width="wrap_content"
+            android:layout_height="50sp"
+            android:background="@drawable/default_background"
+            android:layout_alignBaseline="@id/cityLayout"
+            android:layout_toEndOf="@id/cityLayout"
+            android:layout_marginStart="16dp"
+
+            />
+        <!-- State -->
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+<!--            android:id="@+id/stateLayout"-->
+<!--            android:layout_width="350sp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_below="@id/cityLayout"-->
+<!--            android:hint="State"-->
+<!--            android:layout_marginTop="20sp"-->
+<!--            android:layout_marginLeft="25sp">-->
+
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:id="@+id/stateEditText"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content" />-->
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
 
         <!-- Property Description -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/propertyDescriptionLayout"
             android:layout_width="350sp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/stateLayout"
+            android:layout_below="@id/cityLayout"
             android:hint="Property Description"
             android:layout_marginTop="20sp"
             android:layout_marginLeft="25sp">

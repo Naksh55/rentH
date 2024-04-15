@@ -413,7 +413,8 @@ public class LoginScreen extends AppCompatActivity {
     String notificationMessage;
     String ownerId;
     String userId;
-    String userName;//    private static final String PREF_NAME = "last_screen_pref";
+    String userName;
+    String ownerName;//    private static final String PREF_NAME = "last_screen_pref";
 //    private static final String LAST_SCREEN_KEY = "last_screen";
 //    private void saveLastScreen(String screenName) {
 //        SharedPreferences sharedPreferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
@@ -475,6 +476,7 @@ public class LoginScreen extends AppCompatActivity {
             notificationMessage = i.getStringExtra("notification_message");
             userId = i.getStringExtra("user_id");
             userName = i.getStringExtra("userName");
+            ownerName=i.getStringExtra("oname");
 //            Toast.makeText(this, "id="+userId, Toast.LENGTH_SHORT).show();
         }
 

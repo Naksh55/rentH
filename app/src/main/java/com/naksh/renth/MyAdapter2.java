@@ -1,7 +1,9 @@
 package com.naksh.renth;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -77,7 +79,7 @@ public class MyAdapter2 extends RecyclerView.Adapter<MyAdapter2.ViewHolder> {
                 EditText price = v.findViewById(R.id.priceofpET);
                 EditText image = v.findViewById(R.id.imageurlET);
                 Button btnupdate = v.findViewById(R.id.btnupdate);
-
+                Button btndelete=v.findViewById(R.id.deletebtn);
                 name.setText(property.getNameofproperty());
                 discription.setText(property.getPropertydiscription());
                 price.setText(String.valueOf(property.getPriceofproperty()));
@@ -115,11 +117,39 @@ public class MyAdapter2 extends RecyclerView.Adapter<MyAdapter2.ViewHolder> {
                                 });
                     }
                 });
+
             }
         });
 
+        holder.btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText name = v.findViewById(R.id.nameofpET);
+
+                AlertDialog.Builder builder=new AlertDialog.Builder(holder.tvItem.getContext());
+                builder.setTitle("Are you sure to delete?");
+                builder.setMessage("Deleted data can't be restored");
+                builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        PropertyDetailsModel property = list2.get(holder.getAdapterPosition());
+
+                        String propertyId = property.getPropertyId();
+
+                        FirebaseDatabase.getInstance().getReference().child("PropertyDetailsModel").child(propertyId).removeValue();
 
 
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(holder.tvItem.getContext(), "Canceled the deletion", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                builder.show();
+            }
+        });
 
 
 
@@ -134,6 +164,7 @@ public class MyAdapter2 extends RecyclerView.Adapter<MyAdapter2.ViewHolder> {
                 }
             }
         });
+
     }
 
 

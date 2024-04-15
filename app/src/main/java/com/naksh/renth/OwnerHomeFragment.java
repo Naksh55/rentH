@@ -179,28 +179,31 @@ public class OwnerHomeFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 list.clear(); // Clear the list before adding new data
+                if (isAdded() && getActivity() != null) {
 
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    Log.d("DataSnapshot", "Value: " + dataSnapshot.getValue());
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        Log.d("DataSnapshot", "Value: " + dataSnapshot.getValue());
 
-                    PropertyDetailsModel propertyModel = dataSnapshot.getValue(PropertyDetailsModel.class);
-                    if (propertyModel != null) {
-                        Log.d("PropertyModel", "Name: " + propertyModel.getNameofproperty() + ", Price: " + propertyModel.getPriceofproperty());
+                        PropertyDetailsModel propertyModel = dataSnapshot.getValue(PropertyDetailsModel.class);
+                        if (propertyModel != null) {
+                            Log.d("PropertyModel", "Name: " + propertyModel.getNameofproperty() + ", Price: " + propertyModel.getPriceofproperty());
 
-                        // Check if the property belongs to the desired owner
-                        String propertyOwnerName = propertyModel.getoName();
-                        Toast.makeText(requireContext(), "ownerName="+ownerName, Toast.LENGTH_SHORT).show();
+                            // Check if the property belongs to the desired owner
+                            String propertyOwnerName = propertyModel.getoName();
+                            Toast.makeText(requireContext(), "ownerName=" + ownerName, Toast.LENGTH_SHORT).show();
 
-                        Toast.makeText(requireContext(), "name==="+propertyOwnerName, Toast.LENGTH_SHORT).show();
-                        if (propertyOwnerName != null && propertyOwnerName.equals(ownerName)) {
-                            list.add(propertyModel);
-                        }
-                        else{
-                            Toast.makeText(requireContext(), "null", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(requireContext(), "name===" + propertyOwnerName, Toast.LENGTH_SHORT).show();
+                            if (propertyOwnerName != null && propertyOwnerName.equals(ownerName)) {
+                                list.add(propertyModel);
+                            } else {
+                                Toast.makeText(requireContext(), "null", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
+                    myAdapter2.notifyDataSetChanged();
+                } else {
+                    Log.d("FragmentLifecycle", "Fragment is not attached or context is not available");
                 }
-                myAdapter2.notifyDataSetChanged();
             }
 
             @Override
@@ -340,6 +343,8 @@ public class OwnerHomeFragment extends Fragment {
                         Intent intent = new Intent(requireContext(), BookingScreen.class);
                         intent.putExtra("property_id", propertyId);
                         intent.putExtra("parent_id", parentId);
+                        intent.putExtra("oname", ownerName);
+
 //                        Toast.makeText(PropertyRecyclerActivityForUser.this, "Property ID: " + propertyId, Toast.LENGTH_SHORT).show();
 //                        Toast.makeText(PropertyRecyclerActivityForUser.this, "Parent ID: " + parentId, Toast.LENGTH_SHORT).show();
 
