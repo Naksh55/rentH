@@ -69,11 +69,11 @@ public class UserTripDetails extends AppCompatActivity {
 
             String fromDate = intent.getStringExtra("from_date");
             String toDate = intent.getStringExtra("to_date");
-            userId=intent.getStringExtra("user_id");
-            userName=intent.getStringExtra("userName");
+            userId = intent.getStringExtra("user_id");
+            userName = intent.getStringExtra("userName");
 
-            Toast.makeText(this, "userId:"+userId, Toast.LENGTH_SHORT).show();
-            Toast.makeText(this, "userName:"+userName, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "userId:" + userId, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "userName:" + userName, Toast.LENGTH_SHORT).show();
 
             propertyId = intent.getStringExtra("property_id");
             if (propertyId != null) {
@@ -123,7 +123,7 @@ public class UserTripDetails extends AppCompatActivity {
                 month = month + 1;
                 Log.d(TAG, "onDateSet:date: " + dayOfMonth + "/" + month + "/" + year);
                 String date = dayOfMonth + "/" + month + "/" + year;
-                Toast.makeText(UserTripDetails.this, "Selected date"+date, Toast.LENGTH_SHORT).show();
+                Toast.makeText(UserTripDetails.this, "Selected date" + date, Toast.LENGTH_SHORT).show();
 
                 fromDate.setText(date);
 
@@ -150,7 +150,7 @@ public class UserTripDetails extends AppCompatActivity {
                 int pickerValue = binding.np.getValue();
                 Log.d(TAG, "Picker value: '" + pickerValue + "'");
                 int slots = Integer.parseInt(String.valueOf(pickerValue).trim());
-                Toast.makeText(UserTripDetails.this, "slot when clicked="+slots, Toast.LENGTH_SHORT).show();
+                Toast.makeText(UserTripDetails.this, "slot when clicked=" + slots, Toast.LENGTH_SHORT).show();
                 int guests = Integer.parseInt(Objects.requireNonNull(binding.guests.getText()).toString());
                 assert intent != null;
                 String fromDate = intent.getStringExtra("from_date");
@@ -158,14 +158,26 @@ public class UserTripDetails extends AppCompatActivity {
                 // Check if the selected date falls within the booking range
                 try {
                     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                    Log.d(TAG, "selectedDateStr: " + selectedDateStr);
+                    Log.d(TAG, "fromDate: " + fromDate);
+                    Log.d(TAG, "toDate: " + toDate);
+
+                    if (fromDate.equals("Select from date") || toDate.equals("Select to date")) {
+                        // Invalid or missing from/to date
+                        progressDialog.dismiss();
+                        Toast.makeText(UserTripDetails.this, "Invalid or missing from/to date", Toast.LENGTH_SHORT).show();
+                        return; // Exit the method
+                    }
+
+                    // Both fromDate and toDate are not equal to "Select from/to date", proceed with date parsing
                     Date selectedDate = sdf.parse(selectedDateStr);
                     Date from = sdf.parse(fromDate);
                     Date to = sdf.parse(toDate);
 
-                    if (selectedDate != null && from != null ) {
+                    if (selectedDate != null && from != null) {
                         if (selectedDate.equals(from) || (selectedDate.after(from) && selectedDate.before(to)) || selectedDate.equals(to)) {
-                            // Selected date is equal to from date
-                            Toast.makeText(UserTripDetails.this, "Selected date is equal to unavailable date", Toast.LENGTH_SHORT).show();
+                            // Selected date is equal to or falls within the unavailable range
+                            Toast.makeText(UserTripDetails.this, "Selected date is equal to or falls within the unavailable range", Toast.LENGTH_SHORT).show();
                             progressDialog.dismiss();
                         } else {
                             // Save trip details to the TripDetailsModel node
@@ -174,45 +186,210 @@ public class UserTripDetails extends AppCompatActivity {
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
-//                                        progressDialog.dismiss(); // Dismiss the progress dialog
                                             if (task.isSuccessful()) {
                                                 progressDialog.dismiss();
-
+                                                // Start PaymentActivity with necessary intent extras
                                                 Intent intent = new Intent(UserTripDetails.this, PaymentActivity.class);
-                                                intent.putExtra("slot",slots);
-                                                Toast.makeText(UserTripDetails.this, "slot="+slots, Toast.LENGTH_SHORT).show();
-                                                intent.putExtra("property_id",propertyId);
-                                                intent.putExtra("parent_id",parentId);
-                                                intent.putExtra("user_id",userId);
-                                                intent.putExtra("userName",userName);
-
-                                                Toast.makeText(UserTripDetails.this, "userId="+userId+"userName="+userName, Toast.LENGTH_SHORT).show();
+                                                intent.putExtra("slot", slots);
+                                                intent.putExtra("property_id", propertyId);
+                                                intent.putExtra("parent_id", parentId);
+                                                intent.putExtra("user_id", userId);
+                                                intent.putExtra("userName", userName);
                                                 startActivity(intent);
                                                 finish(); // Finish this activity after starting the next one
                                             } else {
-                                                progressDialog.dismiss(); // Dismiss the progress dialog
-
+                                                progressDialog.dismiss();
                                                 Toast.makeText(UserTripDetails.this, "Failed to save trip details", Toast.LENGTH_SHORT).show();
                                             }
                                         }
                                     });
                         }
+                    } else {
+                        Toast.makeText(UserTripDetails.this, "Date must not be null", Toast.LENGTH_SHORT).show();
                     }
-                    else{
-                            Toast.makeText(UserTripDetails.this, "Date must not be null", Toast.LENGTH_SHORT).show();
-
-                        }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    progressDialog.dismiss(); // Dismiss the progress dialog
+                    Toast.makeText(UserTripDetails.this, "Failed to parse date", Toast.LENGTH_SHORT).show();
+                } finally {
+                    UserTripDetailsModel userTripDetailsModel = new UserTripDetailsModel(selectedDateStr, slots, guests);
+                    databaseReference.child(propertyId).setValue(userTripDetailsModel)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        progressDialog.dismiss();
+                                        // Start PaymentActivity with necessary intent extras
+                                        Intent intent = new Intent(UserTripDetails.this, PaymentActivity.class);
+                                        intent.putExtra("slot", slots);
+                                        intent.putExtra("property_id", propertyId);
+                                        intent.putExtra("parent_id", parentId);
+                                        intent.putExtra("user_id", userId);
+                                        intent.putExtra("userName", userName);
+                                        startActivity(intent);
+                                        finish(); // Finish this activity after starting the next one
+                                    } else {
+                                        progressDialog.dismiss();
+                                        Toast.makeText(UserTripDetails.this, "Failed to save trip details", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
                 }
-                    catch (ParseException e) {
-                        e.printStackTrace();
-                        // Handle parsing error
-                    }
             }
         });
-        // Declare selectedDate as a String
-        String selectedDate = fromDate.getText().toString();
-
     }
+
+//        binding.bookingbutton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                progressDialog.show();
+//                String selectedDateStr = Objects.requireNonNull(binding.fromDate.getText()).toString();
+//                Toast.makeText(UserTripDetails.this, selectedDateStr, Toast.LENGTH_SHORT).show();
+//                int pickerValue = binding.np.getValue();
+//                Log.d(TAG, "Picker value: '" + pickerValue + "'");
+//                int slots = Integer.parseInt(String.valueOf(pickerValue).trim());
+//                Toast.makeText(UserTripDetails.this, "slot when clicked="+slots, Toast.LENGTH_SHORT).show();
+//                int guests = Integer.parseInt(Objects.requireNonNull(binding.guests.getText()).toString());
+//                assert intent != null;
+//                String fromDate = intent.getStringExtra("from_date");
+//                String toDate = intent.getStringExtra("to_date");
+//                // Check if the selected date falls within the booking range
+//                if (fromDate.equals("Select from date") || toDate.equals("Select to date")) {
+//                    progressDialog.dismiss();
+//                    Toast.makeText(UserTripDetails.this, "Invalid or missing from/to date", Toast.LENGTH_SHORT).show();
+//                    return; // Exit the method
+//                }
+//                try {
+//                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+//                    Log.d(TAG, "selectedDateStr: " + selectedDateStr);
+//                    Log.d(TAG, "fromDate: " + fromDate);
+//                    Log.d(TAG, "toDate: " + toDate);
+//
+//                    if (fromDate.equals("Select from date") && toDate.equals("Select to date")) {
+//                        // Check if fromDate and toDate contain only digits and slashes (indicating valid date format)
+//                        // Both fromDate and toDate contain only digits and slashes, proceed with date parsing
+//                        Date selectedDate = sdf.parse(selectedDateStr);
+//                        Date from = sdf.parse(fromDate);
+//                        Date to = sdf.parse(toDate);
+//
+//
+//                        if (selectedDate != null && from != null) {
+//                            if (selectedDate.equals(from) || (selectedDate.after(from) && selectedDate.before(to)) || selectedDate.equals(to)) {
+//                                // Selected date is equal to from date
+//                                Toast.makeText(UserTripDetails.this, "Selected date is equal to unavailable date", Toast.LENGTH_SHORT).show();
+//                                progressDialog.dismiss();
+//                            } else {
+//                                // Save trip details to the TripDetailsModel node
+//                                UserTripDetailsModel userTripDetailsModel = new UserTripDetailsModel(selectedDateStr, slots, guests);
+//                                databaseReference.child(propertyId).setValue(userTripDetailsModel)
+//                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                                            @Override
+//                                            public void onComplete(@NonNull Task<Void> task) {
+////                                        progressDialog.dismiss(); // Dismiss the progress dialog
+//                                                if (task.isSuccessful()) {
+//                                                    progressDialog.dismiss();
+//
+//                                                    Intent intent = new Intent(UserTripDetails.this, PaymentActivity.class);
+//                                                    intent.putExtra("slot", slots);
+//                                                    Toast.makeText(UserTripDetails.this, "slot=" + slots, Toast.LENGTH_SHORT).show();
+//                                                    intent.putExtra("property_id", propertyId);
+//                                                    intent.putExtra("parent_id", parentId);
+//                                                    intent.putExtra("user_id", userId);
+//                                                    intent.putExtra("userName", userName);
+//
+//                                                    Toast.makeText(UserTripDetails.this, "userId=" + userId + "userName=" + userName, Toast.LENGTH_SHORT).show();
+//                                                    startActivity(intent);
+//                                                    finish(); // Finish this activity after starting the next one
+//                                                } else {
+//                                                    progressDialog.dismiss(); // Dismiss the progress dialog
+//
+//                                                    Toast.makeText(UserTripDetails.this, "Failed to save trip details", Toast.LENGTH_SHORT).show();
+//                                                }
+//                                            }
+//                                        });
+//                            }
+//                        } else {
+//                            Toast.makeText(UserTripDetails.this, "Date must not be null", Toast.LENGTH_SHORT).show();
+//
+//                        }
+//                    } else {
+//
+//                        // Check if fromDate and toDate contain only digits and slashes (indicating valid date format)
+//                        // Both fromDate and toDate contain only digits and slashes, proceed with date parsing
+//                        Date selectedDate = sdf.parse(selectedDateStr);
+//                        Date from = sdf.parse(fromDate);
+//                        Date to = sdf.parse(toDate);
+//
+//
+//                        if (selectedDate != null && from != null) {
+//                            if (selectedDate.equals(from) || (selectedDate.after(from) && selectedDate.before(to)) || selectedDate.equals(to)) {
+//                                // Selected date is equal to from date
+//                                Toast.makeText(UserTripDetails.this, "Selected date is equal to unavailable date", Toast.LENGTH_SHORT).show();
+//                                progressDialog.dismiss();
+//                            } else {
+//                                // Save trip details to the TripDetailsModel node
+//                                UserTripDetailsModel userTripDetailsModel = new UserTripDetailsModel(selectedDateStr, slots, guests);
+//                                databaseReference.child(propertyId).setValue(userTripDetailsModel)
+//                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                                            @Override
+//                                            public void onComplete(@NonNull Task<Void> task) {
+////                                        progressDialog.dismiss(); // Dismiss the progress dialog
+//                                                if (task.isSuccessful()) {
+//                                                    progressDialog.dismiss();
+//
+//                                                    Intent intent = new Intent(UserTripDetails.this, PaymentActivity.class);
+//                                                    intent.putExtra("slot", slots);
+//                                                    Toast.makeText(UserTripDetails.this, "slot=" + slots, Toast.LENGTH_SHORT).show();
+//                                                    intent.putExtra("property_id", propertyId);
+//                                                    intent.putExtra("parent_id", parentId);
+//                                                    intent.putExtra("user_id", userId);
+//                                                    intent.putExtra("userName", userName);
+//
+//                                                    Toast.makeText(UserTripDetails.this, "userId=" + userId + "userName=" + userName, Toast.LENGTH_SHORT).show();
+//                                                    startActivity(intent);
+//                                                    finish(); // Finish this activity after starting the next one
+//                                                } else {
+//                                                    progressDialog.dismiss(); // Dismiss the progress dialog
+//
+//                                                    Toast.makeText(UserTripDetails.this, "Failed to save trip details", Toast.LENGTH_SHORT).show();
+//                                                }
+//                                            }
+//                                        });
+//                            }
+//                        } else {
+//                            Toast.makeText(UserTripDetails.this, "Date must not be null", Toast.LENGTH_SHORT).show();
+//
+//                        }
+//                    }
+//                }
+//                    catch (ParseException e) {
+//                        e.printStackTrace();
+////                        progressDialog.dismiss(); // Dismiss the progress dialog
+//
+//                        // Handle parsing error
+//                    }
+//                finally {
+//                    Toast.makeText(UserTripDetails.this, "inside finally block", Toast.LENGTH_SHORT).show();
+//                    progressDialog.dismiss();
+//
+//                    Intent intent = new Intent(UserTripDetails.this, PaymentActivity.class);
+//                    intent.putExtra("slot", slots);
+//                    Toast.makeText(UserTripDetails.this, "slot=" + slots, Toast.LENGTH_SHORT).show();
+//                    intent.putExtra("property_id", propertyId);
+//                    intent.putExtra("parent_id", parentId);
+//                    intent.putExtra("user_id", userId);
+//                    intent.putExtra("userName", userName);
+//
+//                    Toast.makeText(UserTripDetails.this, "userId=" + userId + "userName=" + userName, Toast.LENGTH_SHORT).show();
+//                    startActivity(intent);
+//                    finish(); // Finish this activity after starting the next one
+//                }
+//            }
+//        });
+//        // Declare selectedDate as a String
+//        String selectedDate = fromDate.getText().toString();
+//
+//    }
     private void showDatePickerDialog(TextView textView) {
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
@@ -235,9 +412,16 @@ public class UserTripDetails extends AppCompatActivity {
             public void onDataChange(@android.support.annotation.NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     // Retrieve property details
-                    Long priceLong = dataSnapshot.child("priceofproperty").getValue(Long.class);
-//                    Toast.makeText(UserTripDetails.this, Math.toIntExact(priceLong), Toast.LENGTH_SHORT).show();
-                    int pop = priceLong != null ? priceLong.intValue() : 0; // Default value if priceLong is null
+                    String priceLong = dataSnapshot.child("priceofproperty").getValue(String.class);
+                    int pop = 0; // Default value
+                    if (priceLong != null) {
+                        try {
+                            pop = (int) Long.parseLong(priceLong);
+                        } catch (NumberFormatException e) {
+                            // Handle the case where priceLong is not a valid long string
+                            e.printStackTrace();
+                        }
+                    }
 
                     TextView priceOfPropertyTextView = findViewById(R.id.priceofprperty);
                     String priceString = "Price: <b>₹" + pop + ".00"+"</b>"; // Assuming pop is the price

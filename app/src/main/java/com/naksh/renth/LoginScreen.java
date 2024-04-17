@@ -477,6 +477,8 @@ public class LoginScreen extends AppCompatActivity {
             userId = i.getStringExtra("user_id");
             userName = i.getStringExtra("userName");
             ownerName=i.getStringExtra("oname");
+            ownerId=i.getStringExtra("id");
+
 //            Toast.makeText(this, "id="+userId, Toast.LENGTH_SHORT).show();
         }
 
@@ -696,7 +698,7 @@ public class LoginScreen extends AppCompatActivity {
                                                     Intent intent = new Intent(LoginScreen.this, PropertyRecyclerActivityForUser.class);
                                                     intent.putExtra("user_id", userId);
                                                     intent.putExtra("notification_message", notificationMessage);
-                                                    intent.putExtra("userName", userName);
+                                                    intent.putExtra("id", ownerId);
                                                     startActivity(intent);
                                                     finish(); // Finish the current activity
                                                 } else {

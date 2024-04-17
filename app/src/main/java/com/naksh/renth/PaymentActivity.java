@@ -257,13 +257,16 @@ public class PaymentActivity extends AppCompatActivity {
             public void onDataChange(@android.support.annotation.NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     // Retrieve property details
-                    Long priceLong = dataSnapshot.child("priceofproperty").getValue(Long.class);
-                    if (slots == 0) {
-                        Toast.makeText(PaymentActivity.this, "slots cannot be null", Toast.LENGTH_SHORT).show();
-                    } else {
-//                    Toast.makeText(UserTripDetails.this, Math.toIntExact(priceLong), Toast.LENGTH_SHORT).show();
-                        int pop = priceLong != null ? priceLong.intValue() : 0; // Default value if priceLong is null
-                        int numOfSlots = Integer.parseInt(String.valueOf(slots));
+                    String priceLong = dataSnapshot.child("priceofproperty").getValue(String.class);
+                    int pop=0;
+                    if (priceLong != null) {
+                        try {
+                            pop = (int) Long.parseLong(priceLong);
+                        } catch (NumberFormatException e) {
+                            // Handle the case where priceLong is not a valid long string
+                            e.printStackTrace();
+                        }
+
 
                         TextView priceOfPropertyTextView = findViewById(R.id.ratepernightprice);
                         String priceString = "<b>₹" + (pop*slots)  + "</b>"; // Assuming pop is the price

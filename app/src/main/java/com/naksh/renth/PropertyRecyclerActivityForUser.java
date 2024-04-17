@@ -164,8 +164,10 @@ public class PropertyRecyclerActivityForUser extends AppCompatActivity {
                         intent.putExtra("parent_id", parentId);
                         intent.putExtra("user_id",userId);
                         intent.putExtra("userName",userName);
+                        intent.putExtra("id",ownerId);
 
-                        Toast.makeText(PropertyRecyclerActivityForUser.this, "userId= " + userId, Toast.LENGTH_SHORT).show();
+
+                        Toast.makeText(PropertyRecyclerActivityForUser.this, "userId= " + userId + ", ownerId= " + ownerId, Toast.LENGTH_SHORT).show();
 //                        Toast.makeText(PropertyRecyclerActivityForUser.this, "Parent ID: " + parentId, Toast.LENGTH_SHORT).show();
 
                         startActivity(intent);
