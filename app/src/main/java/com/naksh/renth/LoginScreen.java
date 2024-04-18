@@ -704,8 +704,10 @@ public class LoginScreen extends AppCompatActivity {
                                                     intent.putExtra("id", ownerId);
                                                     intent.putExtra("name", userName);
                                                     intent.putExtra("phoneno", phoneno);
-                                                    intent.putExtra("userEmail", eMailFromDatabase);
+                                                    Toast.makeText(LoginScreen.this, "userName in login screen="+userName+"phoneno="+phoneno, Toast.LENGTH_LONG).show();
 
+                                                    intent.putExtra("userEmail", eMailFromDatabase);
+                                                    Toast.makeText(LoginScreen.this, "email in login screen="+eMailFromDatabase, Toast.LENGTH_SHORT).show();
 
 
                                                     startActivity(intent);

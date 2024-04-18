@@ -38,7 +38,7 @@ public class UserProfileActivity extends AppCompatActivity {
         Intent intent=getIntent();
        userId= intent.getStringExtra("user_id");
        userName= intent.getStringExtra("name");
-      userEmail=  intent.getStringExtra("userEmail");
+       userEmail=  intent.getStringExtra("userEmail");
         userPhoneno=intent.getStringExtra("phoneno");
         textView2.setText(Html.fromHtml("<b>Name:</b> " + userName));
         textView1.setText(Html.fromHtml("<b>Email:</b> " + userEmail));

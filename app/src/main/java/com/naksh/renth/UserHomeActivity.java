@@ -13,6 +13,7 @@ public class UserHomeActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
 UserHomeFrament userHomeFrament=new UserHomeFrament();
 UserProfileFragment userProfileFragment=new UserProfileFragment();
+String userId,userName,userEmail,userPhoneno;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,6 +21,11 @@ UserProfileFragment userProfileFragment=new UserProfileFragment();
 
         bottomNavigationView = findViewById(R.id.bottomnavigation);
         getSupportFragmentManager().beginTransaction().replace(R.id.container, userHomeFrament).commit();
+        Intent intent=getIntent();
+        userId = intent.getStringExtra("user_id");
+        userName= intent.getStringExtra("name");
+        userEmail=  intent.getStringExtra("userEmail");
+        userPhoneno=intent.getStringExtra("phoneno");
 
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
@@ -29,13 +35,20 @@ UserProfileFragment userProfileFragment=new UserProfileFragment();
                     getSupportFragmentManager().beginTransaction().replace(R.id.container, userHomeFrament).commit();
                     return true;
                 } else if(item.getItemId()==R.id.profile) {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.container, userProfileFragment).commit();
-                    return true;
+                    Intent intent=new Intent(UserHomeActivity.this,UserProfileActivity.class);
+                    intent.putExtra("user_id",userId);
+                    intent.putExtra("name",userName);
+                    intent.putExtra("userEmail",userEmail);
+                    intent.putExtra("phoneno",userPhoneno);
+
+
+                    startActivity(intent);
                 }
                 else{
                     // Handle other menu items if needed
                     return false;
                 }
+                return false;
             }
             });
     }

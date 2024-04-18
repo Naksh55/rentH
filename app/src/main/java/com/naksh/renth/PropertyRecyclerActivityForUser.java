@@ -37,6 +37,8 @@ public class PropertyRecyclerActivityForUser extends AppCompatActivity {
     String ownerId;
 
     String userName;
+    String userEmail;
+    String userPhoneno;
 
 
     @Override
@@ -54,7 +56,10 @@ public class PropertyRecyclerActivityForUser extends AppCompatActivity {
            userId=  i.getStringExtra("user_id");
             userName=  i.getStringExtra("userName");
             ownerId=  i.getStringExtra("id");
-
+            userId= i.getStringExtra("user_id");
+            userName= i.getStringExtra("name");
+            userEmail=  i.getStringExtra("userEmail");
+            userPhoneno=i.getStringExtra("phoneno");
 //            Toast.makeText(this, userId, Toast.LENGTH_SHORT).show();
 //            Toast.makeText(this, userName, Toast.LENGTH_SHORT).show();
 
@@ -137,6 +142,10 @@ public class PropertyRecyclerActivityForUser extends AppCompatActivity {
                     return true;
                 } else if (item.getItemId() == R.id.profile) {
                     Intent intent = new Intent(PropertyRecyclerActivityForUser.this, UserProfileActivity.class);
+                    intent.putExtra("user_id",userId);
+                    intent.putExtra("name",userName);
+                    intent.putExtra("userEmail",userEmail);
+                    intent.putExtra("phoneno",userPhoneno);
                     startActivity(intent);
                     return true;
                 } else {
