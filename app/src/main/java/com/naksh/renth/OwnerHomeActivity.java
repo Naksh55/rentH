@@ -59,7 +59,7 @@ public class OwnerHomeActivity extends AppCompatActivity {
             ownerId = intent.getStringExtra("id");
             userId=intent.getStringExtra("user_id");
             ownerName=intent.getStringExtra("oname");
-//            Toast.makeText(this, ownerName, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "ownerName==="+ownerName, Toast.LENGTH_SHORT).show();
             notificationMessage=intent.getStringExtra("notification_message");
             userName=intent.getStringExtra("userName");
 //            Toast.makeText(OwnerHomeActivity.this, "userId="+userId, Toast.LENGTH_SHORT).show();

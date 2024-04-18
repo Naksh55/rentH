@@ -102,6 +102,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -109,8 +110,11 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.naksh.renth.Models.OwnerPersonalDetailsModel;
 import com.naksh.renth.Models.PropertyDetailsModel;
 import com.naksh.renth.databinding.ActivityOwnerPersonalDetailsBinding;
@@ -124,6 +128,7 @@ public class OwnerPersonalDetails extends AppCompatActivity {
     DatabaseReference usersRef;
     RadioGroup genderRadioGroup2;
     String ownerId;
+    EditText email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,6 +144,7 @@ public class OwnerPersonalDetails extends AppCompatActivity {
         progressDialog.setTitle("Saving personal details");
         progressDialog.setMessage("Going to home...");
         genderRadioGroup2 = findViewById(R.id.ownergender);
+        email=findViewById(R.id.oemailet);
         binding.onextbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -195,7 +201,86 @@ public class OwnerPersonalDetails extends AppCompatActivity {
             Toast.makeText(OwnerPersonalDetails.this, "Select gender", Toast.LENGTH_SHORT).show();
             return ""; // Return an empty string or handle the case where no gender is selected
         }
+
+
     }
+
+    private void checkOwnerPersonalDetails(String currentUserEmail, RadioButton selectedRadioButton) {
+        DatabaseReference ownerRef = FirebaseDatabase.getInstance().getReference()
+                .child("OwnerPersonalDetailsModel");
+
+        ownerRef.orderByChild("oemail").equalTo(currentUserEmail).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        String ownerId = snapshot.child("id").getValue(String.class);
+                        String ownername = snapshot.child("oname").getValue(String.class);
+
+                        if (ownerId != null) {
+                            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference()
+                                    .child("Users");
+
+                            userRef.orderByChild("category").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    if (dataSnapshot.exists()) {
+                                        for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                                            String uid = userSnapshot.getKey();
+
+                                            String eMailFromDatabase = userSnapshot.child("email").getValue(String.class); // Assuming email is stored under "email" child node
+
+                                            if (eMailFromDatabase != null && eMailFromDatabase.equals(email.getText().toString().trim())) {
+                                                String userTypeFromDatabase = userSnapshot.child("category").getValue(String.class);
+                                                String userType = selectedRadioButton.getText().toString();
+                                                Toast.makeText(OwnerPersonalDetails.this, userTypeFromDatabase + " " + userType, Toast.LENGTH_SHORT).show();
+
+                                                if (userType.equals(userTypeFromDatabase)) {
+                                                    Intent intent = new Intent(OwnerPersonalDetails.this, PropertyDetails.class);
+//                                                    intent.putExtra("user_id", userId);
+                                                    intent.putExtra("id", ownerId);
+                                                    intent.putExtra("oname", ownername);
+
+
+//                                                    intent.putExtra("notification_message", notificationMessage);
+//                                                    intent.putExtra("userName", userName);
+                                                    startActivity(intent);
+                                                    finish(); // Finish the current activity
+                                                } else {
+                                                    Toast.makeText(OwnerPersonalDetails.this, "Role mismatch", Toast.LENGTH_SHORT).show();
+                                                }
+                                                return; // Exit the loop after finding the matching user
+                                            }
+                                        }
+                                        // If execution reaches here, it means email wasn't found
+                                        Toast.makeText(OwnerPersonalDetails.this, "User not found", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        // No user found with the specified category
+                                        Toast.makeText(OwnerPersonalDetails.this, "User data not found", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                    // Handle database error
+                                }
+                            });
+                        }
+
+                    }
+                } else {
+                    // Email not found in OwnerPersonalDetails node
+                    Toast.makeText(OwnerPersonalDetails .this, "Owner data not found", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle database error
+            }
+        });
+    }
+
 }
 //    @Override
 //    protected void onCreate(Bundle savedInstanceState) {

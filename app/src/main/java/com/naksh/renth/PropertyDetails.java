@@ -1193,7 +1193,7 @@
             if(i!=null) {
                oName= i.getStringExtra("oname");
 
-                Toast.makeText(this, oName, Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "ownername="+oName, Toast.LENGTH_LONG).show();
 
             }
             else{
@@ -1300,13 +1300,13 @@
                             Intent intent = new Intent(PropertyDetails.this, OwnerHomeActivity.class);
                             intent.putExtra("id", ownerId);
                             intent.putExtra("propertyId", propertyId);
+                            intent.putExtra("oname",oName);
 
                             startActivity(intent);
                         } else {
                             Toast.makeText(PropertyDetails.this, "Failed to store property details", Toast.LENGTH_SHORT).show();
                         }
                     });
-
         }
     }
 

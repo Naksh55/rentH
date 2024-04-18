@@ -102,6 +102,8 @@ public class OwnerHomeFragment extends Fragment {
             ownerId = getArguments().getString(ARG_OWNER_ID);
             ownerName = getArguments().getString(ARG_OWNER_NAME);
             Toast.makeText(requireContext(), "ownerId="+ownerId, Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), "ownerName in fragment="+ownerName, Toast.LENGTH_SHORT).show();
+
 
 
 

@@ -675,6 +675,8 @@ public class LoginScreen extends AppCompatActivity {
                     for (DataSnapshot snapshott : dataSnapshot.getChildren()) {
                         String userId = snapshott.child("id").getValue(String.class);
                         String userName = snapshott.child("name").getValue(String.class);
+                        String phoneno = snapshott.child("phoneno").getValue(String.class); // Assuming email is stored under "email" child node
+
 
                         if (userId != null) {
                             DatabaseReference userRef = FirebaseDatabase.getInstance().getReference()
@@ -689,6 +691,7 @@ public class LoginScreen extends AppCompatActivity {
 
                                             String eMailFromDatabase = userSnapshot.child("email").getValue(String.class); // Assuming email is stored under "email" child node
 
+
                                             if (eMailFromDatabase != null && eMailFromDatabase.equals(email.getText().toString().trim())) {
                                                 String userTypeFromDatabase = userSnapshot.child("category").getValue(String.class);
                                                 String userType = selectedRadioButton.getText().toString();
@@ -699,6 +702,12 @@ public class LoginScreen extends AppCompatActivity {
                                                     intent.putExtra("user_id", userId);
                                                     intent.putExtra("notification_message", notificationMessage);
                                                     intent.putExtra("id", ownerId);
+                                                    intent.putExtra("name", userName);
+                                                    intent.putExtra("phoneno", phoneno);
+                                                    intent.putExtra("userEmail", eMailFromDatabase);
+
+
+
                                                     startActivity(intent);
                                                     finish(); // Finish the current activity
                                                 } else {
