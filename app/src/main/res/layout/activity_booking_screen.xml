@@ -19,12 +19,13 @@
             />
         <ImageView
             android:id="@+id/proimage"
-            android:layout_width="404dp"
-            android:layout_height="331dp"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
             android:src="@drawable/ic_image"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="30sp"/>
+            android:layout_marginTop="30sp"
+            android:layout_marginRight="40dp"/>
         <TextView
             android:id="@+id/nameofproperty"
             android:layout_width="wrap_content"

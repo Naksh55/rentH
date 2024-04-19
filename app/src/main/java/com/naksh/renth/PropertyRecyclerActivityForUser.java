@@ -1,16 +1,22 @@
 package com.naksh.renth;
 
+import static android.app.PendingIntent.getActivity;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -22,6 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.naksh.renth.Models.PropertyDetailsModel;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 
 import java.util.ArrayList;
 
@@ -51,21 +58,20 @@ public class PropertyRecyclerActivityForUser extends AppCompatActivity {
         databaseReference = FirebaseDatabase.getInstance("https://renth-aca8f-default-rtdb.firebaseio.com/").getReference("OwnerPersonalDetailsModel");
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        Intent i=getIntent();
-        if(i!=null) {
-           userId=  i.getStringExtra("user_id");
-            userName=  i.getStringExtra("userName");
-            ownerId=  i.getStringExtra("id");
-            userId= i.getStringExtra("user_id");
-            userName= i.getStringExtra("name");
-            userEmail=  i.getStringExtra("userEmail");
-            userPhoneno=i.getStringExtra("phoneno");
+        Intent i = getIntent();
+        if (i != null) {
+            userId = i.getStringExtra("user_id");
+            userName = i.getStringExtra("userName");
+            ownerId = i.getStringExtra("id");
+            userId = i.getStringExtra("user_id");
+            userName = i.getStringExtra("name");
+            userEmail = i.getStringExtra("userEmail");
+            userPhoneno = i.getStringExtra("phoneno");
 //            Toast.makeText(this, userId, Toast.LENGTH_SHORT).show();
 //            Toast.makeText(this, userName, Toast.LENGTH_SHORT).show();
 
 
-        }
-        else{
+        } else {
             Toast.makeText(this, "intent is null", Toast.LENGTH_SHORT).show();
         }
         list = new ArrayList<>();
@@ -78,6 +84,21 @@ public class PropertyRecyclerActivityForUser extends AppCompatActivity {
         });
 
         recyclerView.setAdapter(myAdapter);
+//         Configure FirebaseRecyclerOptions
+        //............code to delete..........
+//        FirebaseRecyclerOptions<PropertyDetailsModel> options = new FirebaseRecyclerOptions.Builder<PropertyDetailsModel>()
+//                .setQuery(database.orderByChild("ownerId").equalTo(ownerId), PropertyDetailsModel.class)
+//                .build();
+//
+//        // Create adapter using FirebaseRecyclerOptions
+//        myAdapter = new MyAdapter(options, new MyAdapter.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(PropertyDetailsModel item) {
+//                String propertyName = item.getNameofproperty(); // Accessing the nameofproperty directly from the clicked item
+//                retrieveParentInfoFromDatabase(propertyName, item.getPropertyId()); // Pass propertyId as well
+//            }
+//        });
+//        recyclerView.setAdapter(myAdapter);
 
 //        Query query = database.orderByChild("ownerId").equalTo(ownerId);
 //
@@ -130,11 +151,11 @@ public class PropertyRecyclerActivityForUser extends AppCompatActivity {
                 }
             }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                }
-                });
-            bottomNavigationView = findViewById(R.id.bottomnavigation);
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+        bottomNavigationView = findViewById(R.id.bottomnavigation);
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
@@ -142,10 +163,10 @@ public class PropertyRecyclerActivityForUser extends AppCompatActivity {
                     return true;
                 } else if (item.getItemId() == R.id.profile) {
                     Intent intent = new Intent(PropertyRecyclerActivityForUser.this, UserProfileActivity.class);
-                    intent.putExtra("user_id",userId);
-                    intent.putExtra("name",userName);
-                    intent.putExtra("userEmail",userEmail);
-                    intent.putExtra("phoneno",userPhoneno);
+                    intent.putExtra("user_id", userId);
+                    intent.putExtra("name", userName);
+                    intent.putExtra("userEmail", userEmail);
+                    intent.putExtra("phoneno", userPhoneno);
                     startActivity(intent);
                     return true;
                 } else {
@@ -155,6 +176,26 @@ public class PropertyRecyclerActivityForUser extends AppCompatActivity {
         });
     }
 
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.search, menu);
+//        MenuItem item = menu.findItem(R.id.search);
+//        SearchView searchView = (SearchView) item.getActionView();
+//
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                filter(query);
+//                return true;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                filter(newText);
+//                return true;
+//            }
+//        });
+//        return super.onCreateOptionsMenu(menu);
+//    }
     private void retrieveParentInfoFromDatabase(String propertyName, String propertyId) {
         DatabaseReference parentRef = FirebaseDatabase.getInstance("https://renth-aca8f-default-rtdb.firebaseio.com/").getReference("PropertyDetailsModel");
         Query query = parentRef.orderByChild("nameofproperty").equalTo(propertyName);
@@ -171,9 +212,9 @@ public class PropertyRecyclerActivityForUser extends AppCompatActivity {
                         Intent intent = new Intent(PropertyRecyclerActivityForUser.this, BookingScreen.class);
                         intent.putExtra("property_id", propertyId);
                         intent.putExtra("parent_id", parentId);
-                        intent.putExtra("user_id",userId);
-                        intent.putExtra("userName",userName);
-                        intent.putExtra("id",ownerId);
+                        intent.putExtra("user_id", userId);
+                        intent.putExtra("userName", userName);
+                        intent.putExtra("id", ownerId);
 
 
                         Toast.makeText(PropertyRecyclerActivityForUser.this, "userId= " + userId + ", ownerId= " + ownerId, Toast.LENGTH_SHORT).show();
@@ -193,4 +234,130 @@ public class PropertyRecyclerActivityForUser extends AppCompatActivity {
             }
         });
     }
+
+    private void retrieveParentInfoFromDatabase2(String propertyName, String propertyId, String nameOfState) {
+        DatabaseReference parentRef = FirebaseDatabase.getInstance("https://renth-aca8f-default-rtdb.firebaseio.com/").getReference("PropertyDetailsModel");
+        Query query = parentRef.orderByChild("state").equalTo(propertyName);
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @SuppressLint("LongLogTag")
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        String parentId = snapshot.getKey();
+                        String propertyId = snapshot.getKey();
+                        Intent intent = getIntent();
+                        intent.putExtra("property_id", propertyId);
+                        intent.putExtra("parent_id", parentId);
+                        intent.putExtra("user_id", userId);
+                        intent.putExtra("userName", userName);
+                        intent.putExtra("id", ownerId);
+
+
+                        Toast.makeText(PropertyRecyclerActivityForUser.this, "userId= " + userId + ", ownerId= " + ownerId, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(PropertyRecyclerActivityForUser.this, "Parent ID: " + parentId, Toast.LENGTH_SHORT).show();
+
+                        break;
+                    }
+                } else {
+                    Log.e("PropertyRecyclerActivity", "No parent found for property: " + propertyName);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("PropertyRecyclerActivity", "Database query cancelled.", databaseError.toException());
+            }
+        });
+    }
+
+    private void filter(String query) {
+        ArrayList<PropertyDetailsModel> filteredList = new ArrayList<>();
+        for (PropertyDetailsModel item : list) {
+            // Filter logic based on your requirements
+            if (item.getNameofproperty().toLowerCase().contains(query.toLowerCase())) {
+                filteredList.add(item);
+            }
+        }
+        // Update the dataset with the filtered results
+        myAdapter.updateList(filteredList);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.search, menu);
+        MenuItem item = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView) item.getActionView();
+
+        assert searchView != null;
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                filter(query);
+                txtSearch( query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                filter(query);
+                txtSearch( query);
+
+                return false;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
+    }
+    private void txtSearch(String str) {
+        FirebaseRecyclerOptions<PropertyDetailsModel> options = new FirebaseRecyclerOptions.Builder<PropertyDetailsModel>()
+                .setQuery(FirebaseDatabase.getInstance().getReference().child("PropertyDetailsModel").orderByChild("state").startAt(str).endAt(str + "\uf8ff"), PropertyDetailsModel.class)
+                .build();
+        myAdapter=new MyAdapter(options);
+        recyclerView.setAdapter(myAdapter);
+//        myAdapter.updateOptions(options);
+    }
+
+
+//    private void txtSearch(String str) {
+////        DatabaseReference parentRef = FirebaseDatabase.getInstance("https://renth-aca8f-default-rtdb.firebaseio.com/").getReference("PropertyDetailsModel");
+////        Query query = parentRef.orderByChild("state").startAt(str).endAt(str + "!");
+////
+////        query.addListenerForSingleValueEvent(new ValueEventListener() {
+////            @SuppressLint("LongLogTag")
+////            @Override
+////            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+////                if (dataSnapshot.exists()) {
+////                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+////                        String parentId = snapshot.getKey();
+////                        String propertyId = snapshot.child("propertyId").getValue(String.class);
+////                        String nameOfProperty = snapshot.child("nameofproperty").getValue(String.class);
+////                        String nameOfState = snapshot.child("state").getValue(String.class);
+////
+////                        retrieveParentInfoFromDatabase2(nameOfProperty,propertyId,nameOfState);
+////
+////                        MyAdapter adapter = new MyAdapter(this, list);
+//////
+////                         recyclerView.setAdapter(adapter);
+////                    }
+////                }
+//////
+//////
+////            }
+////
+////            @Override
+////            public void onCancelled(@NonNull DatabaseError error) {
+////
+////            }
+////        });
+//////
+//        FirebaseRecyclerOptions<PropertyDetailsModel> options = new FirebaseRecyclerOptions.Builder<PropertyDetailsModel>()
+//                .setQuery(FirebaseDatabase.getInstance().getReference().child("PropertyDetailsModel").orderByChild("state").startAt(str).endAt(str + "!"), PropertyDetailsModel.class)
+//                .build();
+//               myAdapter=new MyAdapter(options);
+//        MyAdapter myAdapter = new MyAdapter(options);
+//
+//        recyclerView.setAdapter(myAdapter);
+//
+//    }
 }

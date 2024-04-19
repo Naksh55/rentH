@@ -9,6 +9,9 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.SearchView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
@@ -36,8 +39,8 @@ public class PropertyRecyclerActivityForOwner extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_property_recycler_for_owner);
-        Intent intent=getIntent();
-        if (intent!=null){
+        Intent intent = getIntent();
+        if (intent != null) {
             intent.getStringExtra("id");
         }
         recyclerView2 = findViewById(R.id.recyclerView2);
@@ -91,4 +94,37 @@ public class PropertyRecyclerActivityForOwner extends AppCompatActivity {
             }
         });
     }
+
+    private void retrieveParentInfoFromDatabase2(String propertyName, String propertyId) {
+        DatabaseReference parentRef = FirebaseDatabase.getInstance("https://renth-aca8f-default-rtdb.firebaseio.com/").getReference("PropertyDetailsModel");
+        Query query = parentRef.orderByChild("nameofproperty").equalTo(propertyName);
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @SuppressLint("LongLogTag")
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        String parentId = snapshot.getKey();
+                        String propertyId = snapshot.getKey();
+                        Intent intent = getIntent();
+                        intent.putExtra("property_id", propertyId);
+                        intent.putExtra("parent_id", parentId);
+//                        Toast.makeText(PropertyRecyclerActivityForUser.this, "Property ID: " + propertyId, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(PropertyRecyclerActivityForUser.this, "Parent ID: " + parentId, Toast.LENGTH_SHORT).show();
+
+                        break;
+                    }
+                } else {
+                    Log.e("PropertyRecyclerActivity", "No parent found for property: " + propertyName);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("PropertyRecyclerActivity", "Database query cancelled.", databaseError.toException());
+            }
+        });
+    }
+
 }

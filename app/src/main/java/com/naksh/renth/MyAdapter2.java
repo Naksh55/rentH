@@ -63,6 +63,8 @@ public class MyAdapter2 extends RecyclerView.Adapter<MyAdapter2.ViewHolder> {
         PropertyDetailsModel property = list2.get(holder.getAdapterPosition());
         holder.tvItem.setText(property.getNameofproperty());
         holder.tvItem1.setText(String.valueOf(property.getPriceofproperty()));
+        holder.tvItem2.setText(String.valueOf(property.getState()));
+
         Picasso.get().load(property.getImageUrl()).into(holder.img2);
 
         holder.btn.setOnClickListener(new View.OnClickListener() {
@@ -78,6 +80,7 @@ public class MyAdapter2 extends RecyclerView.Adapter<MyAdapter2.ViewHolder> {
                 EditText discription = v.findViewById(R.id.descriptionofpET);
                 EditText price = v.findViewById(R.id.priceofpET);
                 EditText image = v.findViewById(R.id.imageurlET);
+
                 Button btnupdate = v.findViewById(R.id.btnupdate);
                 Button btndelete=v.findViewById(R.id.deletebtn);
                 name.setText(property.getNameofproperty());
@@ -174,7 +177,7 @@ public class MyAdapter2 extends RecyclerView.Adapter<MyAdapter2.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvItem, tvItem1;
+        TextView tvItem, tvItem1,tvItem2;
         ImageView img2;
         Button btn,btn2;
 
@@ -183,6 +186,8 @@ public class MyAdapter2 extends RecyclerView.Adapter<MyAdapter2.ViewHolder> {
             super(itemView);
             tvItem = itemView.findViewById(R.id.tvItem);
             tvItem1 = itemView.findViewById(R.id.tvItem1);
+            tvItem2 = itemView.findViewById(R.id.tvItem2);
+
             img2 = itemView.findViewById(R.id.img2);
             btn = (Button)itemView.findViewById(R.id.updatebtn); // Replace "your_button_id" with the actual ID of your button
             btn2 = (Button)itemView.findViewById(R.id.deletebtn); // Replace "your_button_id" with the actual ID of your button
