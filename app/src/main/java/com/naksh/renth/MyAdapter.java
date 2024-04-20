@@ -1,13 +1,17 @@
 package com.naksh.renth;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -46,6 +50,9 @@ private ValueEventListener valueEventListener;
     public void updateList(ArrayList<PropertyDetailsModel> newList) {
         list = newList;
         notifyDataSetChanged();
+        Log.d("Adapter", "Dataset size after update: " + getItemCount());
+//        Toast.makeText(context, getItemCount(), Toast.LENGTH_SHORT).show();
+
     }
     public void updateOptions(@NonNull FirebaseRecyclerOptions<PropertyDetailsModel> options) {
         this.options = options;
@@ -65,7 +72,7 @@ private ValueEventListener valueEventListener;
         holder.nameofproperty.setText(testingModel.getNameofproperty());
         holder.priceofproperty.setText(String.valueOf(testingModel.getPriceofproperty()));
         holder.stateofproperty.setText(String.valueOf(testingModel.getState()));
-
+        holder.cardView.startAnimation(AnimationUtils.loadAnimation(holder.itemView.getContext(),R.anim.anim_four));
         Picasso.get().load(testingModel.getImageUrl()).into(holder.propertydp);
 
         // Set click listener for the item
@@ -87,6 +94,7 @@ private ValueEventListener valueEventListener;
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView nameofproperty, priceofproperty,stateofproperty;
         ImageView propertydp;
+        CardView cardView;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -94,6 +102,8 @@ private ValueEventListener valueEventListener;
             priceofproperty = itemView.findViewById(R.id.priceofproperty);
             propertydp = itemView.findViewById(R.id.propertydp);
             stateofproperty = itemView.findViewById(R.id.stateofproperty);
+            cardView = itemView.findViewById(R.id.cardview); // Initialize CardView attribute
+
 
         }
     }

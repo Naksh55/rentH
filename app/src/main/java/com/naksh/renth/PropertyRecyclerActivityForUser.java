@@ -16,7 +16,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -29,6 +28,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.naksh.renth.Models.PropertyDetailsModel;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import androidx.appcompat.widget.SearchView;
 
 import java.util.ArrayList;
 
@@ -47,12 +47,26 @@ public class PropertyRecyclerActivityForUser extends AppCompatActivity {
     String userEmail;
     String userPhoneno;
 
-
+    private  SearchView searchView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_property_recycler_for_user);
+        invalidateOptionsMenu();
+        searchView=findViewById(R.id.searchView);
+        searchView.clearFocus();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
 
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filter(newText);
+                return true;
+            }
+        });
         recyclerView = findViewById(R.id.recyclerView);
         database = FirebaseDatabase.getInstance("https://renth-aca8f-default-rtdb.firebaseio.com/").getReference("PropertyDetailsModel");
         databaseReference = FirebaseDatabase.getInstance("https://renth-aca8f-default-rtdb.firebaseio.com/").getReference("OwnerPersonalDetailsModel");
@@ -74,6 +88,9 @@ public class PropertyRecyclerActivityForUser extends AppCompatActivity {
         } else {
             Toast.makeText(this, "intent is null", Toast.LENGTH_SHORT).show();
         }
+
+
+
         list = new ArrayList<>();
         myAdapter = new MyAdapter(this, list, new MyAdapter.OnItemClickListener() {
             @Override
@@ -82,8 +99,11 @@ public class PropertyRecyclerActivityForUser extends AppCompatActivity {
                 retrieveParentInfoFromDatabase(propertyName, item.getPropertyId()); // Pass propertyId as well
             }
         });
-
         recyclerView.setAdapter(myAdapter);
+
+
+
+
 //         Configure FirebaseRecyclerOptions
         //............code to delete..........
 //        FirebaseRecyclerOptions<PropertyDetailsModel> options = new FirebaseRecyclerOptions.Builder<PropertyDetailsModel>()
@@ -275,8 +295,8 @@ public class PropertyRecyclerActivityForUser extends AppCompatActivity {
     private void filter(String query) {
         ArrayList<PropertyDetailsModel> filteredList = new ArrayList<>();
         for (PropertyDetailsModel item : list) {
-            // Filter logic based on your requirements
-            if (item.getNameofproperty().toLowerCase().contains(query.toLowerCase())) {
+            // Filter logic based on the state attribute
+            if (item.getState().toLowerCase().contains(query.toLowerCase())) {
                 filteredList.add(item);
             }
         }
@@ -284,8 +304,11 @@ public class PropertyRecyclerActivityForUser extends AppCompatActivity {
         myAdapter.updateList(filteredList);
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        Log.d("SearchDebug", "onCreateOptionsMenu called");
+        Toast.makeText(this, "onCreateOptionsMenu called", Toast.LENGTH_SHORT).show();
         getMenuInflater().inflate(R.menu.search, menu);
         MenuItem item = menu.findItem(R.id.search);
         SearchView searchView = (SearchView) item.getActionView();
@@ -294,29 +317,83 @@ public class PropertyRecyclerActivityForUser extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                Log.d("SearchDebug", "onQueryTextSubmit: " + query);
+                Toast.makeText(PropertyRecyclerActivityForUser.this, "Query submitted: " + query, Toast.LENGTH_SHORT).show();
                 filter(query);
-                txtSearch( query);
+                txtSearch(query);
                 return false;
             }
 
             @Override
-            public boolean onQueryTextChange(String query) {
-                filter(query);
-                txtSearch( query);
-
+            public boolean onQueryTextChange(String newText) {
+                Log.d("SearchDebug", "onQueryTextChange: " + newText);
+                Toast.makeText(PropertyRecyclerActivityForUser.this, "Query changed: " + newText, Toast.LENGTH_SHORT).show();
+                filter(newText);
+                txtSearch(newText);
                 return false;
             }
         });
+
         return super.onCreateOptionsMenu(menu);
     }
-    private void txtSearch(String str) {
-        FirebaseRecyclerOptions<PropertyDetailsModel> options = new FirebaseRecyclerOptions.Builder<PropertyDetailsModel>()
-                .setQuery(FirebaseDatabase.getInstance().getReference().child("PropertyDetailsModel").orderByChild("state").startAt(str).endAt(str + "\uf8ff"), PropertyDetailsModel.class)
-                .build();
-        myAdapter=new MyAdapter(options);
-        recyclerView.setAdapter(myAdapter);
+
+    //    private void txtSearch(String str) {
+//        Log.d("SearchQuery", "Search string: " + str);
+//
+//        Query query = FirebaseDatabase.getInstance().getReference()
+//                .child("PropertyDetailsModel")
+//                .orderByChild("state")
+//                .startAt(str)
+//                .endAt(str + "\uf8ff");
+//
+//        Log.d("SearchQuery", "Firebase Query: " + query.toString());
+//
+//        FirebaseRecyclerOptions<PropertyDetailsModel> options =
+//                new FirebaseRecyclerOptions.Builder<PropertyDetailsModel>()
+//                        .setQuery(query, PropertyDetailsModel.class)
+//                        .build();
+//
+//        // Update the existing adapter with new options
 //        myAdapter.updateOptions(options);
+//    }
+    private void txtSearch(String str) {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("PropertyDetailsModel");
+
+        // Query the database to find properties with state names that start with the search string
+        Query query = databaseReference.orderByChild("state")
+                .startAt(str)
+                .endAt(str + "\uf8ff");
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ArrayList<PropertyDetailsModel> filteredList = new ArrayList<>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    PropertyDetailsModel property = snapshot.getValue(PropertyDetailsModel.class);
+                    if (property != null && property.getState() != null && property.getState().toLowerCase().startsWith(str.toLowerCase())) {
+                        filteredList.add(property);
+                        // Display property details in a toast
+                        Toast.makeText(PropertyRecyclerActivityForUser.this, "Property Name: " + property.getNameofproperty() + "\nState: " + property.getState(), Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        Toast.makeText(PropertyRecyclerActivityForUser.this, "data not found", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                // Update the dataset with the filtered results
+                myAdapter.updateList(filteredList);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("PropertyRecyclerActivity", "Database query cancelled.", databaseError.toException());
+            }
+        });
     }
+
+
+
+
 
 
 //    private void txtSearch(String str) {
