@@ -1,13 +1,13 @@
 package com.naksh.renth.Models;
 
 public class OwnerPersonalDetailsModel {
-    private String oname, ogender, ophoneno,oemail,id;
-    private int oage;
+    private String oname, ogender, ophoneno,oemail,id,oage;
+//    private int oage;
 
     public OwnerPersonalDetailsModel() {
     }
 
-    public OwnerPersonalDetailsModel(String oname, int oage, String ogender, String ophoneno,String oemail) {
+    public OwnerPersonalDetailsModel(String oname, String oage, String ogender, String ophoneno,String oemail) {
         this.oname = oname;
         this.oage = oage;
         this.ogender = ogender;
@@ -15,7 +15,7 @@ public class OwnerPersonalDetailsModel {
         this.oemail=oemail;
     }
 
-    public OwnerPersonalDetailsModel(String oname, int oage, String ogender, String ophoneno,String oemail,String id) {
+    public OwnerPersonalDetailsModel(String oname, String oage, String ogender, String ophoneno,String oemail,String id) {
         this.oname = oname;
         this.oage = oage;
         this.ogender = ogender;
@@ -47,11 +47,11 @@ public class OwnerPersonalDetailsModel {
         this.ophoneno = ophoneno;
     }
 
-    public int getOage() {
+    public String getOage() {
         return oage;
     }
 
-    public void setOage(int oage) {
+    public void setOage(String oage) {
         this.oage = oage;
     }
 

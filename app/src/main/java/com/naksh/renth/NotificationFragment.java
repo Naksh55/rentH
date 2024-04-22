@@ -6,11 +6,18 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -145,36 +152,40 @@ public void onCreate(Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_notification, container, false);
 
-        // Retrieve owner ID associated with this fragment
-        Bundle args = getArguments();
-        String propertyId = args != null ? args.getString(ARG_OWNER_ID) : null;
-
-        // Initialize the RecyclerView
-        // Assuming you have a list of notification messages
         recyclerView = view.findViewById(R.id.recyclerViewNotifications); // Initialize the RecyclerView object
-        // Assuming you have a list of notification messages
-//        List<String> notificationMessages = new ArrayList<>();
-        notificationMessages = new ArrayList<>();
-
-        notificationMessages.add(notificationMessage);
+        notificationMessages = new ArrayList<>(); // Initialize the list to hold notification messages
 
         // Set up RecyclerView adapter
         adapter = new NotificationAdapter(getContext(), notificationMessages);
         recyclerView.setAdapter(adapter);
-
-        // Set RecyclerView layout manager (e.g., LinearLayoutManager)
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // Check if the owner ID matches
-//        if (propertyId != null && propertyId.equals(ownerId)) {
-            // Display the notification message
-//        } else {
-            // Hide the TextView or show a message indicating no notification
-//            textView.setVisibility(View.GONE);
-//        }
+        // Fetch notification messages from Firebase
+        DatabaseReference notificationRef = FirebaseDatabase.getInstance().getReference("NotificationMessage");
+        notificationRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                notificationMessages.clear(); // Clear existing data
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    String message = snapshot.child("NotificationMessage").getValue(String.class);
+                    if (message != null) {
+                        notificationMessages.add(message);
+                    }
+                }
+                adapter.notifyDataSetChanged(); // Notify adapter that data set has changed
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle database error
+                Toast.makeText(getContext(), "Database error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
         return view;
     }
+
     // Method to add a new notification message
     // Method to add a new notification message
     // Method to add a new notification message

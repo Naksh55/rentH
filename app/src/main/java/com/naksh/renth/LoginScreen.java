@@ -442,7 +442,7 @@ public class LoginScreen extends AppCompatActivity {
                 if (dataSnapshot.exists()) {
                     // Email found in OwnerPersonalDetailsActivity node
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        String ownerId = snapshot.child("id").getValue(String.class);
+                         ownerId = snapshot.child("id").getValue(String.class);
                         if (ownerId != null) {
                             // Pass the ownerId to OwnerHomeActivity
                             Intent intent = new Intent(LoginScreen.this, OwnerHomeActivity.class);
@@ -594,7 +594,7 @@ public class LoginScreen extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        String ownerId = snapshot.child("id").getValue(String.class);
+                         ownerId = snapshot.child("id").getValue(String.class);
                         String ownername = snapshot.child("oname").getValue(String.class);
 
                         if (ownerId != null) {
@@ -704,10 +704,12 @@ public class LoginScreen extends AppCompatActivity {
                                                     intent.putExtra("id", ownerId);
                                                     intent.putExtra("name", userName);
                                                     intent.putExtra("phoneno", phoneno);
-                                                    Toast.makeText(LoginScreen.this, "userName in login screen="+userName+"phoneno="+phoneno, Toast.LENGTH_LONG).show();
+//                                                    Toast.makeText(LoginScreen.this, "userName in login screen="+userName+"phoneno="+phoneno, Toast.LENGTH_LONG).show();
+                                                    Toast.makeText(LoginScreen.this, "ownerId in login screen="+ownerId, Toast.LENGTH_LONG).show();
+
 
                                                     intent.putExtra("userEmail", eMailFromDatabase);
-                                                    Toast.makeText(LoginScreen.this, "email in login screen="+eMailFromDatabase, Toast.LENGTH_SHORT).show();
+//                                                    Toast.makeText(LoginScreen.this, "email in login screen="+eMailFromDatabase, Toast.LENGTH_SHORT).show();
 
 
                                                     startActivity(intent);

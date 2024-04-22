@@ -228,16 +228,17 @@ public class PropertyRecyclerActivityForUser extends AppCompatActivity {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         String parentId = snapshot.getKey();
                         String propertyId = snapshot.getKey();
-
+                        String ownerId = snapshot.child("ownerId").getValue(String.class); // Assuming email is stored under "email" child node
                         Intent intent = new Intent(PropertyRecyclerActivityForUser.this, BookingScreen.class);
                         intent.putExtra("property_id", propertyId);
                         intent.putExtra("parent_id", parentId);
                         intent.putExtra("user_id", userId);
                         intent.putExtra("userName", userName);
-                        intent.putExtra("id", ownerId);
+                        intent.putExtra("owner_id", ownerId);
+                        Toast.makeText(PropertyRecyclerActivityForUser.this,"ownerId= " + ownerId, Toast.LENGTH_SHORT).show();
 
 
-                        Toast.makeText(PropertyRecyclerActivityForUser.this, "userId= " + userId + ", ownerId= " + ownerId, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(PropertyRecyclerActivityForUser.this, "userId= " + userId + ", ownerId= " + ownerId, Toast.LENGTH_SHORT).show();
 //                        Toast.makeText(PropertyRecyclerActivityForUser.this, "Parent ID: " + parentId, Toast.LENGTH_SHORT).show();
 
                         startActivity(intent);

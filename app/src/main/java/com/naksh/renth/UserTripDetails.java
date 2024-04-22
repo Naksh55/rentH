@@ -27,6 +27,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.naksh.renth.Models.NotificationModel;
 import com.naksh.renth.Models.UserTripDetailsModel;
 import com.naksh.renth.databinding.ActivityUserTripDetailsBinding;
 
@@ -46,7 +47,7 @@ public class UserTripDetails extends AppCompatActivity {
     private TextView fromDate;
     private TextView slots;
     private TextView guests;
-    int priceOfProperty;
+    String priceOfProperty;
     private TextView fdate;
 
     private SeekBar seekBar;
@@ -55,6 +56,7 @@ public class UserTripDetails extends AppCompatActivity {
     String propertyId;
     String userId;
     String userName;
+    String ownerId;
 
     @SuppressLint("CutPasteId")
     @Override
@@ -71,6 +73,8 @@ public class UserTripDetails extends AppCompatActivity {
             String toDate = intent.getStringExtra("to_date");
             userId = intent.getStringExtra("user_id");
             userName = intent.getStringExtra("userName");
+            ownerId = intent.getStringExtra("owner_id");
+
 
             Toast.makeText(this, "userId:" + userId, Toast.LENGTH_SHORT).show();
             Toast.makeText(this, "userName:" + userName, Toast.LENGTH_SHORT).show();
@@ -141,20 +145,21 @@ public class UserTripDetails extends AppCompatActivity {
                 Toast.makeText(UserTripDetails.this, "Selected number: " + newVal, Toast.LENGTH_SHORT).show();
             }
         });
+
         binding.bookingbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 progressDialog.show();
                 String selectedDateStr = Objects.requireNonNull(binding.fromDate.getText()).toString();
-                Toast.makeText(UserTripDetails.this, selectedDateStr, Toast.LENGTH_SHORT).show();
                 int pickerValue = binding.np.getValue();
-                Log.d(TAG, "Picker value: '" + pickerValue + "'");
                 int slots = Integer.parseInt(String.valueOf(pickerValue).trim());
-                Toast.makeText(UserTripDetails.this, "slot when clicked=" + slots, Toast.LENGTH_SHORT).show();
                 int guests = Integer.parseInt(Objects.requireNonNull(binding.guests.getText()).toString());
+
                 assert intent != null;
                 String fromDate = intent.getStringExtra("from_date");
                 String toDate = intent.getStringExtra("to_date");
+
                 // Check if the selected date falls within the booking range
                 try {
                     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
@@ -166,7 +171,10 @@ public class UserTripDetails extends AppCompatActivity {
                         // Invalid or missing from/to date
                         progressDialog.dismiss();
                         Toast.makeText(UserTripDetails.this, "Invalid or missing from/to date", Toast.LENGTH_SHORT).show();
-                        return; // Exit the method
+                        fromDate="11/11/1111";
+                        toDate="11/11/1111";
+
+//                        return; // Exit the method
                     }
 
                     // Both fromDate and toDate are not equal to "Select from/to date", proceed with date parsing
@@ -180,64 +188,199 @@ public class UserTripDetails extends AppCompatActivity {
                             Toast.makeText(UserTripDetails.this, "Selected date is equal to or falls within the unavailable range", Toast.LENGTH_SHORT).show();
                             progressDialog.dismiss();
                         } else {
-                            // Save trip details to the TripDetailsModel node
-                            UserTripDetailsModel userTripDetailsModel = new UserTripDetailsModel(selectedDateStr, slots, guests);
-                            databaseReference.child(propertyId).setValue(userTripDetailsModel)
-                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if (task.isSuccessful()) {
-                                                progressDialog.dismiss();
-                                                // Start PaymentActivity with necessary intent extras
-                                                Intent intent = new Intent(UserTripDetails.this, PaymentActivity.class);
-                                                intent.putExtra("slot", slots);
-                                                intent.putExtra("property_id", propertyId);
-                                                intent.putExtra("parent_id", parentId);
-                                                intent.putExtra("user_id", userId);
-                                                intent.putExtra("userName", userName);
-                                                startActivity(intent);
-                                                finish(); // Finish this activity after starting the next one
+//                            Toast.makeText(UserTripDetails.this, "........", Toast.LENGTH_SHORT).show();
+
+                            // Retrieve property details from the database to compare dates
+                            DatabaseReference propertyRef = FirebaseDatabase.getInstance().getReference("PropertyDetailsModel").child(propertyId);
+                            propertyRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    if (dataSnapshot.exists()) {
+                                        String propertyDateStr = dataSnapshot.child("fordate").getValue(String.class);
+                                        try {
+//                                            Toast.makeText(UserTripDetails.this, "selectedDate="+selectedDate, Toast.LENGTH_SHORT).show();
+//
+//                                            Toast.makeText(UserTripDetails.this, "propertyDateStr="+propertyDateStr, Toast.LENGTH_SHORT).show();
+
+                                            Date propertyDate = sdf.parse(propertyDateStr);
+//                                            Toast.makeText(UserTripDetails.this, "propertyDate="+propertyDate, Toast.LENGTH_SHORT).show();
+
+                                            if (propertyDate != null) {
+                                                if (selectedDate.equals(propertyDate)) {
+                                                    // Selected date matches the date in the database
+                                                    Toast.makeText(UserTripDetails.this, "Selected date matches the date in the database", Toast.LENGTH_SHORT).show();
+                                                } else {
+                                                    // Selected date does not match
+                                                    saveTripDetails(selectedDateStr, slots, guests);
+                                                }
                                             } else {
+                                                // Failed to parse property date
+                                                Toast.makeText(UserTripDetails.this, "Failed to parse property date", Toast.LENGTH_SHORT).show();
                                                 progressDialog.dismiss();
-                                                Toast.makeText(UserTripDetails.this, "Failed to save trip details", Toast.LENGTH_SHORT).show();
                                             }
+                                        } catch (ParseException e) {
+                                            e.printStackTrace();
+                                            progressDialog.dismiss(); // Dismiss the progress dialog
+                                            Toast.makeText(UserTripDetails.this, "Failed to parse property date", Toast.LENGTH_SHORT).show();
                                         }
-                                    });
+                                    } else {
+                                        // Property details not found in the database
+                                        Toast.makeText(UserTripDetails.this, "Property details not found", Toast.LENGTH_SHORT).show();
+                                        progressDialog.dismiss();
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                    // Handle database error
+                                    progressDialog.dismiss();
+                                    Toast.makeText(UserTripDetails.this, "Database error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
                         }
                     } else {
                         Toast.makeText(UserTripDetails.this, "Date must not be null", Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
                     }
                 } catch (ParseException e) {
                     e.printStackTrace();
                     progressDialog.dismiss(); // Dismiss the progress dialog
                     Toast.makeText(UserTripDetails.this, "Failed to parse date", Toast.LENGTH_SHORT).show();
-                } finally {
-                    UserTripDetailsModel userTripDetailsModel = new UserTripDetailsModel(selectedDateStr, slots, guests);
-                    databaseReference.child(propertyId).setValue(userTripDetailsModel)
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        progressDialog.dismiss();
-                                        // Start PaymentActivity with necessary intent extras
-                                        Intent intent = new Intent(UserTripDetails.this, PaymentActivity.class);
-                                        intent.putExtra("slot", slots);
-                                        intent.putExtra("property_id", propertyId);
-                                        intent.putExtra("parent_id", parentId);
-                                        intent.putExtra("user_id", userId);
-                                        intent.putExtra("userName", userName);
-                                        startActivity(intent);
-                                        finish(); // Finish this activity after starting the next one
-                                    } else {
-                                        progressDialog.dismiss();
-                                        Toast.makeText(UserTripDetails.this, "Failed to save trip details", Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
                 }
             }
         });
     }
+        private void saveTripDetails (String selectedDateStr,int slots, int guests){
+            UserTripDetailsModel userTripDetailsModel = new UserTripDetailsModel(selectedDateStr, slots, guests);
+            databaseReference.child(propertyId).setValue(userTripDetailsModel)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                progressDialog.dismiss();
+                                // Start PaymentActivity with necessary intent extras
+                                Intent intent = new Intent(UserTripDetails.this, PaymentActivity.class);
+                                intent.putExtra("slot", slots);
+                                intent.putExtra("property_id", propertyId);
+                                intent.putExtra("parent_id", parentId);
+                                intent.putExtra("user_id", userId);
+                                intent.putExtra("userName", userName);
+                                intent.putExtra("owner_id", ownerId);
+
+                                startActivity(intent);
+                                finish(); // Finish this activity after starting the next one
+                            } else {
+                                progressDialog.dismiss();
+                                Toast.makeText(UserTripDetails.this, "Failed to save trip details", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+        }
+
+
+   
+
+    //.....
+//        binding.bookingbutton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                progressDialog.show();
+//                String selectedDateStr = Objects.requireNonNull(binding.fromDate.getText()).toString();
+//                Toast.makeText(UserTripDetails.this, selectedDateStr, Toast.LENGTH_SHORT).show();
+//                int pickerValue = binding.np.getValue();
+//                Log.d(TAG, "Picker value: '" + pickerValue + "'");
+//                int slots = Integer.parseInt(String.valueOf(pickerValue).trim());
+//                Toast.makeText(UserTripDetails.this, "slot when clicked=" + slots, Toast.LENGTH_SHORT).show();
+//                int guests = Integer.parseInt(Objects.requireNonNull(binding.guests.getText()).toString());
+//                assert intent != null;
+//                String fromDate = intent.getStringExtra("from_date");
+//                String toDate = intent.getStringExtra("to_date");
+//                // Check if the selected date falls within the booking range
+//                try {
+//                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+//                    Log.d(TAG, "selectedDateStr: " + selectedDateStr);
+//                    Log.d(TAG, "fromDate: " + fromDate);
+//                    Log.d(TAG, "toDate: " + toDate);
+//
+//                    if (fromDate.equals("Select from date") || toDate.equals("Select to date")) {
+//                        // Invalid or missing from/to date
+//                        progressDialog.dismiss();
+//                        Toast.makeText(UserTripDetails.this, "Invalid or missing from/to date", Toast.LENGTH_SHORT).show();
+//                        return; // Exit the method
+//                    }
+//
+//                    // Both fromDate and toDate are not equal to "Select from/to date", proceed with date parsing
+//                    Date selectedDate = sdf.parse(selectedDateStr);
+//                    Date from = sdf.parse(fromDate);
+//                    Date to = sdf.parse(toDate);
+//
+//                    if (selectedDate != null && from != null) {
+//                        if (selectedDate.equals(from) || (selectedDate.after(from) && selectedDate.before(to)) || selectedDate.equals(to)) {
+//                            // Selected date is equal to or falls within the unavailable range
+//                            Toast.makeText(UserTripDetails.this, "Selected date is equal to or falls within the unavailable range", Toast.LENGTH_SHORT).show();
+//                            progressDialog.dismiss();
+//                        } else {
+//                            // Save trip details to the TripDetailsModel node
+//                            UserTripDetailsModel userTripDetailsModel = new UserTripDetailsModel(selectedDateStr, slots, guests);
+//                            databaseReference.child(propertyId).setValue(userTripDetailsModel)
+//                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                                        @Override
+//                                        public void onComplete(@NonNull Task<Void> task) {
+//                                            if (task.isSuccessful()) {
+//                                                progressDialog.dismiss();
+//                                                // Start PaymentActivity with necessary intent extras
+//                                                Intent intent = new Intent(UserTripDetails.this, PaymentActivity.class);
+//                                                intent.putExtra("slot", slots);
+//                                                intent.putExtra("property_id", propertyId);
+//                                                intent.putExtra("parent_id", parentId);
+//                                                intent.putExtra("user_id", userId);
+//                                                intent.putExtra("userName", userName);
+//                                                startActivity(intent);
+//                                                finish(); // Finish this activity after starting the next one
+//                                            } else {
+//                                                progressDialog.dismiss();
+//                                                Toast.makeText(UserTripDetails.this, "Failed to save trip details", Toast.LENGTH_SHORT).show();
+//                                            }
+//                                        }
+//                                    });
+//                        }
+//                    } else {
+//                        Toast.makeText(UserTripDetails.this, "Date must not be null", Toast.LENGTH_SHORT).show();
+//                    }
+//                } catch (ParseException e) {
+//                    e.printStackTrace();
+//                    progressDialog.dismiss(); // Dismiss the progress dialog
+//                    Toast.makeText(UserTripDetails.this, "Failed to parse date", Toast.LENGTH_SHORT).show();
+//                } finally {
+//                    UserTripDetailsModel userTripDetailsModel = new UserTripDetailsModel(selectedDateStr, slots, guests);
+//                    databaseReference.child(propertyId).setValue(userTripDetailsModel)
+//                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                                @Override
+//                                public void onComplete(@NonNull Task<Void> task) {
+//                                    if (task.isSuccessful()) {
+//                                        progressDialog.dismiss();
+//                                        // Start PaymentActivity with necessary intent extras
+//                                        Intent intent = new Intent(UserTripDetails.this, PaymentActivity.class);
+//                                        intent.putExtra("slot", slots);
+//                                        intent.putExtra("property_id", propertyId);
+//                                        intent.putExtra("parent_id", parentId);
+//                                        intent.putExtra("user_id", userId);
+//                                        intent.putExtra("userName", userName);
+//                                        startActivity(intent);
+//                                        finish(); // Finish this activity after starting the next one
+//                                    } else {
+//                                        progressDialog.dismiss();
+//                                        Toast.makeText(UserTripDetails.this, "Failed to save trip details", Toast.LENGTH_SHORT).show();
+//                                    }
+//                                }
+//                            });
+//                }
+//            }
+//        });
+//    }
+
+        //........
+
 
 //        binding.bookingbutton.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -390,6 +533,7 @@ public class UserTripDetails extends AppCompatActivity {
 //        String selectedDate = fromDate.getText().toString();
 //
 //    }
+
     private void showDatePickerDialog(TextView textView) {
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);

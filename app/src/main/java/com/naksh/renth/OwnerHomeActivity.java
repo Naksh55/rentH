@@ -64,7 +64,7 @@ public class OwnerHomeActivity extends AppCompatActivity {
             userName=intent.getStringExtra("userName");
 //            Toast.makeText(OwnerHomeActivity.this, "userId="+userId, Toast.LENGTH_SHORT).show();
 //            Toast.makeText(OwnerHomeActivity.this, "userName="+userName, Toast.LENGTH_SHORT).show();
-//            Toast.makeText(OwnerHomeActivity.this, "notification="+notificationMessage, Toast.LENGTH_LONG).show();
+            Toast.makeText(OwnerHomeActivity.this, "notification="+notificationMessage, Toast.LENGTH_LONG).show();
             // Pass the ID to the fragment
             loadHomeFragmentWithOwnerId(ownerId);
             retrievePropertiesForOwner(ownerId);

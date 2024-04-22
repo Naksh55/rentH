@@ -97,9 +97,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
@@ -127,6 +130,10 @@ public class SignUpScreen extends AppCompatActivity {
     private ProgressDialog progressDialog;
     EditText email;
     EditText password;
+    EditText confirmPassword;
+    ImageView togglePasswordVisibilityImage; // Change to ImageView
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,6 +142,10 @@ public class SignUpScreen extends AppCompatActivity {
         setContentView(binding.getRoot());
         email = findViewById(R.id.etemail);
         password = findViewById(R.id.etPassword);
+        confirmPassword = findViewById(R.id.etConfirmPassword); // Initialize confirmPassword EditText
+        togglePasswordVisibilityImage = findViewById(R.id.password_toggle); // Initialize ImageView
+
+
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         progressDialog = new ProgressDialog(this);
@@ -193,17 +204,48 @@ public class SignUpScreen extends AppCompatActivity {
                 }
             }
         });
+
+        togglePasswordVisibilityImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                togglePasswordVisibility();
+            }
+        });
     }
+
+    private void togglePasswordVisibility() {
+        // Toggle password visibility
+        if (password.getTransformationMethod() == PasswordTransformationMethod.getInstance()) {
+            // Show password
+            password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+            confirmPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+        } else {
+            // Hide password
+            password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            confirmPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        }
+        // Move cursor to the end of the text
+        password.setSelection(password.getText().length());
+        confirmPassword.setSelection(confirmPassword.getText().length());
+    }
+
+
+
     public boolean validation() {
         String eMail = email.getText().toString().trim();
         String userPassword = password.getText().toString().trim();
-        if (eMail.isEmpty()||userPassword.isEmpty()){
+        String confirmUserPassword = confirmPassword.getText().toString().trim();
+
+        if (eMail.isEmpty() || userPassword.isEmpty()) {
             Toast.makeText(this, "All fields must be filled out", Toast.LENGTH_SHORT).show();
             return false;
         }
+        if (!userPassword.equals(confirmUserPassword)) {
+            Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
         return true;
 
     }
-
-
 }

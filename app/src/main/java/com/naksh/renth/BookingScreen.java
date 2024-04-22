@@ -49,6 +49,8 @@ public class BookingScreen extends AppCompatActivity {
 //    String fromDate;
 //    String toDate;
 String userId;
+    String ownerId;
+
 //    String ownerId;
 
 
@@ -78,10 +80,10 @@ String userId;
              String toDate = intent.getStringExtra("to_date");
              userId=intent.getStringExtra("user_id");
              userName=intent.getStringExtra("userName");
-//             ownerId = intent.getStringExtra("id");
-
-            Toast.makeText(this, "userId=="+userId, Toast.LENGTH_SHORT).show();
-            Toast.makeText(this, "userName=="+userName, Toast.LENGTH_SHORT).show();
+             ownerId = intent.getStringExtra("owner_id");
+            Toast.makeText(this, "ownerId in booking screen==="+ownerId, Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "userId=="+userId, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "userName=="+userName, Toast.LENGTH_SHORT).show();
 
 //            Toast.makeText(this, "to date="+toDate, Toast.LENGTH_SHORT).show();
 
@@ -124,9 +126,12 @@ String userId;
                             intent.putExtra("to_date",todate);
                             intent.putExtra("user_id",userId);
                             intent.putExtra("userName",userName);
+                            intent.putExtra("owner_id",ownerId);
 
-                            Toast.makeText(BookingScreen.this, "userId=="+userId, Toast.LENGTH_SHORT).show();
-                            Toast.makeText(BookingScreen.this, "userName=="+userName, Toast.LENGTH_SHORT).show();
+//
+//                            Toast.makeText(BookingScreen.this, "userId=="+userId, Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(BookingScreen.this, "userName=="+userName, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(BookingScreen.this, "ownerId==="+ownerId, Toast.LENGTH_SHORT).show();
 
 
                             startActivity(intent);
@@ -181,6 +186,8 @@ private void handleBookingButtonClick(String propertyId) {
                     intent.putExtra("property_id",propertyId);
                     intent.putExtra("user_id",userId);
                 intent.putExtra("userName",userName);
+                intent.putExtra("owner_id",ownerId);
+
 
                 Toast.makeText(BookingScreen.this, "id="+userId+"userName="+userName, Toast.LENGTH_SHORT).show();
                     startActivity(intent);

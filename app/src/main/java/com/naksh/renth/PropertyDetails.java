@@ -247,6 +247,7 @@
     import com.google.firebase.storage.FirebaseStorage;
     import com.google.firebase.storage.StorageReference;
     import com.naksh.renth.Models.PropertyDetailsModel;
+    import com.naksh.renth.Models.UserTripDetailsModel;
     import com.naksh.renth.databinding.ActivityPropertyDetailsBinding;
 
     import java.text.SimpleDateFormat;
@@ -1308,5 +1309,7 @@
                         }
                     });
         }
+
+
     }
 

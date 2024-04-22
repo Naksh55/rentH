@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -47,6 +49,8 @@ public class PaymentActivity extends AppCompatActivity {
     String userId;
 
     int slots;
+    String notificationMessage;
+    String ownerId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +59,9 @@ public class PaymentActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null) {
             propertyId = intent.getStringExtra("property_id");
+            ownerId = intent.getStringExtra("owner_id");
+            Toast.makeText(this, "ownerId="+ownerId, Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "propertyId in payment antivity="+propertyId, Toast.LENGTH_LONG).show();
             slots = intent.getIntExtra("slot", 0); // 0 is the default value if "slot" extra is not found
             if (slots == 0) {
                 Toast.makeText(this, "Slots is null", Toast.LENGTH_SHORT).show();
@@ -62,14 +69,17 @@ public class PaymentActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(this, "Slots: " + slots, Toast.LENGTH_SHORT).show();
             }
-            Toast.makeText(this, String.valueOf(slots), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, String.valueOf(slots), Toast.LENGTH_SHORT).show();
 
             if (propertyId != null) {
-                parentId = intent.getStringExtra("parent_id");
+                parentId = intent.getStringExtra("id");
+
                 userId=intent.getStringExtra("user_id");
                 username=intent.getStringExtra("userName");
+                notificationMessage=intent.getStringExtra("notification_message");
+//                Toast.makeText(this,notificationMessage , Toast.LENGTH_SHORT).show();
 
-                Toast.makeText(this, "userId="+userId, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "userId="+userId, Toast.LENGTH_SHORT).show();
                 retrieveDetailsFromDatabase(propertyId, parentId);
                 retrieveOwnerIDs();
 
@@ -159,12 +169,13 @@ public class PaymentActivity extends AppCompatActivity {
                         if (dataSnapshot.exists()) {
                             String userName = dataSnapshot.child("name").getValue(String.class);
                             String userId=dataSnapshot.child("id").getValue(String.class);
-                            Toast.makeText(PaymentActivity.this, "name="+userName, Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(PaymentActivity.this, "name="+userName, Toast.LENGTH_SHORT).show();
                             if (userName != null) {
                                 String notificationMessage = "Your property (ID: " + propertyId + ") has been booked by " + userName;
-                                Toast.makeText(PaymentActivity.this, "userName="+userName, Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(PaymentActivity.this, "userName="+userName, Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(PaymentActivity.this, LoginScreen.class);
                                 intent.putExtra("notification_message", notificationMessage);
+
 //                                NotificationFragment notificationFragment = new NotificationFragment();
 //                                notificationFragment.addNotification("notification_message");
 // Assuming you have a reference to the NotificationFragment
@@ -177,7 +188,10 @@ public class PaymentActivity extends AppCompatActivity {
                                 intent.putExtra("user_id",userId);
                                 intent.putExtra("userName",userName);
                                 intent.putExtra("property_id",propertyId);
-                                Toast.makeText(PaymentActivity.this, "userName="+userName, Toast.LENGTH_SHORT).show();
+                                intent.putExtra("id", ownerId);
+
+//                                Toast.makeText(PaymentActivity.this, "userName="+userName, Toast.LENGTH_SHORT).show();
+                                createNotificationMessage( notificationMessage,userId,propertyId,ownerId);
                                 startActivity(intent);
                             } else {
                                 Toast.makeText(PaymentActivity.this, "User name not found", Toast.LENGTH_SHORT).show();
@@ -195,7 +209,8 @@ public class PaymentActivity extends AppCompatActivity {
                 });
             }
         });
-    }
+
+        }
 
 
 
@@ -299,4 +314,35 @@ public class PaymentActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void createNotificationMessage(String notificationMessage, String userId, String propertyId,String ownerId) {
+        DatabaseReference notificationRef = FirebaseDatabase.getInstance().getReference("NotificationMessage");
+        String notificationId = notificationRef.push().getKey(); // Generate unique ID for the notification
+
+        if (notificationId != null) {
+            DatabaseReference newNotificationRef = notificationRef.child(notificationId);
+            newNotificationRef.child("NotificationMessage").setValue(notificationMessage);
+            newNotificationRef.child("userId").setValue(userId);
+            newNotificationRef.child("ownerId").setValue(ownerId);
+
+            newNotificationRef.child("propertyId").setValue(propertyId)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                // Notification message created successfully
+                                Toast.makeText(PaymentActivity.this, "Notification message created successfully", Toast.LENGTH_SHORT).show();
+                            } else {
+                                // Failed to create notification message
+                                Toast.makeText(PaymentActivity.this, "Failed to create notification message", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+        } else {
+            // Failed to generate notification ID
+            Toast.makeText(PaymentActivity.this, "Failed to generate notification ID", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
 }
