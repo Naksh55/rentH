@@ -1,6 +1,7 @@
 package com.naksh.renth;
 
 import static android.content.Intent.getIntent;
+import static android.content.Intent.getIntentOld;
 
 import androidx.fragment.app.Fragment;
 
@@ -101,9 +102,9 @@ public class OwnerHomeFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
             ownerId = getArguments().getString(ARG_OWNER_ID);
             ownerName = getArguments().getString(ARG_OWNER_NAME);
-            Toast.makeText(requireContext(), "ownerId="+ownerId, Toast.LENGTH_SHORT).show();
-            Toast.makeText(requireContext(), "ownerName in fragment="+ownerName, Toast.LENGTH_SHORT).show();
-
+//            Toast.makeText(requireContext(), "ownerId="+ownerId, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(requireContext(), "ownerName in fragment="+ownerName, Toast.LENGTH_SHORT).show();
+//
 
 
 
@@ -342,7 +343,7 @@ public class OwnerHomeFragment extends Fragment {
                         String parentId = snapshot.getKey();
                         String propertyId = snapshot.getKey();
 
-                        Intent intent = new Intent(requireContext(), BookingScreen.class);
+                        Intent intent =new Intent();
                         intent.putExtra("property_id", propertyId);
                         intent.putExtra("parent_id", parentId);
                         intent.putExtra("oname", ownerName);
@@ -350,7 +351,6 @@ public class OwnerHomeFragment extends Fragment {
 //                        Toast.makeText(PropertyRecyclerActivityForUser.this, "Property ID: " + propertyId, Toast.LENGTH_SHORT).show();
 //                        Toast.makeText(PropertyRecyclerActivityForUser.this, "Parent ID: " + parentId, Toast.LENGTH_SHORT).show();
 
-                        startActivity(intent);
                         break;
                     }
                 } else {

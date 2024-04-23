@@ -133,11 +133,13 @@ public void onCreate(Bundle savedInstanceState) {
         userId = getArguments().getString(ARG_USER_ID);
         userName = getArguments().getString(ARG_USERNAME);
         propertyId = getArguments().getString(ARG_PROPERTYID);
-        Toast.makeText(getContext(), "message=" + notificationMessage, Toast.LENGTH_LONG).show();
-        Toast.makeText(getContext(), "userName=" + userName, Toast.LENGTH_SHORT).show();
-        Toast.makeText(getContext(), "userId=" + userId, Toast.LENGTH_SHORT).show();
-        Toast.makeText(getContext(), "propertyId=" + propertyId, Toast.LENGTH_SHORT).show();
-            // Your existing code...
+        Toast.makeText(getContext(), "ownerId in fragment=" + ownerId, Toast.LENGTH_SHORT).show();
+
+//        Toast.makeText(getContext(), "message=" + notificationMessage, Toast.LENGTH_LONG).show();
+//        Toast.makeText(getContext(), "userName=" + userName, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getContext(), "userId=" + userId, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getContext(), "propertyId=" + propertyId, Toast.LENGTH_SHORT).show();
+//            // Your existing code...
 //            notificationMessages = new ArrayList<>();
 //            adapter = new NotificationAdapter(getContext(), notificationMessages); // Initialize the adapter
 
@@ -161,27 +163,30 @@ public void onCreate(Bundle savedInstanceState) {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         // Fetch notification messages from Firebase
+        // Fetch notification messages from Firebase
         DatabaseReference notificationRef = FirebaseDatabase.getInstance().getReference("NotificationMessage");
         notificationRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 notificationMessages.clear(); // Clear existing data
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    String message = snapshot.child("NotificationMessage").getValue(String.class);
-                    if (message != null) {
-                        notificationMessages.add(message);
+                    String ownerid = snapshot.child("ownerId").getValue(String.class);
+                    if (ownerid != null && ownerid.equals(ownerId)) { // Replace currentUserOwnerId with the ownerId of the current user
+                        String message = snapshot.child("NotificationMessage").getValue(String.class);
+                        if (message != null) {
+                            notificationMessages.add(message);
+                        }
                     }
                 }
                 adapter.notifyDataSetChanged(); // Notify adapter that data set has changed
             }
 
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Handle database error
-                Toast.makeText(getContext(), "Database error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                // Handle errors
             }
         });
+
 
         return view;
     }

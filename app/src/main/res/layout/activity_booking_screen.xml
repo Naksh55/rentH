@@ -17,6 +17,7 @@
             android:orientation="vertical"
             android:id="@+id/guide_v_10"
             />
+
         <ImageView
             android:id="@+id/proimage"
             android:layout_width="300dp"

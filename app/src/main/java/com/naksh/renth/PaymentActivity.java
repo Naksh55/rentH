@@ -321,7 +321,7 @@ public class PaymentActivity extends AppCompatActivity {
 
         if (notificationId != null) {
             DatabaseReference newNotificationRef = notificationRef.child(notificationId);
-            newNotificationRef.child("NotificationMessage").setValue(notificationMessage);
+            newNotificationRef.child("notificationMessage").setValue(notificationMessage);
             newNotificationRef.child("userId").setValue(userId);
             newNotificationRef.child("ownerId").setValue(ownerId);
 

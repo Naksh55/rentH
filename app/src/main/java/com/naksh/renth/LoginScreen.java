@@ -377,6 +377,7 @@
         import android.app.ProgressDialog;
         import android.content.Intent;
         import android.os.Bundle;
+        import android.text.Html;
         import android.util.Log;
         import android.view.View;
         import android.widget.EditText;
@@ -446,7 +447,7 @@ public class LoginScreen extends AppCompatActivity {
                         if (ownerId != null) {
                             // Pass the ownerId to OwnerHomeActivity
                             Intent intent = new Intent(LoginScreen.this, OwnerHomeActivity.class);
-                            intent.putExtra("id", ownerId);
+                            intent.putExtra("owner_id", ownerId);
                             startActivity(intent);
                             return; // Exit the loop after finding the matching email
                         }
@@ -477,7 +478,9 @@ public class LoginScreen extends AppCompatActivity {
             userId = i.getStringExtra("user_id");
             userName = i.getStringExtra("userName");
             ownerName=i.getStringExtra("oname");
-            ownerId=i.getStringExtra("id");
+            ownerId=i.getStringExtra("owner_id");
+//            Toast.makeText(this, "ownerId in on crate="+ownerId, Toast.LENGTH_SHORT).show();
+//            retriveNotification(ownerId);
 
 //            Toast.makeText(this, "id="+userId, Toast.LENGTH_SHORT).show();
         }
@@ -594,10 +597,10 @@ public class LoginScreen extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                         ownerId = snapshot.child("id").getValue(String.class);
-                        String ownername = snapshot.child("oname").getValue(String.class);
+                        String  ownerid = snapshot.child("id").getValue(String.class);
+                         String ownername = snapshot.child("oname").getValue(String.class);
 
-                        if (ownerId != null) {
+                        if (ownerid != null) {
                             DatabaseReference userRef = FirebaseDatabase.getInstance().getReference()
                                     .child("Users");
 
@@ -618,12 +621,13 @@ public class LoginScreen extends AppCompatActivity {
                                                 if (userType.equals(userTypeFromDatabase)) {
                                                     Intent intent = new Intent(LoginScreen.this, OwnerHomeActivity.class);
                                                     intent.putExtra("user_id", userId);
-                                                    intent.putExtra("id", ownerId);
+                                                    intent.putExtra("id", ownerid);
                                                     intent.putExtra("oname", ownername);
 
-
+                                                    Toast.makeText(LoginScreen.this, "====="+ownerid, Toast.LENGTH_SHORT).show();
                                                     intent.putExtra("notification_message", notificationMessage);
                                                     intent.putExtra("userName", userName);
+//                                                    retriveNotification(ownerid);
                                                     startActivity(intent);
                                                     finish(); // Finish the current activity
                                                 } else {
@@ -659,6 +663,8 @@ public class LoginScreen extends AppCompatActivity {
                 // Handle database error
             }
         });
+
+
     }
 
 
@@ -761,6 +767,10 @@ public class LoginScreen extends AppCompatActivity {
         return true;
 
     }
+
+
+
+
 }
 
 
