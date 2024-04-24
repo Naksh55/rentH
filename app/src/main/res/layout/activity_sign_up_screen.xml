@@ -131,19 +131,20 @@
             android:id="@+id/etPassword"/>
 
         <!--    confirm password-->
-        <TextView
-            android:id="@+id/ConfirmPasswordTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Confirm Password"
-            app:layout_constraintTop_toBottomOf="@+id/etPassword"
-            app:layout_constraintStart_toStartOf="@id/guide_v_10"
-            android:textSize="25sp"
-            android:layout_marginLeft="6sp"
-            android:textColor="@color/black"
-            android:textStyle="normal"/>
 
-        <EditText
+                <TextView
+                    android:id="@+id/ConfirmPasswordTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6sp"
+                    android:text="Confirm Password"
+                    android:textColor="@color/black"
+                    android:textSize="25sp"
+                    android:textStyle="normal"
+                    app:layout_constraintStart_toStartOf="@id/guide_v_10"
+                    app:layout_constraintTop_toBottomOf="@+id/etPassword" />
+
+                <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="Re-enter your password"
@@ -163,7 +164,8 @@
                     android:src="@drawable/password"
                     app:layout_constraintStart_toEndOf="@+id/tvPassword"
                     app:layout_constraintTop_toBottomOf="@+id/etemail"
-                    android:layout_marginLeft="10dp"/>
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"/>
 
         <!--    signup button-->
         <Button
@@ -176,7 +178,8 @@
             app:layout_constraintTop_toBottomOf="@id/etConfirmPassword"
             android:layout_marginTop="5dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            android:backgroundTint="@color/light_blue"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

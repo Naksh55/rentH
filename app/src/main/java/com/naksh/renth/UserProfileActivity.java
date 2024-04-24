@@ -54,6 +54,10 @@ public class UserProfileActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(MenuItem item) {
                 if (item.getItemId() == R.id.home) {
                     Intent intent=new Intent(UserProfileActivity.this,PropertyRecyclerActivityForUser.class);
+                    intent.putExtra("user_id", userId);
+                    intent.putExtra("name", userName);
+                    intent.putExtra("userEmail", userEmail);
+                    intent.putExtra("phoneno", userPhoneno);
                     startActivity(intent);
                     return true;
                 } else if(item.getItemId()==R.id.profile) {

@@ -313,13 +313,14 @@ public class OwnerHomeActivity extends AppCompatActivity {
     NotificationFragment notificationFragment = new NotificationFragment();
 
     String ownerId;
-    String propertyId,parentId;
+    String propertyId, parentId;
     String ownerphoneno;
     String notificationMessage;
     String userName;
     String userId;
     String ownerName;
     FirebaseDatabase database;
+    String phoneNo;
 
     TextView ownerNameTextView, ownerPhoneNumberTextView, ownerEmailTextView;
 
@@ -333,27 +334,77 @@ public class OwnerHomeActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("id")) {
             database = FirebaseDatabase.getInstance();
+            ownerId = intent.getStringExtra("id");
+            phoneNo=intent.getStringExtra("phoneno");
+            Toast.makeText(this, "...."+ownerId, Toast.LENGTH_SHORT).show();
 //            DatabaseReference usersRef = database.getReference("NotificationMessage").getKey() ;// Initialize usersRef
 
-            ownerId = intent.getStringExtra("id");
-            retrieveNotification(ownerId);
-            userId=intent.getStringExtra("user_id");
-            ownerName=intent.getStringExtra("oname");
+        }
+
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference("NotificationMessage");
+
+        database.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // Retrieve property details
+                    String nodeId = dataSnapshot.getChildren().iterator().next().getKey();
+                    Toast.makeText(OwnerHomeActivity.this, "notificationId="+nodeId, Toast.LENGTH_SHORT).show();
+                    retrieveNotification(nodeId);
+
+                    String nId=dataSnapshot.child("notificationId").getValue(String.class);
+//                    Toast.makeText(OwnerHomeActivity.this, "notificationId="+nId, Toast.LENGTH_SHORT).show();
+                    String notificationMessage = dataSnapshot.child("notificationMessage").getValue(String.class);
+                    String userId = dataSnapshot.child("userId").getValue(String.class);
+                    String propertyId = dataSnapshot.child("propertyId").getValue(String.class);
+                    String ownerid = dataSnapshot.child("ownerId").getValue(String.class);
+
+                    // You can directly retrieve the ownerId from the method parameter
+
+                    // Assuming you want to send this data to another activity
+//                        Intent intent = getIntent();
+//                        intent.putExtra("notification_message", notificationMessage);
+//                        intent.putExtra("owner_id", ownerid); // Use the ownerId from the method parameter
+//                        intent.putExtra("user_id", userId);
+//                        intent.putExtra("propertyId", propertyId);
+//                        Toast.makeText(OwnerHomeActivity.this, "userId ini method=" + userId, Toast.LENGTH_SHORT).show();
+////                    Toast.makeText(OwnerHomeActivity.this, "notification in method=" + notificationMessage, Toast.LENGTH_SHORT).show();
+//
+//                        if (ownerid != null) {
+//                            Toast.makeText(OwnerHomeActivity.this, "ownerId inside onDataChange=" + ownerId, Toast.LENGTH_LONG).show();
+//                        } else {
+//                            Toast.makeText(OwnerHomeActivity.this, "ownerId is null" + ownerid, Toast.LENGTH_LONG).show();
+//                        }
+                } else {
+                    // Handle the case where no property details are found
+                    Toast.makeText(OwnerHomeActivity.this, "No property details found", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle database error
+            }
+        });
+
+        userId = intent.getStringExtra("user_id");
+        ownerName = intent.getStringExtra("oname");
 //            Toast.makeText(this, ownerName, Toast.LENGTH_SHORT).show();
 //            Toast.makeText(this, "ownerName==="+ownerName, Toast.LENGTH_SHORT).show();
-            notificationMessage=intent.getStringExtra("notification_message");
-            userName=intent.getStringExtra("userName");
+        notificationMessage = intent.getStringExtra("notification_message");
+        userName = intent.getStringExtra("userName");
 //            Toast.makeText(OwnerHomeActivity.this, "userId="+userId, Toast.LENGTH_SHORT).show();
 //            Toast.makeText(OwnerHomeActivity.this, "userName="+userName, Toast.LENGTH_SHORT).show();
 //            Toast.makeText(OwnerHomeActivity.this, "notification="+notificationMessage, Toast.LENGTH_LONG).show();
-            // Pass the ID to the fragment
-            loadHomeFragmentWithOwnerId(ownerId);
-            retrievePropertiesForOwner(ownerId);
+        // Pass the ID to the fragment
+        loadHomeFragmentWithOwnerId(ownerId);
+        retrievePropertiesForOwner(ownerId);
 
-        }
-        else{
-            Toast.makeText(this, "intent is null", Toast.LENGTH_SHORT).show();
-        }
+
+//        else{
+//            Toast.makeText(this, "intent is null", Toast.LENGTH_SHORT).show();
+//        }
+
         bottomNavigationView2 = findViewById(R.id.bottomnavigation2);
         bottomNavigationView2.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
@@ -374,7 +425,7 @@ public class OwnerHomeActivity extends AppCompatActivity {
                         Toast.makeText(OwnerHomeActivity.this, "Intent or ownerId is null", Toast.LENGTH_SHORT).show();
                     }
                 } else if (item.getItemId() == R.id.ohome) {
-                    OwnerHomeFragment ownerHomeFragment = OwnerHomeFragment.newInstance(ownerId, null,ownerName);
+                    OwnerHomeFragment ownerHomeFragment = OwnerHomeFragment.newInstance(ownerId, null, ownerName);
 
                     getSupportFragmentManager().beginTransaction().replace(R.id.container, ownerHomeFragment).commit();
                     return true;
@@ -405,6 +456,7 @@ public class OwnerHomeActivity extends AppCompatActivity {
         // Other initialization code...
 
     }
+
 
     private void loadProfileFragmentWithOwnerId(String ownerId) {
         // Create a new instance of the OwnerProfileFragment with ownerId
@@ -444,6 +496,13 @@ public class OwnerHomeActivity extends AppCompatActivity {
                         String propertyName = propertySnapshot.child("nameofproperty").getValue(String.class);
                         String propertyType = propertySnapshot.child("typeofproperty").getValue(String.class);
                         String propertyPrice = propertySnapshot.child("priceofproperty").getValue(String.class);
+                        String oName = propertySnapshot.child("oName").getValue(String.class);
+                        String ownerID = propertySnapshot.child("ownerId").getValue(String.class);
+
+
+                        Intent intent=getIntent();
+                        intent.putExtra("ownerName",oName);
+                        intent.putExtra("oID",ownerID);
 
                         // Add property to the list
                         PropertyDetailsModel property = new PropertyDetailsModel(propertyName, propertyType, propertyPrice);
@@ -471,7 +530,7 @@ public class OwnerHomeActivity extends AppCompatActivity {
 
     private void retrieveNotification(String ownerId) {
         Toast.makeText(this, "ownerId in method=" + ownerId, Toast.LENGTH_SHORT).show();
-        DatabaseReference database = FirebaseDatabase.getInstance().getReference("NotificationMessage").child("-NwB-voz1x48jaYFVjvf");
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference("NotificationMessage").child(ownerId);
 
         database.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -482,16 +541,20 @@ public class OwnerHomeActivity extends AppCompatActivity {
                     String userId = dataSnapshot.child("userId").getValue(String.class);
                     String propertyId = dataSnapshot.child("propertyId").getValue(String.class);
                     String ownerid = dataSnapshot.child("ownerId").getValue(String.class);
-
+                    String notificationId=dataSnapshot.child("notificationId").getValue(String.class);
                     // You can directly retrieve the ownerId from the method parameter
 
-                    // Assuming you want to send this data to another activity
+                    // Assumingyou want to send this data to another activity
                     Intent intent = getIntent();
                     intent.putExtra("notification_message", notificationMessage);
                     intent.putExtra("owner_id", ownerid); // Use the ownerId from the method parameter
                     intent.putExtra("user_id", userId);
                     intent.putExtra("propertyId", propertyId);
-                    Toast.makeText(OwnerHomeActivity.this, "userId ini method=" + userId, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(OwnerHomeActivity.this, "userId ini method=" + userId, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(OwnerHomeActivity.this, "notificationId in method=" + notificationId, Toast.LENGTH_SHORT).show();
+
+//                    Toast.makeText(OwnerHomeActivity.this, "notification in method=" + notificationMessage, Toast.LENGTH_SHORT).show();
+
                     if (ownerid != null) {
                         Toast.makeText(OwnerHomeActivity.this, "ownerId inside onDataChange=" + ownerId, Toast.LENGTH_LONG).show();
                     } else {

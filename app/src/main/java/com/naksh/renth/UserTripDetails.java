@@ -57,6 +57,9 @@ public class UserTripDetails extends AppCompatActivity {
     String userId;
     String userName;
     String ownerId;
+    String propertyName;
+    String phoneNo;
+    String userEmail;
 
     @SuppressLint("CutPasteId")
     @Override
@@ -74,8 +77,9 @@ public class UserTripDetails extends AppCompatActivity {
             userId = intent.getStringExtra("user_id");
             userName = intent.getStringExtra("userName");
             ownerId = intent.getStringExtra("owner_id");
-
-
+            propertyName=intent.getStringExtra("propertyName");
+            phoneNo=intent.getStringExtra("phoneno");
+            userEmail=intent.getStringExtra("userEmail");
             Toast.makeText(this, "userId:" + userId, Toast.LENGTH_SHORT).show();
             Toast.makeText(this, "userName:" + userName, Toast.LENGTH_SHORT).show();
 
@@ -105,34 +109,34 @@ public class UserTripDetails extends AppCompatActivity {
         progressDialog.setTitle("Saving trip details");
         progressDialog.setMessage("Make payment");
 
-        fromDate = (TextView) findViewById(R.id.fromDate);
-        fromDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar cal = Calendar.getInstance();
-                int year = cal.get(Calendar.YEAR);
-                int month = cal.get(Calendar.MONTH);
-                int day = cal.get(Calendar.DAY_OF_MONTH);
+//        fromDate = (TextView) findViewById(R.id.fromDate);
+//        fromDate.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Calendar cal = Calendar.getInstance();
+//                int year = cal.get(Calendar.YEAR);
+//                int month = cal.get(Calendar.MONTH);
+//                int day = cal.get(Calendar.DAY_OF_MONTH);
+//
+//                // Create a date picker dialog
+//                DatePickerDialog datePickerDialog = new DatePickerDialog(UserTripDetails.this, mDateSetListener, year, month, day);
+//                // Show the dialog
+//                datePickerDialog.show();
+//            }
+//        });
 
-                // Create a date picker dialog
-                DatePickerDialog datePickerDialog = new DatePickerDialog(UserTripDetails.this, mDateSetListener, year, month, day);
-                // Show the dialog
-                datePickerDialog.show();
-            }
-        });
-
-        mDateSetListener = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                month = month + 1;
-                Log.d(TAG, "onDateSet:date: " + dayOfMonth + "/" + month + "/" + year);
-                String date = dayOfMonth + "/" + month + "/" + year;
-                Toast.makeText(UserTripDetails.this, "Selected date" + date, Toast.LENGTH_SHORT).show();
-
-                fromDate.setText(date);
-
-            }
-        };
+//        mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+//            @Override
+//            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+//                month = month + 1;
+//                Log.d(TAG, "onDateSet:date: " + dayOfMonth + "/" + month + "/" + year);
+//                String date = dayOfMonth + "/" + month + "/" + year;
+//                Toast.makeText(UserTripDetails.this, "Selected date" + date, Toast.LENGTH_SHORT).show();
+//
+//                fromDate.setText(date);
+//
+//            }
+//        };
 
         NumberPicker numberPicker = findViewById(R.id.np);
         numberPicker.setMinValue(1);
@@ -150,7 +154,20 @@ public class UserTripDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                progressDialog.show();
+                int selectedSlots = binding.np.getValue();
+                if (selectedSlots == 0) {
+                    // Display a message prompting the user to select a value
+                    Toast.makeText(UserTripDetails.this, "Please select the number of slots", Toast.LENGTH_SHORT).show();
+                    return; // Exit the method as validation failed
+                }
+                String guestsText = binding.guests.getText().toString().trim();
+                if (guestsText.isEmpty()) {
+                    // Display a message prompting the user to fill in the field
+                    Toast.makeText(UserTripDetails.this, "Please enter the number of guests", Toast.LENGTH_SHORT).show();
+                    return; // Exit the method as validation failed
+                }
+//                progressDialog.show();
+
                 String selectedDateStr = Objects.requireNonNull(binding.fromDate.getText()).toString();
                 int pickerValue = binding.np.getValue();
                 int slots = Integer.parseInt(String.valueOf(pickerValue).trim());
@@ -169,7 +186,7 @@ public class UserTripDetails extends AppCompatActivity {
 
                     if (fromDate.equals("Select from date") || toDate.equals("Select to date")) {
                         // Invalid or missing from/to date
-                        progressDialog.dismiss();
+//                        progressDialog.dismiss();
                         Toast.makeText(UserTripDetails.this, "Invalid or missing from/to date", Toast.LENGTH_SHORT).show();
                         fromDate="11/11/1111";
                         toDate="11/11/1111";
@@ -186,9 +203,10 @@ public class UserTripDetails extends AppCompatActivity {
                         if (selectedDate.equals(from) || (selectedDate.after(from) && selectedDate.before(to)) || selectedDate.equals(to)) {
                             // Selected date is equal to or falls within the unavailable range
                             Toast.makeText(UserTripDetails.this, "Selected date is equal to or falls within the unavailable range", Toast.LENGTH_SHORT).show();
-                            progressDialog.dismiss();
+//                            progressDialog.dismiss();
                         } else {
 //                            Toast.makeText(UserTripDetails.this, "........", Toast.LENGTH_SHORT).show();
+                            progressDialog.show();
 
                             // Retrieve property details from the database to compare dates
                             DatabaseReference propertyRef = FirebaseDatabase.getInstance().getReference("PropertyDetailsModel").child(propertyId);
@@ -266,8 +284,11 @@ public class UserTripDetails extends AppCompatActivity {
                                 intent.putExtra("user_id", userId);
                                 intent.putExtra("userName", userName);
                                 intent.putExtra("owner_id", ownerId);
-
+                                intent.putExtra("propertyName",propertyName);
+                                intent.putExtra("phoneno",phoneNo);
+                                intent.putExtra("userEmail",userEmail);
                                 startActivity(intent);
+
                                 finish(); // Finish this activity after starting the next one
                             } else {
                                 progressDialog.dismiss();
@@ -539,12 +560,29 @@ public class UserTripDetails extends AppCompatActivity {
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH);
         int day = cal.get(Calendar.DAY_OF_MONTH);
+
         DatePickerDialog datePickerDialog = new DatePickerDialog(UserTripDetails.this,
                 (view, year1, month1, dayOfMonth) -> {
                     month1 = month1 + 1;
                     String date = dayOfMonth + "/" + month1 + "/" + year1;
-                    textView.setText(date);
+
+                    // Get the selected date as a Calendar object
+                    Calendar selectedDate = Calendar.getInstance();
+                    selectedDate.set(year1, month1 - 1, dayOfMonth); // Month is 0-based
+
+                    // Get the current date
+                    Calendar currentDate = Calendar.getInstance();
+
+                    // Compare the selected date with the current date
+                    if (selectedDate.before(currentDate)) {
+                        // Show a toast indicating that the selected date is invalid
+                        Toast.makeText(UserTripDetails.this, "Please choose a date after current date", Toast.LENGTH_SHORT).show();
+                    } else {
+                        // Set the selected date to the text view
+                        textView.setText(date);
+                    }
                 }, year, month, day);
+
         datePickerDialog.show();
     }
 

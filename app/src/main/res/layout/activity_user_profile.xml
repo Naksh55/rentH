@@ -56,7 +56,7 @@
         android:id="@+id/about"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="About"
+        android:text="About rentH"
         android:textSize="40dp"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@+id/useremail"
@@ -68,14 +68,16 @@
         android:id="@+id/aboutrentH"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="As rentH is the first project to be MADE IN INDIA, rentH can be used by Owner to show their properties to Users. It also helps the User to enquire about the availability of property and check the details of the property at a particular date from a particular location.This Property Booking System will act as a  complete game changer for our current era and this has an ultimate potential to alter markrt which are dominated by some hotels companies.The main objective of this project is to provide the facilities to those people who don't want to stay/check-in a hotel and need a complete privacy at a reasonable price ranges, the main objective is that a family when travels should stay together which is not possible in any hotel and this software provides a medium for users to enjoy all the benefits which was not provided by hotels. This project has contained essential modules like Owner,User and Admin. "
+        android:text="rentH is a Graphical User Interface that allows an User to book any Property. The Users may very quickly book a property with the help of Owner using the system’s simple design. The Property Booking app and web app has a modern and simple design with buttons like submit, Log in / Log out, and book making it suitable for a wide range of Users, from simply booking properties quickly. The database stores the data of numerous users and owners personal details and also contains the property details of owner's property.  "
         app:layout_constraintTop_toBottomOf="@+id/about"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:textSize="10sp"
+        android:textSize="17sp"
+        android:padding="15dp"
         android:layout_marginTop="20sp"
         android:layout_marginStart="10sp"
-        android:layout_marginEnd="10sp"/>
+        android:layout_marginEnd="10sp"
+        android:gravity="fill"/>
 
     <Button
         android:id="@+id/logutbutton"
@@ -85,8 +87,8 @@
         app:layout_constraintTop_toBottomOf="@id/aboutrentH"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="90sp"
-        android:paddingHorizontal="50sp"/>
+        android:paddingHorizontal="50sp"
+        android:backgroundTint="@color/light_blue"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomnavigation"

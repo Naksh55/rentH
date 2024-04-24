@@ -5,22 +5,15 @@
     android:layout_height="match_parent"
     tools:context=".OwnerHomeFragment">
 
-    <TextView
-        android:id="@+id/ownerhomeTV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="HOME"
-        android:textSize="40sp"
-        android:layout_marginTop="20dp"
-        android:layout_centerHorizontal="true"/>
 
     <TextView
         android:id="@+id/myPropertiesTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="My Properties"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
         android:textSize="30sp"
-        android:layout_below="@+id/ownerhomeTV"
         android:layout_centerHorizontal="true"/>
 
 <!--    <ImageView-->
@@ -37,8 +30,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/myPropertiesTV"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:padding="10sp"
+        android:layout_marginBottom="60sp"
         />
 
 

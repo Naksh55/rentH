@@ -75,6 +75,7 @@
         android:layout_below="@id/aboutrentH"
         android:layout_marginTop="30sp"
         android:layout_centerHorizontal="true"
-        android:paddingHorizontal="50sp"/>
+        android:paddingHorizontal="50sp"
+        android:backgroundTint="@color/light_blue"/>
 
 </RelativeLayout>

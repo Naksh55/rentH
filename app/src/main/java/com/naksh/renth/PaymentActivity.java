@@ -51,6 +51,10 @@ public class PaymentActivity extends AppCompatActivity {
     int slots;
     String notificationMessage;
     String ownerId;
+    String propertyName;
+    String phoneNo;
+    String userEmail;
+    String userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +64,11 @@ public class PaymentActivity extends AppCompatActivity {
         if (intent != null) {
             propertyId = intent.getStringExtra("property_id");
             ownerId = intent.getStringExtra("owner_id");
+            propertyName=intent.getStringExtra("propertyName");
+            phoneNo=intent.getStringExtra("phoneno");
+            Toast.makeText(this, "phoneno="+phoneNo, Toast.LENGTH_SHORT).show();
+            userEmail=intent.getStringExtra("userEmail");
+            userName=intent.getStringExtra("userName");
             Toast.makeText(this, "ownerId="+ownerId, Toast.LENGTH_LONG).show();
 //            Toast.makeText(this, "propertyId in payment antivity="+propertyId, Toast.LENGTH_LONG).show();
             slots = intent.getIntExtra("slot", 0); // 0 is the default value if "slot" extra is not found
@@ -171,7 +180,7 @@ public class PaymentActivity extends AppCompatActivity {
                             String userId=dataSnapshot.child("id").getValue(String.class);
 //                            Toast.makeText(PaymentActivity.this, "name="+userName, Toast.LENGTH_SHORT).show();
                             if (userName != null) {
-                                String notificationMessage = "Your property (ID: " + propertyId + ") has been booked by " + userName;
+                                String notificationMessage = "Your property " + propertyName + " has been booked by " + userName + "\nCustomer contact: " + phoneNo+"\nCustomer Email: "+userEmail;
 //                                Toast.makeText(PaymentActivity.this, "userName="+userName, Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(PaymentActivity.this, LoginScreen.class);
                                 intent.putExtra("notification_message", notificationMessage);
@@ -321,6 +330,8 @@ public class PaymentActivity extends AppCompatActivity {
 
         if (notificationId != null) {
             DatabaseReference newNotificationRef = notificationRef.child(notificationId);
+            newNotificationRef.child("notificationId").setValue(notificationId);
+
             newNotificationRef.child("notificationMessage").setValue(notificationMessage);
             newNotificationRef.child("userId").setValue(userId);
             newNotificationRef.child("ownerId").setValue(ownerId);

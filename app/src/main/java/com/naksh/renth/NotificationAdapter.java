@@ -4,9 +4,11 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -32,6 +34,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     public void onBindViewHolder(@NonNull NotificationViewHolder holder, int position) {
         String notification = notificationList.get(position);
         holder.bind(notification);
+        holder.cardView.startAnimation(AnimationUtils.loadAnimation(holder.itemView.getContext(),R.anim.anim_one));
+
     }
 
     @Override
@@ -40,11 +44,14 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     }
 
     public class NotificationViewHolder extends RecyclerView.ViewHolder {
+        CardView cardView;
         private TextView textViewNotification;
 
         public NotificationViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewNotification = itemView.findViewById(R.id.textViewNotification);
+            cardView = itemView.findViewById(R.id.cardview3);
+
         }
 
         public void bind(String notification) {

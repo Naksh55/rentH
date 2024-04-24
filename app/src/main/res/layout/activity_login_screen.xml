@@ -126,6 +126,16 @@
             app:layout_constraintTop_toBottomOf="@id/emailet"
             app:layout_constraintStart_toStartOf="@id/guide_v_10"
             />
+        <ImageView
+            android:id="@+id/password_toggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/password"
+            app:layout_constraintStart_toEndOf="@+id/tvPassword"
+            app:layout_constraintTop_toBottomOf="@+id/emailet"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="25sp"/>
+
 
         <EditText
             android:layout_width="wrap_content"
@@ -166,7 +176,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/signuptext"
-
+            android:backgroundTint="@color/light_blue"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

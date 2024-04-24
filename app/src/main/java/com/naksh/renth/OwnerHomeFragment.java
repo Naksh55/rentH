@@ -55,8 +55,8 @@ public class OwnerHomeFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private static final String ARG_OWNER_ID = "owner_id";
-    private static final String ARG_OWNER_NAME = "oname";
+    private static final String ARG_OWNER_ID = "id";
+    private static final String ARG_OWNER_NAME = "ownerName";
 
 
 
@@ -194,8 +194,9 @@ public class OwnerHomeFragment extends Fragment {
                             // Check if the property belongs to the desired owner
                             String propertyOwnerName = propertyModel.getoName();
                             Toast.makeText(requireContext(), "ownerName=" + ownerName, Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(requireContext(), "name" + oname, Toast.LENGTH_SHORT).show();
 
-                            Toast.makeText(requireContext(), "name===" + propertyOwnerName, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(requireContext(), "name" + propertyOwnerName, Toast.LENGTH_SHORT).show();
                             if (propertyOwnerName != null && propertyOwnerName.equals(ownerName)) {
                                 list.add(propertyModel);
                             } else {

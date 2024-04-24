@@ -49,9 +49,11 @@ public class BookingScreen extends AppCompatActivity {
 //    String fromDate;
 //    String toDate;
 String userId;
+String phonoNo;
     String ownerId;
 
 //    String ownerId;
+    String userEmail;
 
 
     @Override
@@ -81,6 +83,8 @@ String userId;
              userId=intent.getStringExtra("user_id");
              userName=intent.getStringExtra("userName");
              ownerId = intent.getStringExtra("owner_id");
+             phonoNo=intent.getStringExtra("phoneno");
+             userEmail=intent.getStringExtra("userEmail");
             Toast.makeText(this, "ownerId in booking screen==="+ownerId, Toast.LENGTH_LONG).show();
 //            Toast.makeText(this, "userId=="+userId, Toast.LENGTH_SHORT).show();
 //            Toast.makeText(this, "userName=="+userName, Toast.LENGTH_SHORT).show();
@@ -117,6 +121,7 @@ String userId;
                         if (dataSnapshot.exists()) {
                             String fromDate = dataSnapshot.child("fordate").getValue(String.class);
                             String todate = dataSnapshot.child("todate").getValue(String.class);
+
 //                            Toast.makeText(BookingScreen.this, "From:"+fromDate+"    To: "+todate, Toast.LENGTH_LONG).show();
 
 //                Intent intent = getIntent();
@@ -127,6 +132,7 @@ String userId;
                             intent.putExtra("user_id",userId);
                             intent.putExtra("userName",userName);
                             intent.putExtra("owner_id",ownerId);
+                            intent.putExtra("userEmail",userEmail);
 
 //
 //                            Toast.makeText(BookingScreen.this, "userId=="+userId, Toast.LENGTH_SHORT).show();
@@ -176,6 +182,9 @@ private void handleBookingButtonClick(String propertyId) {
             if (dataSnapshot.exists()) {
                 String fromDate = dataSnapshot.child("fordate").getValue(String.class);
                 String todate = dataSnapshot.child("todate").getValue(String.class);
+                String propertyName = dataSnapshot.child("nameofproperty").getValue(String.class);
+
+
 //                Toast.makeText(BookingScreen.this, "From:"+fromDate+"    To: "+todate, Toast.LENGTH_LONG).show();
 
 //                Intent intent = getIntent();
@@ -187,9 +196,12 @@ private void handleBookingButtonClick(String propertyId) {
                     intent.putExtra("user_id",userId);
                 intent.putExtra("userName",userName);
                 intent.putExtra("owner_id",ownerId);
+                intent.putExtra("propertyName",propertyName);
+                intent.putExtra("phoneno",phonoNo);
+                intent.putExtra("userEmail",userEmail);
 
 
-                Toast.makeText(BookingScreen.this, "id="+userId+"userName="+userName, Toast.LENGTH_SHORT).show();
+                Toast.makeText(BookingScreen.this, "phoneNo="+phonoNo+"userName="+userName, Toast.LENGTH_SHORT).show();
                     startActivity(intent);
 //                    Toast.makeText(BookingScreen.this, fDate + "From date is null", Toast.LENGTH_SHORT).show();
 //                    Toast.makeText(BookingScreen.this, tDate + "to date is null", Toast.LENGTH_SHORT).show();
@@ -297,6 +309,8 @@ private void handleBookingButtonClick(String propertyId) {
                     String ownerName = dataSnapshot.child("oname").getValue(String.class);
                     String ownerPhoneNumber = dataSnapshot.child("ophoneno").getValue(String.class);
                     String ownerEmail = dataSnapshot.child("oemail").getValue(String.class);
+                    Intent intent=getIntent();
+                    intent.putExtra("phoneNo",ownerPhoneNumber);
                     // Set owner details in respective TextViews
                     ownerNameTextView = findViewById(R.id.oname);
                     ownerPhoneNumberTextView = findViewById(R.id.opnumber);

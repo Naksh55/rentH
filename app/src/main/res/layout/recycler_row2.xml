@@ -1,87 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10sp"
-    >
-    <RelativeLayout
+    app:cardBackgroundColor="#64B5F6"
+    app:cardElevation="4dp"
+    app:cardCornerRadius="8dp"
+    android:layout_margin="8dp"
+    android:id="@+id/cardview2">
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        >
+        android:backgroundTint="@color/light_blue"
+        android:background="@color/white"
+        android:padding="20dp">
         <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="200sp"
-            android:src="@drawable/baseline_add_box_24"
             android:id="@+id/img2"
-            />
+            android:layout_width="0dp"
+            android:layout_height="400dp"
+            android:src="@drawable/baseline_add_box_24"
+            android:scaleType="centerCrop"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
             android:id="@+id/tvItem"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="38sp"
-            android:gravity="center"
-            android:textStyle="bold"
+            android:layout_marginTop="10dp"
+            android:padding="10dp"
             android:text="House"
             android:textColor="@color/black"
-            android:layout_below="@id/img2"
-            android:padding="10dp"
-            tools:ignore="MissingConstraints" />
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/img2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
             android:id="@+id/tvItem1"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="38sp"
-            android:textStyle="bold"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:text="State: California"
             android:textColor="@color/black"
-            android:gravity="center"
-            android:text="$120"
-            android:layout_below="@id/tvItem"
-            android:padding="10dp"
-            tools:ignore="MissingConstraints"
-            android:layout_marginBottom="20sp"/>
-
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@id/tvItem"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
             android:id="@+id/tvItem2"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="38sp"
-            android:textStyle="bold"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="10dp"
+            android:text="$120"
             android:textColor="@color/black"
-            android:gravity="center"
-            android:text="state"
-            android:layout_below="@id/tvItem1"
-            android:padding="10dp"
-            tools:ignore="MissingConstraints"
-            android:layout_marginBottom="20sp"/>
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/tvItem1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <Button
             android:id="@+id/updatebtn"
-            android:layout_width="wrap_content"
+             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvItem2"
-            android:text="Update"
-            android:backgroundTint="@color/white"
-            android:textColor="@color/black"
-        />
+            app:layout_constraintTop_toBottomOf="@+id/tvItem2"
+            android:backgroundTint="@color/black"
+            android:text="UPDATE"
+            tools:ignore="MissingConstraints" />
 
         <Button
             android:id="@+id/deletebtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvItem2"
-            android:text="Delete"
-            android:layout_marginHorizontal="300dp"
-            android:backgroundTint="@color/white"
-            android:textColor="@color/black"
-            />
-
-
-
-
-
-    </RelativeLayout>
+            app:layout_constraintTop_toBottomOf="@+id/tvItem2"
+            app:layout_constraintStart_toEndOf="@+id/updatebtn"
+            android:layout_marginLeft="125dp"
+            android:backgroundTint="@color/black"
+            android:text="DELETE"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

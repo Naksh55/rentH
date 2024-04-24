@@ -33,7 +33,7 @@ public class NotificationFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private static final String ARG_OWNER_ID = "owner_id";
+    private static final String ARG_OWNER_ID = "id";
     private static final String ARG_NOTIFICATION_MESSAGE = "notification_message";
     private static final String ARG_USER_ID = "user_id";
     private static final String ARG_USERNAME = "userName";
@@ -64,7 +64,7 @@ public class NotificationFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param id Parameter 1.
+     * @param ownerId Parameter 1.
      * @param param2 Parameter 2.
      * @param  notificationMessage Parameter 3.
      * @param  userName Parameter 3.
@@ -89,10 +89,10 @@ public class NotificationFragment extends Fragment {
 //        return fragment;
 //    }
 
-    public static NotificationFragment newInstance(String id, String param2, String notificationMessage, String userId, String userName) {
+    public static NotificationFragment newInstance(String ownerId, String param2, String notificationMessage, String userId, String userName) {
         NotificationFragment fragment = new NotificationFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, id);
+//        args.putString(ARG_PARAM1, id);
         args.putString(ARG_PARAM2, param2);
         args.putString(ARG_OWNER_ID, ownerId);
         args.putString(ARG_NOTIFICATION_MESSAGE, notificationMessage);
@@ -172,7 +172,7 @@ public void onCreate(Bundle savedInstanceState) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     String ownerid = snapshot.child("ownerId").getValue(String.class);
                     if (ownerid != null && ownerid.equals(ownerId)) { // Replace currentUserOwnerId with the ownerId of the current user
-                        String message = snapshot.child("NotificationMessage").getValue(String.class);
+                        String message = snapshot.child("notificationMessage").getValue(String.class);
                         if (message != null) {
                             notificationMessages.add(message);
                         }

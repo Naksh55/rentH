@@ -516,7 +516,7 @@ public class OwnerPersonalDetails extends AppCompatActivity {
                             String ownerName = ownerPersonalDetailsModel.getOname();
 
                             Toast.makeText(OwnerPersonalDetails.this, ownerId, Toast.LENGTH_SHORT).show();
-                            Intent intent=new Intent(OwnerPersonalDetails.this,PropertyDetails.class);
+                            Intent intent=new Intent(OwnerPersonalDetails.this,OwnerHomeActivity.class);
                             intent.putExtra("id", ownerId);
                             intent.putExtra("oname",ownerName);
                             // Pass ownerId to PropertyDetails activity

@@ -378,9 +378,12 @@
         import android.content.Intent;
         import android.os.Bundle;
         import android.text.Html;
+        import android.text.method.HideReturnsTransformationMethod;
+        import android.text.method.PasswordTransformationMethod;
         import android.util.Log;
         import android.view.View;
         import android.widget.EditText;
+        import android.widget.ImageView;
         import android.widget.RadioButton;
         import android.widget.TextView;
         import android.widget.Toast;
@@ -415,6 +418,8 @@ public class LoginScreen extends AppCompatActivity {
     String ownerId;
     String userId;
     String userName;
+    ImageView togglePasswordVisibilityImage; // Change to ImageView
+
     String ownerName;//    private static final String PREF_NAME = "last_screen_pref";
 //    private static final String LAST_SCREEN_KEY = "last_screen";
 //    private void saveLastScreen(String screenName) {
@@ -447,7 +452,7 @@ public class LoginScreen extends AppCompatActivity {
                         if (ownerId != null) {
                             // Pass the ownerId to OwnerHomeActivity
                             Intent intent = new Intent(LoginScreen.this, OwnerHomeActivity.class);
-                            intent.putExtra("owner_id", ownerId);
+                            intent.putExtra("id", ownerId);
                             startActivity(intent);
                             return; // Exit the loop after finding the matching email
                         }
@@ -472,13 +477,15 @@ public class LoginScreen extends AppCompatActivity {
         binding = ActivityLoginScreenBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         auth = FirebaseAuth.getInstance();
+        togglePasswordVisibilityImage = findViewById(R.id.password_toggle); // Initialize ImageView
+
         Intent i = getIntent();
         if (i != null) {
             notificationMessage = i.getStringExtra("notification_message");
             userId = i.getStringExtra("user_id");
             userName = i.getStringExtra("userName");
-            ownerName=i.getStringExtra("oname");
-            ownerId=i.getStringExtra("owner_id");
+//            ownerName=i.getStringExtra("oname");
+            ownerId = i.getStringExtra("id");
 //            Toast.makeText(this, "ownerId in on crate="+ownerId, Toast.LENGTH_SHORT).show();
 //            retriveNotification(ownerId);
 
@@ -577,7 +584,7 @@ public class LoginScreen extends AppCompatActivity {
 //                finish(); // Finish the current activity
 //            }
 //        }
-    }
+
 
 //        @Override
 //        protected void onPause() {
@@ -586,7 +593,26 @@ public class LoginScreen extends AppCompatActivity {
 //            saveLastScreen(LoginScreen.class.getName());
 //        }
 
+        togglePasswordVisibilityImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                togglePasswordVisibility();
+            }
+        });
+    }
 
+    private void togglePasswordVisibility() {
+        // Toggle password visibility
+        if (password.getTransformationMethod() == PasswordTransformationMethod.getInstance()) {
+            // Show password
+            password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+        } else {
+            // Hide password
+            password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        }
+        // Move cursor to the end of the text
+        password.setSelection(password.getText().length());
+    }
     // Method to check ownerId from "OwnerPersonalDetails" node
     private void checkOwnerPersonalDetails(String currentUserEmail, RadioButton selectedRadioButton) {
         DatabaseReference ownerRef = FirebaseDatabase.getInstance().getReference()
@@ -680,9 +706,9 @@ public class LoginScreen extends AppCompatActivity {
                     // User found in the database
                     for (DataSnapshot snapshott : dataSnapshot.getChildren()) {
                         String userId = snapshott.child("id").getValue(String.class);
-                        String userName = snapshott.child("name").getValue(String.class);
+                        String userName = snapshott.child("userName").getValue(String.class);
                         String phoneno = snapshott.child("phoneno").getValue(String.class); // Assuming email is stored under "email" child node
-
+                        String userEmail=snapshott.child("uemail").getValue(String.class);
 
                         if (userId != null) {
                             DatabaseReference userRef = FirebaseDatabase.getInstance().getReference()
@@ -708,10 +734,12 @@ public class LoginScreen extends AppCompatActivity {
                                                     intent.putExtra("user_id", userId);
                                                     intent.putExtra("notification_message", notificationMessage);
                                                     intent.putExtra("id", ownerId);
-                                                    intent.putExtra("name", userName);
+                                                    intent.putExtra("userName", userName);
                                                     intent.putExtra("phoneno", phoneno);
-//                                                    Toast.makeText(LoginScreen.this, "userName in login screen="+userName+"phoneno="+phoneno, Toast.LENGTH_LONG).show();
-                                                    Toast.makeText(LoginScreen.this, "ownerId in login screen="+ownerId, Toast.LENGTH_LONG).show();
+                                                    intent.putExtra("userEmail", userEmail);
+
+                                                    Toast.makeText(LoginScreen.this, "userEmail in login screen="+userEmail, Toast.LENGTH_LONG).show();
+//                                                    Toast.makeText(LoginScreen.this, "ownerId in login screen="+ownerId, Toast.LENGTH_LONG).show();
 
 
                                                     intent.putExtra("userEmail", eMailFromDatabase);

@@ -284,7 +284,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp"
-            android:layout_below="@+id/propertydp"/>
+            android:layout_below="@+id/propertydp"
+            android:visibility="invisible"/>
 
         <Button
             android:id="@+id/nextbutton"
@@ -293,7 +294,8 @@
             android:text="Next"
             android:layout_below="@+id/propertydp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="100sp" />
+            android:layout_marginTop="100sp"
+            android:backgroundTint="@color/light_blue"/>
 
     </RelativeLayout>
 </ScrollView>

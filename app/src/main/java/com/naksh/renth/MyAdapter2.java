@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -64,6 +66,7 @@ public class MyAdapter2 extends RecyclerView.Adapter<MyAdapter2.ViewHolder> {
         holder.tvItem.setText(property.getNameofproperty());
         holder.tvItem1.setText(String.valueOf(property.getPriceofproperty()));
         holder.tvItem2.setText(String.valueOf(property.getState()));
+        holder.cardView.startAnimation(AnimationUtils.loadAnimation(holder.itemView.getContext(),R.anim.anim_four));
 
         Picasso.get().load(property.getImageUrl()).into(holder.img2);
 
@@ -180,6 +183,7 @@ public class MyAdapter2 extends RecyclerView.Adapter<MyAdapter2.ViewHolder> {
         TextView tvItem, tvItem1,tvItem2;
         ImageView img2;
         Button btn,btn2;
+        CardView cardView;
 
 
         ViewHolder(View itemView) {
@@ -187,6 +191,7 @@ public class MyAdapter2 extends RecyclerView.Adapter<MyAdapter2.ViewHolder> {
             tvItem = itemView.findViewById(R.id.tvItem);
             tvItem1 = itemView.findViewById(R.id.tvItem1);
             tvItem2 = itemView.findViewById(R.id.tvItem2);
+            cardView = itemView.findViewById(R.id.cardview2); // Initialize CardView attribute
 
             img2 = itemView.findViewById(R.id.img2);
             btn = (Button)itemView.findViewById(R.id.updatebtn); // Replace "your_button_id" with the actual ID of your button

@@ -81,7 +81,7 @@
         android:id="@+id/imageurlTV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Price of property"
+        android:text="DP of property"
         android:gravity="center"
         android:textSize="20sp"
         android:layout_marginTop="5dp"
@@ -110,5 +110,6 @@
         android:backgroundTint="@color/light_blue"
         android:textAllCaps="false"
         android:background="@drawable/update"
-        android:gravity="center"/>
+        android:gravity="center"
+        />
 </LinearLayout>
