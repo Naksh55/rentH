@@ -378,10 +378,12 @@
         import android.content.Intent;
         import android.os.Bundle;
         import android.text.Html;
+        import android.text.TextUtils;
         import android.text.method.HideReturnsTransformationMethod;
         import android.text.method.PasswordTransformationMethod;
         import android.util.Log;
         import android.view.View;
+        import android.widget.Button;
         import android.widget.EditText;
         import android.widget.ImageView;
         import android.widget.RadioButton;
@@ -419,23 +421,8 @@ public class LoginScreen extends AppCompatActivity {
     String userId;
     String userName;
     ImageView togglePasswordVisibilityImage; // Change to ImageView
+//    TextView forgotPasswordTV;
 
-    String ownerName;//    private static final String PREF_NAME = "last_screen_pref";
-//    private static final String LAST_SCREEN_KEY = "last_screen";
-//    private void saveLastScreen(String screenName) {
-//        SharedPreferences sharedPreferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-//        SharedPreferences.Editor editor = sharedPreferences.edit();
-//        editor.putString(LAST_SCREEN_KEY, screenName);
-//        editor.apply();
-//    }
-
-    // Method to get the last visited screen from SharedPreferences
-//    private String getLastScreen() {
-//        SharedPreferences sharedPreferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-//        return sharedPreferences.getString(LAST_SCREEN_KEY, null);
-//    }
-
-    // Method to check ownerId from "OwnerPersonalDetails" node
     private void checkOwnerPersonalDetails(String currentUserEmail) {
         DatabaseReference ownerRef = FirebaseDatabase.getInstance().getReference()
                 .child("OwnerPersonalDetailsModel");
@@ -478,18 +465,13 @@ public class LoginScreen extends AppCompatActivity {
         setContentView(binding.getRoot());
         auth = FirebaseAuth.getInstance();
         togglePasswordVisibilityImage = findViewById(R.id.password_toggle); // Initialize ImageView
-
+//        forgotPasswordTV=findViewById(R.id.forgotPasswordTV);
         Intent i = getIntent();
         if (i != null) {
             notificationMessage = i.getStringExtra("notification_message");
             userId = i.getStringExtra("user_id");
             userName = i.getStringExtra("userName");
-//            ownerName=i.getStringExtra("oname");
             ownerId = i.getStringExtra("id");
-//            Toast.makeText(this, "ownerId in on crate="+ownerId, Toast.LENGTH_SHORT).show();
-//            retriveNotification(ownerId);
-
-//            Toast.makeText(this, "id="+userId, Toast.LENGTH_SHORT).show();
         }
 
         progressDialog = new ProgressDialog(LoginScreen.this);
@@ -540,7 +522,8 @@ public class LoginScreen extends AppCompatActivity {
                                     if (currentUser != null) {
                                         // Redirecting based on user type
                                         if (userType.equals("User")) {
-                                            checkUserDetails(currentUser.getEmail(), selectedRadioButton);
+
+//                                            checkUserDetails(currentUser.getEmail(), selectedRadioButton);
                                         } else if (userType.equals("Owner")) {
                                             checkOwnerPersonalDetails(currentUser.getEmail(), selectedRadioButton);
                                         }
@@ -563,35 +546,10 @@ public class LoginScreen extends AppCompatActivity {
                             }
                         });
             }
+//            Button loginbtn=findViewById(R.id.loginbtn);
+//            loginbtn.
+
         });
-
-//        if (auth.getCurrentUser() != null) {
-//            // Get the last visited screen
-//            String lastScreen = getLastScreen();
-//            if (lastScreen != null) {
-//                // Open the last visited screen
-//                Intent intent = null;
-//                try {
-//                    intent = new Intent(LoginScreen.this, Class.forName(lastScreen));
-//                } catch (ClassNotFoundException e) {
-//                    throw new RuntimeException(e);
-//                }
-//                startActivity(intent);
-//                finish(); // Finish the current activity
-//            } else {
-//                // If last screen is not available, open default screen
-//                startActivity(new Intent(LoginScreen.this, OwnerHomeActivity.class));
-//                finish(); // Finish the current activity
-//            }
-//        }
-
-
-//        @Override
-//        protected void onPause() {
-//            super.onPause();
-//            // Save the current screen to SharedPreferences when the activity is paused
-//            saveLastScreen(LoginScreen.class.getName());
-//        }
 
         togglePasswordVisibilityImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -599,6 +557,16 @@ public class LoginScreen extends AppCompatActivity {
                 togglePasswordVisibility();
             }
         });
+
+        TextView forgotPasswordTextView = findViewById(R.id.forgotPasswordTV);
+        forgotPasswordTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Call forgotPassword method
+                forgotPassword(v);
+            }
+        });
+
     }
 
     private void togglePasswordVisibility() {
@@ -650,7 +618,7 @@ public class LoginScreen extends AppCompatActivity {
                                                     intent.putExtra("id", ownerid);
                                                     intent.putExtra("oname", ownername);
 
-                                                    Toast.makeText(LoginScreen.this, "====="+ownerid, Toast.LENGTH_SHORT).show();
+//                                                    Toast.makeText(LoginScreen.this, "====="+ownerid, Toast.LENGTH_SHORT).show();
                                                     intent.putExtra("notification_message", notificationMessage);
                                                     intent.putExtra("userName", userName);
 //                                                    retriveNotification(ownerid);
@@ -796,8 +764,25 @@ public class LoginScreen extends AppCompatActivity {
 
     }
 
+    public void forgotPassword(View view) {
+        String email = binding.emailet.getText().toString().trim();
 
+        if (TextUtils.isEmpty(email)) {
+            // Email field is empty
+            Toast.makeText(this, "Please enter your email address.", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
+        // Send password reset email
+        FirebaseAuth.getInstance().sendPasswordResetEmail(email)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(LoginScreen.this, "Password reset email sent.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(LoginScreen.this, "Failed to send password reset email. Please check your email address.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
 
 }
 
