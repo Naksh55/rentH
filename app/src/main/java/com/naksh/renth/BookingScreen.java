@@ -86,6 +86,8 @@ String phonoNo;
              phonoNo=intent.getStringExtra("phoneno");
              userEmail=intent.getStringExtra("userEmail");
             Toast.makeText(this, "ownerId in booking screen==="+ownerId, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "userName in booking screen==="+userName, Toast.LENGTH_LONG).show();
+
 //            Toast.makeText(this, "userId=="+userId, Toast.LENGTH_SHORT).show();
 //            Toast.makeText(this, "userName=="+userName, Toast.LENGTH_SHORT).show();
 

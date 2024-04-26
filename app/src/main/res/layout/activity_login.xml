@@ -34,11 +34,11 @@
                 android:textColor="@color/light_blue"/>
 
             <LinearLayout
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="15dp"
                 android:id="@+id/person_container"
                 android:background="@drawable/customedittxt"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="55dp"
                 android:orientation="horizontal"
                 >
                 <ImageView
@@ -46,16 +46,30 @@
                     android:layout_height="match_parent"
                     android:src="@drawable/baseline_login_24"
                     android:layout_marginStart="10dp"
-                    android:layout_marginTop="5dp"/>
+                    android:layout_marginTop="-10dp"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="  Login As:"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="15dp"
                     android:textSize="20sp"
 
                      />
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="70dp"
 
+                    >
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/person"
+                    android:layout_marginStart="20dp"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal"
+
+                    >
 
                 <RadioButton
                     android:layout_width="wrap_content"
@@ -63,8 +77,7 @@
                     android:text="User"
                     android:textSize="15sp"
                     android:id="@+id/user"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="3dp"/>
+                    android:layout_marginTop="3dp" />
 
                 <RadioButton
                     android:layout_width="wrap_content"
@@ -73,14 +86,18 @@
                     android:text="Owner "
                     android:textSize="15sp"
                     android:layout_marginTop="3dp"
+
+
                       />
+                </RadioGroup>
+                </RelativeLayout>
 
             </LinearLayout>
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:id="@+id/username"
+                android:id="@+id/emailet"
                 android:background="@drawable/customedittxt"
                 android:layout_marginTop="40dp"
                 android:padding="8dp"
@@ -88,10 +105,11 @@
                 android:drawableLeft="@drawable/baseline_person_24"
                 android:textColor="@color/black"
                 android:drawablePadding="8dp"/>
+
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:id="@+id/password"
+                android:id="@+id/etPassword"
                 android:background="@drawable/customedittxt"
                 android:layout_marginTop="20dp"
                 android:inputType="textPassword"
@@ -99,18 +117,29 @@
                 android:hint="Password"
                 android:drawableLeft="@drawable/baseline_lock_24"
                 android:textColor="@color/black"
-                android:drawablePadding="8dp"/>
+                android:drawablePadding="8dp"
+            />
+            <ImageView
+                android:id="@+id/password_toggle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/password"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="-35dp"
+                android:paddingStart="250dp"
+                />
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:text="Login"
-                android:id="@+id/loginButton"
+                android:id="@+id/loginbtn"
                 android:textSize="18sp"
                 android:layout_marginTop="30dp"
                 android:backgroundTint="@color/light_blue"
                 app:cornerRadius = "20dp"/>
 
             <TextView
+                android:id="@+id/forgotPasswordTV"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="Forgot Password? Create new Password!"
@@ -119,6 +148,7 @@
                 android:textColor="@color/light_blue"/>
 
             <TextView
+                android:id="@+id/signuptext"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="New to rentH please SIGN UP!"

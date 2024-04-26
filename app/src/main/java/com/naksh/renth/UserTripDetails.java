@@ -139,7 +139,7 @@ public class UserTripDetails extends AppCompatActivity {
 //        };
 
         NumberPicker numberPicker = findViewById(R.id.np);
-        numberPicker.setMinValue(1);
+        numberPicker.setMinValue(0);
         numberPicker.setMaxValue(6);
 
         numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
@@ -184,10 +184,16 @@ public class UserTripDetails extends AppCompatActivity {
                     Log.d(TAG, "fromDate: " + fromDate);
                     Log.d(TAG, "toDate: " + toDate);
 
+                    if (fromDate.equals("Choose from date")) {
+                        Toast.makeText(UserTripDetails.this, "Invalid or missing from/to date", Toast.LENGTH_SHORT).show();
+                        return; // Exit the method as validation failed
+
+                    }
+
                     if (fromDate.equals("Select from date") || toDate.equals("Select to date")) {
                         // Invalid or missing from/to date
 //                        progressDialog.dismiss();
-                        Toast.makeText(UserTripDetails.this, "Invalid or missing from/to date", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(UserTripDetails.this, "Invalid or missing from/to date", Toast.LENGTH_SHORT).show();
                         fromDate="11/11/1111";
                         toDate="11/11/1111";
 
@@ -215,6 +221,7 @@ public class UserTripDetails extends AppCompatActivity {
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     if (dataSnapshot.exists()) {
                                         String propertyDateStr = dataSnapshot.child("fordate").getValue(String.class);
+                                        Toast.makeText(UserTripDetails.this, "fordate="+propertyDateStr, Toast.LENGTH_SHORT).show();
                                         try {
 //                                            Toast.makeText(UserTripDetails.this, "selectedDate="+selectedDate, Toast.LENGTH_SHORT).show();
 //

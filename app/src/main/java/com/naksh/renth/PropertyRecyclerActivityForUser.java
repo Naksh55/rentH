@@ -77,6 +77,8 @@ public class PropertyRecyclerActivityForUser extends AppCompatActivity {
         if (i != null) {
             userId = i.getStringExtra("user_id");
             userName = i.getStringExtra("userName");
+            Toast.makeText(this, "userNAME IN home"+userName, Toast.LENGTH_SHORT).show();
+
             ownerId = i.getStringExtra("id");
             userId = i.getStringExtra("user_id");
 //            userName = i.getStringExtra("name");

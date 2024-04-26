@@ -479,7 +479,7 @@ public class LoginScreen extends AppCompatActivity {
         progressDialog.setMessage("Logging in....");
         email = findViewById(R.id.emailet);
         password = findViewById(R.id.etPassword);
-        password = findViewById(R.id.etPassword);
+//        password = findViewById(R.id.etPassword);
         TextView signuptext = findViewById(R.id.signuptext);
         signuptext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -503,9 +503,14 @@ public class LoginScreen extends AppCompatActivity {
                     return; // Return without attempting to sign in if no category is selected
                 }
 
+//                Toast.makeText(LoginScreen.this, "email=" + email.getText().toString(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(LoginScreen.this, "password=" + password.getText().toString(), Toast.LENGTH_SHORT).show();
+
                 // Getting the selected radio button and user type
                 RadioButton selectedRadioButton = findViewById(selectedId);
                 String userType = selectedRadioButton.getText().toString();
+//                Toast.makeText(LoginScreen.this, "selected radio buttom="+userType, Toast.LENGTH_SHORT).show();
+
 
                 // Showing progress dialog
                 progressDialog.show();
@@ -516,16 +521,25 @@ public class LoginScreen extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 progressDialog.dismiss(); // Dismiss the progress dialog
-
                                 if (task.isSuccessful()) {
+                                    Toast.makeText(LoginScreen.this, "done", Toast.LENGTH_SHORT).show();
                                     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
                                     if (currentUser != null) {
+                                        Toast.makeText(LoginScreen.this, "current user not null", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(LoginScreen.this, "userType="+userType, Toast.LENGTH_SHORT).show();
+
                                         // Redirecting based on user type
                                         if (userType.equals("User")) {
 
-//                                            checkUserDetails(currentUser.getEmail(), selectedRadioButton);
+                                            checkUserDetails(currentUser.getEmail(), selectedRadioButton);
                                         } else if (userType.equals("Owner")) {
+                                            Toast.makeText(LoginScreen.this, "inside elseif block", Toast.LENGTH_SHORT).show();
+
                                             checkOwnerPersonalDetails(currentUser.getEmail(), selectedRadioButton);
+                                        }
+                                        else{
+                                            Toast.makeText(LoginScreen.this, "no owner found", Toast.LENGTH_SHORT).show();
+
                                         }
                                     } else {
                                         // Current user is null
@@ -674,7 +688,7 @@ public class LoginScreen extends AppCompatActivity {
                     // User found in the database
                     for (DataSnapshot snapshott : dataSnapshot.getChildren()) {
                         String userId = snapshott.child("id").getValue(String.class);
-                        String userName = snapshott.child("userName").getValue(String.class);
+                        String userName = snapshott.child("name").getValue(String.class);
                         String phoneno = snapshott.child("phoneno").getValue(String.class); // Assuming email is stored under "email" child node
                         String userEmail=snapshott.child("uemail").getValue(String.class);
 
@@ -785,6 +799,7 @@ public class LoginScreen extends AppCompatActivity {
     }
 
 }
+
 
 
 

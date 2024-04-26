@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.Html;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -24,6 +25,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.RemoteMessage;
 import com.naksh.renth.NotificationFragment;
+import com.phonepe.intent.sdk.api.B2BPGRequest;
+import com.phonepe.intent.sdk.api.B2BPGRequestBuilder;
+import com.phonepe.intent.sdk.api.PhonePe;
+import com.phonepe.intent.sdk.api.PhonePeInitException;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -38,6 +43,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.nio.charset.Charset;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -60,16 +71,23 @@ public class PaymentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
+        int price = 100;
+//        int newprice=price*100;
+        try {
+            PhonePe.init(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         Intent intent = getIntent();
         if (intent != null) {
             propertyId = intent.getStringExtra("property_id");
             ownerId = intent.getStringExtra("owner_id");
-            propertyName=intent.getStringExtra("propertyName");
-            phoneNo=intent.getStringExtra("phoneno");
-            Toast.makeText(this, "phoneno="+phoneNo, Toast.LENGTH_SHORT).show();
-            userEmail=intent.getStringExtra("userEmail");
-            userName=intent.getStringExtra("userName");
-            Toast.makeText(this, "ownerId="+ownerId, Toast.LENGTH_LONG).show();
+            propertyName = intent.getStringExtra("propertyName");
+            phoneNo = intent.getStringExtra("phoneno");
+            Toast.makeText(this, "phoneno=" + phoneNo, Toast.LENGTH_SHORT).show();
+            userEmail = intent.getStringExtra("userEmail");
+            userName = intent.getStringExtra("userName");
+            Toast.makeText(this, "ownerId=" + ownerId, Toast.LENGTH_LONG).show();
 //            Toast.makeText(this, "propertyId in payment antivity="+propertyId, Toast.LENGTH_LONG).show();
             slots = intent.getIntExtra("slot", 0); // 0 is the default value if "slot" extra is not found
             if (slots == 0) {
@@ -83,9 +101,9 @@ public class PaymentActivity extends AppCompatActivity {
             if (propertyId != null) {
                 parentId = intent.getStringExtra("id");
 
-                userId=intent.getStringExtra("user_id");
-                username=intent.getStringExtra("userName");
-                notificationMessage=intent.getStringExtra("notification_message");
+                userId = intent.getStringExtra("user_id");
+                username = intent.getStringExtra("userName");
+                notificationMessage = intent.getStringExtra("notification_message");
 //                Toast.makeText(this,notificationMessage , Toast.LENGTH_SHORT).show();
 
 //                Toast.makeText(this, "userId="+userId, Toast.LENGTH_SHORT).show();
@@ -177,31 +195,31 @@ public class PaymentActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()) {
                             String userName = dataSnapshot.child("name").getValue(String.class);
-                            String userId=dataSnapshot.child("id").getValue(String.class);
+                            String userId = dataSnapshot.child("id").getValue(String.class);
 //                            Toast.makeText(PaymentActivity.this, "name="+userName, Toast.LENGTH_SHORT).show();
                             if (userName != null) {
-                                String notificationMessage = "Your property " + propertyName + " has been booked by " + userName + "\nCustomer contact: " + phoneNo+"\nCustomer Email: "+userEmail;
+                                String notificationMessage = "Your property " + propertyName + " has been booked by " + userName + "\nCustomer contact: " + phoneNo + "\nCustomer Email: " + userEmail;
 //                                Toast.makeText(PaymentActivity.this, "userName="+userName, Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(PaymentActivity.this, LoginScreen.class);
+                                Intent intent = getIntent();
                                 intent.putExtra("notification_message", notificationMessage);
 
 //                                NotificationFragment notificationFragment = new NotificationFragment();
 //                                notificationFragment.addNotification("notification_message");
 // Assuming you have a reference to the NotificationFragment
                                 String param2 = "";
-                                String id="";
+                                String id = "";
                                 NotificationFragment notificationFragment = NotificationFragment.newInstance(id, param2, notificationMessage, userId, userName);
 
                                 notificationFragment.addNotification("notification_message");
 
-                                intent.putExtra("user_id",userId);
-                                intent.putExtra("userName",userName);
-                                intent.putExtra("property_id",propertyId);
+                                intent.putExtra("user_id", userId);
+                                intent.putExtra("userName", userName);
+                                intent.putExtra("property_id", propertyId);
                                 intent.putExtra("id", ownerId);
 
 //                                Toast.makeText(PaymentActivity.this, "userName="+userName, Toast.LENGTH_SHORT).show();
-                                createNotificationMessage( notificationMessage,userId,propertyId,ownerId);
-                                startActivity(intent);
+                                createNotificationMessage(notificationMessage, userId, propertyId, ownerId);
+//                                startActivity(intent);
                             } else {
                                 Toast.makeText(PaymentActivity.this, "User name not found", Toast.LENGTH_SHORT).show();
                             }
@@ -216,11 +234,45 @@ public class PaymentActivity extends AppCompatActivity {
                         Toast.makeText(PaymentActivity.this, "Failed to retrieve user details: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
+
+                JSONObject data = new JSONObject();
+//                String upiId = "7973958511@ybl";
+
+                try {
+                    data.put("merchantTransactionId", "MT7850590068188104");
+                    data.put("merchantId", "PGTESTPAYUAT");
+//                    data.put("merchantId", upiId);
+
+                    data.put("merchantUserId", "MUID123");
+                    data.put("amount", price);
+                    data.put("mobileNumber", "9999999999");
+                    data.put("callbackUrl", "https://webhook.site/7fbbf7fb-c73c-4504-8467-14b0845d7c38");
+                    JSONObject paymentInstrument = new JSONObject();
+                    paymentInstrument.put("type", "PAY_PAGE");
+                    paymentInstrument.put("targetApp", "com.phonepe.simulator");
+                    data.put("paymentInstrument", paymentInstrument);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                // Convert data HashMap to JSON and then encode to Base64
+                String base64Body = Base64.encodeToString(data.toString().getBytes(Charset.defaultCharset()), Base64.NO_WRAP);
+                String checksum = sha256(base64Body + "/pg/v1/pay" + "099eb0cd-02cf-4e2a-8aca-3e6c6aff0399") + "###1";
+                B2BPGRequest b2BPGRequest = new B2BPGRequestBuilder()
+                        .setData(base64Body)
+                        .setChecksum(checksum)
+                        .setUrl("/pg/v1/pay")
+                        .build();
+                try {
+                    startActivityForResult(PhonePe.getImplicitIntent(PaymentActivity.this, b2BPGRequest, ""), 1);
+                } catch (PhonePeInitException e) {
+                    e.printStackTrace();
+                }
+
             }
+
         });
-
-        }
-
+    }
 
 
     private void sendNotificationToOwner( String propertyId) {
@@ -354,6 +406,46 @@ public class PaymentActivity extends AppCompatActivity {
             Toast.makeText(PaymentActivity.this, "Failed to generate notification ID", Toast.LENGTH_SHORT).show();
         }
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                // Payment was successful
+                // Handle success, e.g., show a success message to the user
+                Toast.makeText(this, "Payment successful", Toast.LENGTH_SHORT).show();
+                Intent i=new Intent(PaymentActivity.this,PropertyRecyclerActivityForUser.class);
+                startActivity(i);
+            } else if (resultCode == RESULT_CANCELED) {
+                // Payment was canceled by the user
+                // Handle cancellation, e.g., show a message indicating that the payment was canceled
+                Toast.makeText(this, "Payment canceled", Toast.LENGTH_SHORT).show();
+            } else {
+                // Payment failed or an error occurred
+                // Handle failure, e.g., display an error message to the user
+                Toast.makeText(this, "Payment failed", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private String sha256(String input) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(input.getBytes(Charset.defaultCharset()));
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) {
+                    hexString.append('0');
+                }
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
 
 }
