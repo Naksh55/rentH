@@ -178,6 +178,7 @@ public void onCreate(Bundle savedInstanceState) {
                         }
                     }
                 }
+                adapter.reverseList(); // Call this method to reverse the list
                 adapter.notifyDataSetChanged(); // Notify adapter that data set has changed
             }
 

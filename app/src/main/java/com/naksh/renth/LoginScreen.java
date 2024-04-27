@@ -638,6 +638,8 @@ public class LoginScreen extends AppCompatActivity {
 //                                                    retriveNotification(ownerid);
                                                     startActivity(intent);
                                                     finish(); // Finish the current activity
+//                                                    overridePendingTransition(R.anim.slide_in_right,R.anim.slide_in_left);
+
                                                 } else {
                                                     Toast.makeText(LoginScreen.this, "Role mismatch", Toast.LENGTH_SHORT).show();
                                                 }
@@ -730,6 +732,7 @@ public class LoginScreen extends AppCompatActivity {
 
                                                     startActivity(intent);
                                                     finish(); // Finish the current activity
+                                                    overridePendingTransition(R.anim.slide_in_left,R.anim.slide_in_right);
                                                 } else {
                                                     Toast.makeText(LoginScreen.this, "Role mismatch", Toast.LENGTH_SHORT).show();
                                                 }

@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Collections;
 import java.util.List;
 
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.NotificationViewHolder> {
@@ -57,5 +58,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         public void bind(String notification) {
             textViewNotification.setText(notification);
         }
+    }
+    public void reverseList() {
+        Collections.reverse(notificationList);
+        notifyDataSetChanged();
     }
 }

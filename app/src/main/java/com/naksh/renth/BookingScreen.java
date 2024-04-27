@@ -12,6 +12,8 @@ import android.support.annotation.NonNull;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -262,9 +264,16 @@ private void handleBookingButtonClick(String propertyId) {
                     address.setText(Html.fromHtml("<b>Address:</b> " + addressOfProperty));
                     storageReference = FirebaseStorage.getInstance().getReference();
                     Picasso.get().load(imageUrl).into(imageView);
-                    // Retrieve owner details using the parent ID
+                    Animation animation = AnimationUtils.loadAnimation(BookingScreen.this, R.anim.slide_left_to_right);
+                    // Apply  animation to the TextViews
+                    stateofproperty.startAnimation(animation);
+                    nameOfProperty.startAnimation(animation);
+                    typeOfProperty.startAnimation(animation);
+                    address.startAnimation(animation);                    // Retrieve owner details using the parent ID
+                    city.startAnimation(animation);                    // Retrieve owner details using the parent ID
+                    propertyDescription.startAnimation(animation);
+// Retrieve owner details using the parent ID
                     retrieveOwnerDetails(ownerId, propertyId);
-
                     Intent intent = new Intent();
                     intent.putExtra("property_id", propertyId);
                     intent.putExtra("parent_id", parentId);
@@ -322,6 +331,14 @@ private void handleBookingButtonClick(String propertyId) {
                     ownerNameTextView.setText(Html.fromHtml("<b>Owner Name:</b> " + ownerName));
                     ownerPhoneNumberTextView.setText(Html.fromHtml("<b>Owner Contact:</b> <font color='#4848EF'>" + ownerPhoneNumber + "</font>"));
                     ownerEmailTextView.setText(Html.fromHtml("<b>Owner Email:</b> " + ownerEmail));
+//                    Animation animation = AnimationUtils.loadAnimation(BookingScreen.this, R.anim.slide_left_to_right);
+//                    // Apply  animation to the TextViews
+                    Animation animation = AnimationUtils.loadAnimation(BookingScreen.this, R.anim.slide_left_to_right);
+
+                    ownerNameTextView.startAnimation(animation);
+                    ownerPhoneNumberTextView.startAnimation(animation);
+                    ownerEmailTextView.startAnimation(animation);
+
                 } else {
 
                     Toast.makeText(BookingScreen.this, "parentId="+parentId, Toast.LENGTH_SHORT).show();

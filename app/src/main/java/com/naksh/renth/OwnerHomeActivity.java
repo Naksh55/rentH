@@ -328,6 +328,7 @@ public class OwnerHomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_owner_home);
+
         recyclerView2 = findViewById(R.id.recyclerView2);
 
 

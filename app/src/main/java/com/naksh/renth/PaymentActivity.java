@@ -2,6 +2,8 @@ package com.naksh.renth;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -235,42 +237,113 @@ public class PaymentActivity extends AppCompatActivity {
                     }
                 });
 
-                JSONObject data = new JSONObject();
-//                String upiId = "7973958511@ybl";
 
-                try {
-                    data.put("merchantTransactionId", "MT7850590068188104");
-                    data.put("merchantId", "PGTESTPAYUAT");
-//                    data.put("merchantId", upiId);
 
-                    data.put("merchantUserId", "MUID123");
-                    data.put("amount", price);
-                    data.put("mobileNumber", "9999999999");
-                    data.put("callbackUrl", "https://webhook.site/7fbbf7fb-c73c-4504-8467-14b0845d7c38");
-                    JSONObject paymentInstrument = new JSONObject();
-                    paymentInstrument.put("type", "PAY_PAGE");
-                    paymentInstrument.put("targetApp", "com.phonepe.simulator");
-                    data.put("paymentInstrument", paymentInstrument);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                // Convert data HashMap to JSON and then encode to Base64
-                String base64Body = Base64.encodeToString(data.toString().getBytes(Charset.defaultCharset()), Base64.NO_WRAP);
-                String checksum = sha256(base64Body + "/pg/v1/pay" + "099eb0cd-02cf-4e2a-8aca-3e6c6aff0399") + "###1";
-                B2BPGRequest b2BPGRequest = new B2BPGRequestBuilder()
-                        .setData(base64Body)
-                        .setChecksum(checksum)
-                        .setUrl("/pg/v1/pay")
-                        .build();
-                try {
-                    startActivityForResult(PhonePe.getImplicitIntent(PaymentActivity.this, b2BPGRequest, ""), 1);
-                } catch (PhonePeInitException e) {
-                    e.printStackTrace();
-                }
 
             }
 
+        });
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this)
+                .setTitle("Terms and Conditions")
+                .setMessage("......")
+                .setPositiveButton("Accept", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference()
+                                .child("UserPersonalDetailsModel")
+                                .child(userId); // Assuming you have the userId available
+
+                        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.exists()) {
+                                    String userName = dataSnapshot.child("name").getValue(String.class);
+                                    String userId = dataSnapshot.child("id").getValue(String.class);
+//                            Toast.makeText(PaymentActivity.this, "name="+userName, Toast.LENGTH_SHORT).show();
+                                    if (userName != null) {
+                                        String notificationMessage = "Your property " + propertyName + " has been booked by " + userName + "\nCustomer contact: " + phoneNo + "\nCustomer Email: " + userEmail;
+//                                Toast.makeText(PaymentActivity.this, "userName="+userName, Toast.LENGTH_SHORT).show();
+                                        Intent intent = getIntent();
+                                        intent.putExtra("notification_message", notificationMessage);
+
+//                                NotificationFragment notificationFragment = new NotificationFragment();
+//                                notificationFragment.addNotification("notification_message");
+// Assuming you have a reference to the NotificationFragment
+                                        String param2 = "";
+                                        String id = "";
+                                        NotificationFragment notificationFragment = NotificationFragment.newInstance(id, param2, notificationMessage, userId, userName);
+
+                                        notificationFragment.addNotification("notification_message");
+
+                                        intent.putExtra("user_id", userId);
+                                        intent.putExtra("userName", userName);
+                                        intent.putExtra("property_id", propertyId);
+                                        intent.putExtra("id", ownerId);
+
+//                                Toast.makeText(PaymentActivity.this, "userName="+userName, Toast.LENGTH_SHORT).show();
+                                        createNotificationMessage(notificationMessage, userId, propertyId, ownerId);
+//                                startActivity(intent);
+                                    } else {
+                                        Toast.makeText(PaymentActivity.this, "User name not found", Toast.LENGTH_SHORT).show();
+                                    }
+                                } else {
+                                    Toast.makeText(PaymentActivity.this, "User details not found", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                // Handle database error
+                                Toast.makeText(PaymentActivity.this, "Failed to retrieve user details: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        // Handle logout action
+                        JSONObject data = new JSONObject();
+//                String upiId = "7973958511@ybl";
+
+                        try {
+                            data.put("merchantTransactionId", "MT7850590068188104");
+                            data.put("merchantId", "PGTESTPAYUAT");
+//                    data.put("merchantId", upiId);
+
+                            data.put("merchantUserId", "MUID123");
+                            data.put("amount", price);
+                            data.put("mobileNumber", "9999999999");
+                            data.put("callbackUrl", "https://webhook.site/7fbbf7fb-c73c-4504-8467-14b0845d7c38");
+                            JSONObject paymentInstrument = new JSONObject();
+                            paymentInstrument.put("type", "PAY_PAGE");
+                            paymentInstrument.put("targetApp", "com.phonepe.simulator");
+                            data.put("paymentInstrument", paymentInstrument);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        // Convert data HashMap to JSON and then encode to Base64
+                        String base64Body = Base64.encodeToString(data.toString().getBytes(Charset.defaultCharset()), Base64.NO_WRAP);
+                        String checksum = sha256(base64Body + "/pg/v1/pay" + "099eb0cd-02cf-4e2a-8aca-3e6c6aff0399") + "###1";
+                        B2BPGRequest b2BPGRequest = new B2BPGRequestBuilder()
+                                .setData(base64Body)
+                                .setChecksum(checksum)
+                                .setUrl("/pg/v1/pay")
+                                .build();
+                        try {
+                            startActivityForResult(PhonePe.getImplicitIntent(PaymentActivity.this, b2BPGRequest, ""), 1);
+                        } catch (PhonePeInitException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                })
+                .setNegativeButton("Reject", null);
+
+
+        final AlertDialog logoutConfirmationDialog = alertDialogBuilder.create();
+        payment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Show logout confirmation dialog
+                logoutConfirmationDialog.show();
+            }
         });
     }
 
@@ -416,6 +489,17 @@ public class PaymentActivity extends AppCompatActivity {
                 // Handle success, e.g., show a success message to the user
                 Toast.makeText(this, "Payment successful", Toast.LENGTH_SHORT).show();
                 Intent i=new Intent(PaymentActivity.this,PropertyRecyclerActivityForUser.class);
+                i.putExtra("slot", slots);
+                i.putExtra("property_id", propertyId);
+                i.putExtra("parent_id", parentId);
+                i.putExtra("user_id", userId);
+                i.putExtra("userName", userName);
+                i.putExtra("owner_id", ownerId);
+                i.putExtra("propertyName", propertyName);
+                i.putExtra("phoneno", phoneNo);
+                i.putExtra("userEmail", userEmail);
+//                createNotificationMessage(notificationMessage, userId, propertyId, ownerId);
+
                 startActivity(i);
             } else if (resultCode == RESULT_CANCELED) {
                 // Payment was canceled by the user
