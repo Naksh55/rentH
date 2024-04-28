@@ -29,8 +29,13 @@ import com.naksh.renth.Models.PropertyDetailsModel;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.squareup.picasso.Picasso;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class MyAdapter2 extends RecyclerView.Adapter<MyAdapter2.ViewHolder> {
@@ -83,13 +88,20 @@ public class MyAdapter2 extends RecyclerView.Adapter<MyAdapter2.ViewHolder> {
                 EditText discription = v.findViewById(R.id.descriptionofpET);
                 EditText price = v.findViewById(R.id.priceofpET);
                 EditText image = v.findViewById(R.id.imageurlET);
+                EditText fromdate=v.findViewById(R.id.fDate);
+                EditText toDate=v.findViewById(R.id.tDate);
+                // Check if the dates are in standard format (you may need to adjust this condition)
 
                 Button btnupdate = v.findViewById(R.id.btnupdate);
                 Button btndelete=v.findViewById(R.id.deletebtn);
                 name.setText(property.getNameofproperty());
                 discription.setText(property.getPropertydiscription());
+
+                fromdate.setText(property.getFordate());
+                toDate.setText(property.getTodate());
+
                 price.setText(String.valueOf(property.getPriceofproperty()));
-                image.setText(property.getImageUrl());
+//                image.setText(property.getImageUrl());
                 dialogPlus.show();
 
                 btnupdate.setOnClickListener(new View.OnClickListener() {
@@ -103,9 +115,20 @@ public class MyAdapter2 extends RecyclerView.Adapter<MyAdapter2.ViewHolder> {
                         map.put("nameofproperty", name.getText().toString());
                         map.put("propertydiscription", discription.getText().toString());
                         map.put("priceofproperty", price.getText().toString());
-                        map.put("imageUrl", image.getText().toString());
+//                        map.put("imageUrl", image.getText().toString());
+                        map.put("fordate", fromdate.getText().toString());
+                        map.put("todate", toDate.getText().toString());
+                        Toast.makeText(name.getContext(), "fromDate="+fromdate.getText().toString(), Toast.LENGTH_SHORT).show();
+                        if (!isValidDate(fromdate.getText().toString()) || !isValidDate(toDate.getText().toString())) {
+                            Toast.makeText(name.getContext(), "Please enter dates in the standard format.", Toast.LENGTH_SHORT).show();
+                            return; // Stop the operation
+                        }
 
-
+                        // Check if the selected dates are in the past
+                        if (isPastDate(fromdate.getText().toString()) || isPastDate(toDate.getText().toString())) {
+                            Toast.makeText(name.getContext(), "Please select dates that are not in the past.", Toast.LENGTH_SHORT).show();
+                            return; // Stop the operation
+                        }
                         FirebaseDatabase.getInstance().getReference().child("PropertyDetailsModel").child(
                                         propertyId).updateChildren(map)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -125,7 +148,36 @@ public class MyAdapter2 extends RecyclerView.Adapter<MyAdapter2.ViewHolder> {
                 });
 
             }
+
+            // Method to check if the date is in the standard format
+            private boolean isValidDate(String date){
+                // Implement your validation logic here
+                // For example, you can use SimpleDateFormat to parse the date
+                // and catch ParseException if the format is not as expected
+                try {
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                    sdf.setLenient(false);
+                    sdf.parse(date);
+                    return true;
+                } catch (ParseException e) {
+                    return false;
+                }
+            }
+            // Method to check if the date is in the past
+            private boolean isPastDate(String date) {
+                try {
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                    Date selectedDate = sdf.parse(date);
+                    Date currentDate = Calendar.getInstance().getTime();
+                    return selectedDate.before(currentDate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    return true; // Assume the date is in the past if there's an error parsing it
+                }
+            }
         });
+
+
 
         holder.btn2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,6 +213,7 @@ public class MyAdapter2 extends RecyclerView.Adapter<MyAdapter2.ViewHolder> {
 
 
 
+
         // Set click listener
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -184,6 +237,7 @@ public class MyAdapter2 extends RecyclerView.Adapter<MyAdapter2.ViewHolder> {
         ImageView img2;
         Button btn,btn2;
         CardView cardView;
+        EditText fromDateEditText, toDateEditText;
 
 
         ViewHolder(View itemView) {
@@ -192,11 +246,14 @@ public class MyAdapter2 extends RecyclerView.Adapter<MyAdapter2.ViewHolder> {
             tvItem1 = itemView.findViewById(R.id.tvItem1);
             tvItem2 = itemView.findViewById(R.id.tvItem2);
             cardView = itemView.findViewById(R.id.cardview2); // Initialize CardView attribute
-
+            fromDateEditText = itemView.findViewById(R.id.fDate);
+            toDateEditText = itemView.findViewById(R.id.tDate);
             img2 = itemView.findViewById(R.id.img2);
             btn = (Button)itemView.findViewById(R.id.updatebtn); // Replace "your_button_id" with the actual ID of your button
             btn2 = (Button)itemView.findViewById(R.id.deletebtn); // Replace "your_button_id" with the actual ID of your button
-
+//            // Set OnClickListener for EditText fields
+//            fromDateEditText.setOnClickListener(this);
+//            toDateEditText.setOnClickListener(this);
 
             // Initialize your views here
             // For example:

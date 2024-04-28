@@ -87,8 +87,8 @@ String phonoNo;
              ownerId = intent.getStringExtra("owner_id");
              phonoNo=intent.getStringExtra("phoneno");
              userEmail=intent.getStringExtra("userEmail");
-            Toast.makeText(this, "ownerId in booking screen==="+ownerId, Toast.LENGTH_LONG).show();
-            Toast.makeText(this, "userName in booking screen==="+userName, Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "ownerId in booking screen==="+ownerId, Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "userName in booking screen==="+userName, Toast.LENGTH_LONG).show();
 
 //            Toast.makeText(this, "userId=="+userId, Toast.LENGTH_SHORT).show();
 //            Toast.makeText(this, "userName=="+userName, Toast.LENGTH_SHORT).show();
@@ -114,57 +114,6 @@ String phonoNo;
             Toast.makeText(this, "Intent is null", Toast.LENGTH_SHORT).show();
         }
 
-
-        name.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DatabaseReference database = FirebaseDatabase.getInstance().getReference("PropertyDetailsModel");
-                database.child(propertyId).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            String fromDate = dataSnapshot.child("fordate").getValue(String.class);
-                            String todate = dataSnapshot.child("todate").getValue(String.class);
-
-//                            Toast.makeText(BookingScreen.this, "From:"+fromDate+"    To: "+todate, Toast.LENGTH_LONG).show();
-
-//                Intent intent = getIntent();
-//                if (intent != null) {
-                            Intent intent = new Intent(BookingScreen.this, UserTripDetails.class);
-                            intent.putExtra("from_date",fromDate);
-                            intent.putExtra("to_date",todate);
-                            intent.putExtra("user_id",userId);
-                            intent.putExtra("userName",userName);
-                            intent.putExtra("owner_id",ownerId);
-                            intent.putExtra("userEmail",userEmail);
-
-//
-//                            Toast.makeText(BookingScreen.this, "userId=="+userId, Toast.LENGTH_SHORT).show();
-//                            Toast.makeText(BookingScreen.this, "userName=="+userName, Toast.LENGTH_SHORT).show();
-                            Toast.makeText(BookingScreen.this, "ownerId==="+ownerId, Toast.LENGTH_SHORT).show();
-
-
-                            startActivity(intent);
-//                    Toast.makeText(BookingScreen.this, fDate + "From date is null", Toast.LENGTH_SHORT).show();
-//                    Toast.makeText(BookingScreen.this, tDate + "to date is null", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    Toast.makeText(BookingScreen.this, "Intent is null", Toast.LENGTH_SHORT).show();
-//
-//                }
-                        }
-                        else{
-                            Toast.makeText(BookingScreen.this, "snapshot dosent exist", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@androidx.annotation.NonNull DatabaseError error) {
-
-                    }
-                });
-
-            }
-        });
         Button bookingbutton = findViewById(R.id.bookingbutton);
         bookingbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -187,6 +136,7 @@ private void handleBookingButtonClick(String propertyId) {
                 String fromDate = dataSnapshot.child("fordate").getValue(String.class);
                 String todate = dataSnapshot.child("todate").getValue(String.class);
                 String propertyName = dataSnapshot.child("nameofproperty").getValue(String.class);
+                String price=dataSnapshot.child("priceofproperty").getValue(String.class);
 
 
 //                Toast.makeText(BookingScreen.this, "From:"+fromDate+"    To: "+todate, Toast.LENGTH_LONG).show();
@@ -203,7 +153,8 @@ private void handleBookingButtonClick(String propertyId) {
                 intent.putExtra("propertyName",propertyName);
                 intent.putExtra("phoneno",phonoNo);
                 intent.putExtra("userEmail",userEmail);
-
+                intent.putExtra("priceofproperty",price);
+                Toast.makeText(BookingScreen.this, "price==="+price, Toast.LENGTH_SHORT).show();
 
                 Toast.makeText(BookingScreen.this, "phoneNo="+phonoNo+"userName="+userName, Toast.LENGTH_SHORT).show();
                     startActivity(intent);

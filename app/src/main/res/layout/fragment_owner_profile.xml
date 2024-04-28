@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".OwnerProfileFragment">
+    tools:context=".OwnerProfileFragment"
+    android:background="@drawable/loginbkg">
 
     <TextView
         android:id="@+id/ownerprofile"
@@ -12,6 +13,7 @@
         android:layout_height="wrap_content"
         android:text="Profile"
         android:textSize="40dp"
+        android:textColor="@color/black"
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,6 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
+        android:textColor="@color/black"
         android:textSize="25dp"
         app:layout_constraintTop_toBottomOf="@+id/ownerprofile"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,6 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
+        android:textColor="@color/black"
         android:textSize="25dp"
         app:layout_constraintTop_toBottomOf="@+id/username"
         app:layout_constraintStart_toStartOf="parent"
@@ -44,6 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
+        android:textColor="@color/black"
         android:textSize="25dp"
         app:layout_constraintTop_toBottomOf="@+id/ownerphoneno"
         app:layout_constraintStart_toStartOf="parent"
@@ -57,6 +62,8 @@
         android:text="About rentH"
         android:textSize="40dp"
         android:textStyle="bold"
+        android:textColor="@color/black"
+
         app:layout_constraintTop_toBottomOf="@+id/owneremail"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="30dp"

@@ -10,6 +10,8 @@ import android.support.annotation.NonNull;
 import android.text.Html;
 import android.util.Base64;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,7 +53,10 @@ import org.json.JSONObject;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -68,12 +73,15 @@ public class PaymentActivity extends AppCompatActivity {
     String phoneNo;
     String userEmail;
     String userName;
-
+    String fromDate;
+    String priceofproperty;
+    String pop;
+    String newpriceofproperty;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
-        int price = 100;
+//        int price = 100;
 //        int newprice=price*100;
         try {
             PhonePe.init(this);
@@ -82,21 +90,44 @@ public class PaymentActivity extends AppCompatActivity {
         }
         Intent intent = getIntent();
         if (intent != null) {
+            priceofproperty=intent.getStringExtra("pp");
+//            slot=intent.getStringExtra("slot");
+            pop=intent.getStringExtra("propertyPrice");
+            Toast.makeText(this, "price="+priceofproperty, Toast.LENGTH_SHORT).show();
+
+//            Toast.makeText(this, "price="+priceofproperty, Toast.LENGTH_SHORT).show();
+            Animation animation = AnimationUtils.loadAnimation(PaymentActivity.this, R.anim.slide_left_to_right);
+
+            TextView ratepernight=findViewById(R.id.ratepernight);
+            ratepernight.startAnimation(animation);
+            TextView cleaningcharges=findViewById(R.id.cleaningcharges);
+            cleaningcharges.startAnimation(animation);
+            TextView renthfee=findViewById(R.id.renthfee);
+            renthfee.startAnimation(animation);
+            TextView ratepernightprice=findViewById(R.id.ratepernightprice);
+            ratepernightprice.startAnimation(animation);
+            TextView cleaningprice=findViewById(R.id.cleaningprice);
+            cleaningprice.startAnimation(animation);
+            TextView renthfeeprice=findViewById(R.id.renthfeeprice);
+            renthfeeprice.startAnimation(animation);
+
             propertyId = intent.getStringExtra("property_id");
+            fromDate=intent.getStringExtra("fDate");
+//            Toast.makeText(this, "from date="+fromDate, Toast.LENGTH_SHORT).show();
             ownerId = intent.getStringExtra("owner_id");
             propertyName = intent.getStringExtra("propertyName");
             phoneNo = intent.getStringExtra("phoneno");
-            Toast.makeText(this, "phoneno=" + phoneNo, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "phoneno=" + phoneNo, Toast.LENGTH_SHORT).show();
             userEmail = intent.getStringExtra("userEmail");
             userName = intent.getStringExtra("userName");
-            Toast.makeText(this, "ownerId=" + ownerId, Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "ownerId=" + ownerId, Toast.LENGTH_LONG).show();
 //            Toast.makeText(this, "propertyId in payment antivity="+propertyId, Toast.LENGTH_LONG).show();
             slots = intent.getIntExtra("slot", 0); // 0 is the default value if "slot" extra is not found
             if (slots == 0) {
                 Toast.makeText(this, "Slots is null", Toast.LENGTH_SHORT).show();
                 return; // Exit the method as slots is null
             } else {
-                Toast.makeText(this, "Slots: " + slots, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "Slots: " + slots, Toast.LENGTH_SHORT).show();
             }
 //            Toast.makeText(this, String.valueOf(slots), Toast.LENGTH_SHORT).show();
 
@@ -126,62 +157,7 @@ public class PaymentActivity extends AppCompatActivity {
 
             // Use the username here
         }
-//        createNotificationChannel();
-
-//        Button payment=findViewById(R.id.payment);
-//        payment.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-////                sendNotificationToOwner( propertyId);
-//                String notificationMessage = "Your property (ID: " + propertyId + ") has been booked by a user.";
 //
-//                Intent intent=new Intent(PaymentActivity.this,LoginScreen.class);
-//                intent.putExtra("notification_message",notificationMessage);
-//                startActivity(intent);
-//            }
-//        });
-//
-//    }
-
-//        Button payment = findViewById(R.id.payment);
-//        payment.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                DatabaseReference userRef = FirebaseDatabase.getInstance().getReference()
-//                        .child("UserPersonalDetailsModel");
-//
-//                Query query = userRef.orderByChild("name").equalTo(username); // Assuming you have the username available
-//
-//                query.addListenerForSingleValueEvent(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                        if (dataSnapshot.exists()) {
-//                            for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-//                                String userName = userSnapshot.child("name").getValue(String.class);
-//                                if (userName != null) {
-//                                    String notificationMessage = "Your property (ID: " + propertyId + ") has been booked by " + userName;
-//                                    Intent intent = new Intent(PaymentActivity.this, LoginScreen.class);
-//                                    intent.putExtra("notification_message", notificationMessage);
-//                                    Toast.makeText(PaymentActivity.this, "Name="+userName, Toast.LENGTH_SHORT).show();
-//
-//                                    startActivity(intent);
-//                                    return; // Exit loop after finding the user
-//                                }
-//                            }
-//                        } else {
-//                            Toast.makeText(PaymentActivity.this, "User not found", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError databaseError) {
-//                        // Handle database error
-//                        Toast.makeText(PaymentActivity.this, "Failed to retrieve user details: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//            }
-//        });
-//    }
 
         Button payment = findViewById(R.id.payment);
         payment.setOnClickListener(new View.OnClickListener() {
@@ -199,8 +175,9 @@ public class PaymentActivity extends AppCompatActivity {
                             String userName = dataSnapshot.child("name").getValue(String.class);
                             String userId = dataSnapshot.child("id").getValue(String.class);
 //                            Toast.makeText(PaymentActivity.this, "name="+userName, Toast.LENGTH_SHORT).show();
-                            if (userName != null) {
-                                String notificationMessage = "Your property " + propertyName + " has been booked by " + userName + "\nCustomer contact: " + phoneNo + "\nCustomer Email: " + userEmail;
+                                if (userName != null) {
+                                String notificationMessage = "Your property " + propertyName + " has been booked by " + userName +" "+"on "+fromDate+ "\nCustomer contact: " + phoneNo + "\nCustomer Email: " + userEmail;
+                                    Toast.makeText(PaymentActivity.this, "notifocationmesage="+notificationMessage, Toast.LENGTH_LONG).show();
 //                                Toast.makeText(PaymentActivity.this, "userName="+userName, Toast.LENGTH_SHORT).show();
                                 Intent intent = getIntent();
                                 intent.putExtra("notification_message", notificationMessage);
@@ -262,7 +239,10 @@ public class PaymentActivity extends AppCompatActivity {
                                     String userId = dataSnapshot.child("id").getValue(String.class);
 //                            Toast.makeText(PaymentActivity.this, "name="+userName, Toast.LENGTH_SHORT).show();
                                     if (userName != null) {
-                                        String notificationMessage = "Your property " + propertyName + " has been booked by " + userName + "\nCustomer contact: " + phoneNo + "\nCustomer Email: " + userEmail;
+                                        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+                                        String currentTime = sdf.format(new Date());
+                                        String notificationMessage = "Your property " + propertyName + " has been booked by " + userName +" "+"on "+fromDate+" "+"for "+slots+" slots "+ "at "+currentTime+"\nCustomer contact: " + phoneNo + "\nCustomer Email: " + userEmail;
+                                        Toast.makeText(PaymentActivity.this, "message="+notificationMessage, Toast.LENGTH_SHORT).show();
 //                                Toast.makeText(PaymentActivity.this, "userName="+userName, Toast.LENGTH_SHORT).show();
                                         Intent intent = getIntent();
                                         intent.putExtra("notification_message", notificationMessage);
@@ -308,7 +288,7 @@ public class PaymentActivity extends AppCompatActivity {
 //                    data.put("merchantId", upiId);
 
                             data.put("merchantUserId", "MUID123");
-                            data.put("amount", price);
+                            data.put("amount", 480000);
                             data.put("mobileNumber", "9999999999");
                             data.put("callbackUrl", "https://webhook.site/7fbbf7fb-c73c-4504-8467-14b0845d7c38");
                             JSONObject paymentInstrument = new JSONObject();
@@ -426,6 +406,9 @@ public class PaymentActivity extends AppCompatActivity {
                         priceOfPropertyTextView.setText(styledText);
                         TextView totalPrice = findViewById(R.id.totalprice);
                         String priceString2 = "<b>₹" + (price + price*(0.2)) + "0" + "</b>";
+//                        String pricestring=(price + price*(0.2)+"0");
+//                        Intent i=getIntent();
+//                        i.putExtra("propertyPrice",pricestring);
                         CharSequence styledText2 = Html.fromHtml(priceString2);
                         totalPrice.setText(styledText2);// Assuming pop is the price
 //                        TextView cleaningCharges = findViewById(R.id.cleaningprice);

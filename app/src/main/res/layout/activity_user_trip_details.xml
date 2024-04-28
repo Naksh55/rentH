@@ -26,11 +26,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Trip Details"
-        android:textSize="30dp"
+        android:textSize="45dp"
+        android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@+id/guide_v_10"
         app:layout_constraintTop_toTopOf="parent"
 
-        android:layout_marginTop="30sp"
+        android:layout_marginTop="60sp"
         android:textStyle="bold"/>
 
     <TextView
@@ -74,25 +75,6 @@
         android:layout_marginTop="25sp"
         android:textSize="25dp"/>
 
-<!--    <com.shawnlin.numberpicker.NumberPicker-->
-<!--        android:id="@+id/np"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_centerInParent="true"-->
-<!--        app:np_width="64dp"-->
-<!--        app:np_height="180dp"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/slots"-->
-<!--        app:np_dividerColor="@color/light_blue"-->
-<!--        app:np_formatter="@string/number_picker_formatter"-->
-<!--        app:np_max="59"-->
-<!--        app:np_min="0"-->
-<!--        app:np_selectedTextColor="@color/light_blue"-->
-<!--        app:np_selectedTextSize="18dp"-->
-<!--        app:np_textColor="@color/light_blue"-->
-<!--        app:np_textSize="18dp"-->
-<!--        app:np_value="3"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"/>-->
     <NumberPicker
         android:id="@+id/np"
         android:layout_width="wrap_content"
@@ -166,11 +148,12 @@
         android:id="@+id/bookingbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Make payment"
+        android:text="Next"
         app:layout_constraintTop_toBottomOf="@+id/priceofprperty"
         app:layout_constraintStart_toEndOf="@+id/guide_v_10"
-        android:layout_marginLeft="100dp"
         android:layout_marginTop="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:backgroundTint="@color/light_blue"
         />
 

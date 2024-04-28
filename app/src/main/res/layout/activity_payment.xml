@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PaymentActivity">
+    tools:context=".PaymentActivity"
+    android:background="@drawable/loginbkg">
 
     <androidx.constraintlayout.widget.Guideline
         android:layout_width="wrap_content"
@@ -25,25 +26,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Payment"
-        android:textSize="30dp"
+        android:layout_marginTop="100dp"
+        android:textSize="45dp"
+        android:textColor="@color/black"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@+id/guide_v_11"
         app:layout_constraintStart_toEndOf="@+id/guide_v_10"/>
 
 
 
-    <Button
-        android:id="@+id/payment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/renthfee"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="400sp"
-        android:layout_marginLeft="4sp"
-        android:text="Make Payment"/>
 
 
 
@@ -54,6 +45,7 @@
         android:text="Price Details"
         android:textSize="25sp"
         android:textStyle="bold"
+        android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@+id/guide_v_10"
         app:layout_constraintTop_toBottomOf="@+id/paymentmenthod"
         android:layout_marginTop="25sp" />
@@ -61,11 +53,12 @@
         android:id="@+id/ratepernight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Rate per slot"
+        android:text="Total slot amount"
         android:textSize="20sp"
+        android:textColor="@color/black"
         app:layout_constraintTop_toBottomOf="@+id/pricedetails"
         app:layout_constraintStart_toEndOf="@+id/guide_v_10"
-        android:layout_marginTop="20sp"/>
+        android:layout_marginTop="30sp"/>
 
     <TextView
         android:id="@+id/cleaningcharges"
@@ -73,20 +66,24 @@
         android:layout_height="wrap_content"
         android:text="Cleaning charges"
         android:textSize="20sp"
+        android:textColor="@color/black"
+
         app:layout_constraintTop_toBottomOf="@+id/ratepernight"
         app:layout_constraintStart_toEndOf="@+id/guide_v_10"
-        android:layout_marginTop="20sp"/>
+        android:layout_marginTop="30sp"/>
 
 
     <TextView
         android:id="@+id/renthfee"
         android:layout_width="wrap_content"
+        android:textColor="@color/black"
+
         android:layout_height="wrap_content"
         android:text="rentH Fee"
         android:textSize="20sp"
         app:layout_constraintTop_toBottomOf="@+id/cleaningcharges"
         app:layout_constraintStart_toEndOf="@+id/guide_v_10"
-        android:layout_marginTop="20sp"/>
+        android:layout_marginTop="30sp"/>
     <TextView
         android:id="@+id/ratepernightprice"
         android:layout_width="wrap_content"
@@ -95,7 +92,8 @@
         app:layout_constraintStart_toEndOf="@+id/ratepernight"
         android:textSize="20sp"
         android:text="Rate"
-        android:layout_marginTop="25dp"
+        android:textColor="@color/black"
+        android:layout_marginTop="30dp"
         android:layout_marginLeft="100sp"/>
 
     <TextView
@@ -107,7 +105,9 @@
         android:textSize="20sp"
         android:text="+10%"
         android:textStyle="bold"
-        android:layout_marginTop="25dp"
+        android:textColor="@color/black"
+
+        android:layout_marginTop="30dp"
         android:layout_marginLeft="100sp"/>
     <TextView
         android:id="@+id/renthfeeprice"
@@ -118,7 +118,8 @@
         android:textSize="20sp"
         android:text="+10%"
         android:textStyle="bold"
-        android:layout_marginTop="15dp"
+        android:textColor="@color/black"
+        android:layout_marginTop="30dp"
         android:layout_marginLeft="100sp"/>
 
     <TextView
@@ -129,7 +130,8 @@
         app:layout_constraintStart_toEndOf="@+id/guide_v_10"
         android:textSize="25sp"
         android:textStyle="bold"
-        android:text="Total"
+        android:text="Grand Total"
+        android:textColor="@color/black"
         android:layout_marginTop="30dp"
         />
 
@@ -141,7 +143,21 @@
         app:layout_constraintStart_toEndOf="@+id/ratepernight"
         android:textSize="25sp"
         android:text="Rate"
+        android:textColor="@color/black"
         android:layout_marginTop="25dp"
         android:layout_marginLeft="100sp"/>
+    <Button
+        android:id="@+id/payment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/totalprice"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="50dp"
+        android:text="Make Payment"
+        android:backgroundTint="@color/light_blue"
+       />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

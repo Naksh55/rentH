@@ -1358,6 +1358,10 @@ public class PropertyDetails extends AppCompatActivity {
         String price = priceOfPropertyEditText.getText().toString().trim();
         String address=addressEditText.getText().toString().trim();
         String pd=propertyDescriptionEditText.getText().toString().trim();
+        String fromDate=fromdate.getText().toString().trim();
+        String toDate=todate.getText().toString().trim();
+
+
         if (oname.isEmpty() || price.isEmpty()||address.isEmpty()||pd.isEmpty()) {
             Toast.makeText(this, "All fields must be filled out", Toast.LENGTH_SHORT).show();
             return false;
@@ -1371,6 +1375,16 @@ public class PropertyDetails extends AppCompatActivity {
         if (propertyDPImageView.getDrawable() == null) {
             Toast.makeText(this, "Please choose an image", Toast.LENGTH_SHORT).show();
             return false;
+        }
+        if(fromDate.equals("Select from date")){
+            Toast.makeText(this, "Please select from date", Toast.LENGTH_SHORT).show();
+            return false;
+
+        }
+        if(toDate.equals("Select to date")){
+            Toast.makeText(this, "Please select to date", Toast.LENGTH_SHORT).show();
+            return false;
+
         }
         return true;
     }

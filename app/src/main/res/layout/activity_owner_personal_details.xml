@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".OwnerPersonalDetails">
+    tools:context=".OwnerPersonalDetails"
+    android:background="@drawable/loginbkg">
     <androidx.constraintlayout.widget.Guideline
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -24,7 +25,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:paddingTop="20dp"
-        android:layout_marginTop="30sp"
+        android:layout_marginTop="70sp"
         />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -34,7 +35,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/ownerhomescreenTV"
         app:layout_constraintStart_toEndOf="@+id/guide_v_10"
-        android:hint="Enter Name"
+        android:hint=" Enter Name"
         android:layout_marginTop="50sp"
         >
         <com.google.android.material.textfield.TextInputEditText
@@ -44,6 +45,8 @@
             app:layout_constraintTop_toBottomOf="@+id/tv"
             app:layout_constraintStart_toEndOf="@+id/guide_v_10"
             android:layout_marginTop="30sp"
+            android:drawableLeft="@drawable/baseline_person_24"
+
             />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -53,17 +56,20 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:id="@+id/agetv"
         android:layout_width="350sp"
+
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/nametv"
         app:layout_constraintStart_toEndOf="@+id/guide_v_10"
-        android:hint="Enter Age"
-        android:layout_marginTop="20sp"
+        android:hint=" Enter Age"
+        android:layout_marginTop="30sp"
         >
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/ageet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number"
+            android:drawableLeft="@drawable/baseline_123_24"
+
             app:layout_constraintTop_toBottomOf="@+id/tv"
             app:layout_constraintStart_toEndOf="@+id/guide_v_10"
             android:layout_marginTop="30sp"
@@ -75,10 +81,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20dp"
-        android:text="Select Gender"
+        android:textColor="@color/black"
+        android:text=" Select Gender:"
         app:layout_constraintTop_toBottomOf="@+id/agetv"
         app:layout_constraintStart_toEndOf="@+id/guide_v_10"
-        android:layout_marginTop="25sp"/>
+        android:layout_marginTop="30sp"/>
     <RadioGroup
         android:id="@+id/ownergender"
         android:layout_width="wrap_content"
@@ -92,17 +99,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Male"
+            android:textColor="@color/black"
             android:textSize="15sp"
             android:layout_marginLeft="150dp"
-            android:layout_marginTop="-14dp"
+            android:layout_marginTop="-10dp"
             />
         <RadioButton
             android:id="@+id/owner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Female"
+            android:textColor="@color/black"
             android:textSize="15sp"
-            android:layout_marginTop="-14dp"
+            android:layout_marginTop="-10dp"
             android:layout_marginLeft="50dp"
 
             />
@@ -117,34 +126,35 @@
 
         app:layout_constraintTop_toBottomOf="@id/gender"
         app:layout_constraintStart_toEndOf="@+id/guide_v_10"
-        android:hint="Enter Phone number"
-        android:layout_marginTop="20sp"
+        android:hint=" Enter Phone number"
+        android:layout_marginTop="30sp"
         >
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/ophonenoet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number"
+            android:drawableLeft="@drawable/baseline_local_phone_24"
+
             app:layout_constraintTop_toBottomOf="@+id/tv"
             app:layout_constraintStart_toEndOf="@+id/guide_v_10"
             android:layout_marginTop="30sp" />
     </com.google.android.material.textfield.TextInputLayout>
-
 
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:id="@+id/oemailtv"
         android:layout_width="350sp"
         android:layout_height="wrap_content"
-
         app:layout_constraintTop_toBottomOf="@id/ophonenotv"
         app:layout_constraintStart_toEndOf="@+id/guide_v_10"
-        android:hint="Enter E-mail address"
-        android:layout_marginTop="20sp"
+        android:hint=" Enter E-mail address"
+        android:layout_marginTop="30sp"
         >
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/oemailet"
             android:layout_width="match_parent"
+            android:drawableLeft="@drawable/baseline_alternate_email_24"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/tv"
             app:layout_constraintStart_toEndOf="@+id/guide_v_10"
@@ -157,10 +167,10 @@
         android:id="@+id/onextbtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="180sp"
         app:layout_constraintTop_toBottomOf="@id/oemailtv"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:text="Next"
+        android:layout_marginTop="30sp"
         android:backgroundTint="@color/light_blue"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -93,6 +93,7 @@
             app:layout_constraintStart_toEndOf="@+id/guide_v_10"
             android:textSize="25sp"
             android:textStyle="bold"
+            android:textColor="@color/black"
             android:text="Property Disription : "
             android:paddingTop="20sp"/>
 
@@ -113,6 +114,7 @@
             android:layout_height="wrap_content"
             android:text="Property Discription goes here......."
             android:textSize="15sp"
+            android:textColor="@color/black"
             app:layout_constraintTop_toBottomOf="@+id/prodiscription"
             app:layout_constraintStart_toEndOf="@+id/guide_v_10"
             android:layout_marginTop="10sp"/>
@@ -122,17 +124,19 @@
             android:id="@+id/bookingbutton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="BOOK NOW"
+            android:text="Book now"
             app:layout_constraintTop_toBottomOf="@+id/oemail"
             app:layout_constraintStart_toEndOf="@id/guide_v_10"
             android:layout_marginTop="70sp"
-            android:layout_marginLeft="110dp" />
+            android:layout_marginLeft="110dp"
+            android:backgroundTint="@color/light_blue"/>
 
         <TextView
             android:id="@+id/oname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Owner Name"
+            android:textColor="@color/black"
             app:layout_constraintTop_toBottomOf="@+id/sepline"
             app:layout_constraintStart_toEndOf="@+id/guide_v_10"
             android:textSize="25sp"
@@ -144,6 +148,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Owner Contact"
+            android:textColor="@color/black"
             app:layout_constraintTop_toBottomOf="@+id/oname"
             app:layout_constraintStart_toEndOf="@+id/guide_v_10"
             android:textSize="25sp"
@@ -153,6 +158,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Owner E-mail id"
+            android:textColor="@color/black"
             app:layout_constraintTop_toBottomOf="@+id/opnumber"
             app:layout_constraintStart_toEndOf="@+id/guide_v_10"
             android:textSize="20sp"
