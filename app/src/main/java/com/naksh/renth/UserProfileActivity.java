@@ -43,8 +43,6 @@ public class UserProfileActivity extends AppCompatActivity {
         textView2.setText(Html.fromHtml("<b>Name:</b> " + userName));
         textView1.setText(Html.fromHtml("<b>Email:</b> " + userEmail));
         textView3.setText(Html.fromHtml("<b>PhoneNo:</b> " + userPhoneno));
-
-
         retrieveUserDetails(userId, textView2, textView1, textView3);
 
         bottomNavigationView = findViewById(R.id.bottomnavigation);
@@ -80,7 +78,6 @@ public class UserProfileActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // Handle logout action
-                        Toast.makeText(UserProfileActivity.this, "Logging out...", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(UserProfileActivity.this, LoginScreen.class);
                         startActivity(intent);
                     }

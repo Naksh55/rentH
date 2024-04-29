@@ -73,22 +73,6 @@ public class NotificationFragment extends Fragment {
      * @return A new instance of fragment NotificationFragment.
      */
     // TODO: Rename and change types and number of parameters
-//    public static NotificationFragment newInstance(String id, String param2,String notificationMessage,String userId,String userName) {
-//        NotificationFragment fragment = new NotificationFragment();
-//        Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, id);
-//        args.putString(ARG_PARAM2, param2);
-//        args.putString(ARG_OWNER_ID, ownerId);
-//        args.putString(ARG_NOTIFICATION_MESSAGE, notificationMessage);
-//        args.putString(ARG_USER_ID, userId);
-//        args.putString(ARG_USERNAME, userName);
-//        args.putString(ARG_PROPERTYID, propertyId);
-//        args.putStringArrayList(ARG_NOTIFICATION_MESSAGE, (ArrayList<String>) notificationMessages);
-//
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
-
     public static NotificationFragment newInstance(String ownerId, String param2, String notificationMessage, String userId, String userName) {
         NotificationFragment fragment = new NotificationFragment();
         Bundle args = new Bundle();
@@ -99,28 +83,11 @@ public class NotificationFragment extends Fragment {
         args.putString(ARG_USER_ID, userId);
         args.putString(ARG_USERNAME, userName);
         args.putString(ARG_PROPERTYID, propertyId); // Assuming propertyId is also static
-//        ArrayList<String> notificationMessages = new ArrayList<>();
-//        notificationMessages.add(notificationMessage); // Add the notification message to the list
-//
-//        args.putStringArrayList(ARG_NOTIFICATION_MESSAGE, notificationMessages);
         fragment.setArguments(args);
         return fragment;
     }
 
 
-    //    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
-//            ownerId = getArguments().getString(ARG_OWNER_ID);
-//            notificationMessage = getArguments().getString(ARG_NOTIFICATION_MESSAGE);
-//            Toast.makeText(getContext(),"message="+notificationMessage , Toast.LENGTH_SHORT).show();
-//
-//
-//        }
-//    }
 @Override
 public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -133,16 +100,6 @@ public void onCreate(Bundle savedInstanceState) {
         userId = getArguments().getString(ARG_USER_ID);
         userName = getArguments().getString(ARG_USERNAME);
         propertyId = getArguments().getString(ARG_PROPERTYID);
-        Toast.makeText(getContext(), "ownerId in fragment=" + ownerId, Toast.LENGTH_SHORT).show();
-
-//        Toast.makeText(getContext(), "message=" + notificationMessage, Toast.LENGTH_LONG).show();
-//        Toast.makeText(getContext(), "userName=" + userName, Toast.LENGTH_SHORT).show();
-//        Toast.makeText(getContext(), "userId=" + userId, Toast.LENGTH_SHORT).show();
-//        Toast.makeText(getContext(), "propertyId=" + propertyId, Toast.LENGTH_SHORT).show();
-//            // Your existing code...
-//            notificationMessages = new ArrayList<>();
-//            adapter = new NotificationAdapter(getContext(), notificationMessages); // Initialize the adapter
-
 
     }
 }
@@ -203,34 +160,5 @@ public void onCreate(Bundle savedInstanceState) {
             Log.e("NotificationFragment", "Adapter is null");
         }
     }
-
-
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//                             Bundle savedInstanceState) {
-//        // Inflate the layout for this fragment
-//
-//        View view= inflater.inflate(R.layout.fragment_notification, container, false);
-//        TextView textView= view.findViewById(R.id.onotifications);
-//        Bundle bundle = getArguments();
-//        if (bundle != null) {
-//            String ownerId = bundle.getString(ARG_PARAM1);
-//            if (ownerId != null) {
-//                Intent intent=new Intent();
-//                String id = intent.getStringExtra("notification_message");
-//                Toast.makeText(requireContext(), id, Toast.LENGTH_SHORT).show();
-////                Toast.makeText(getContext(), "id="+ownerId, Toast.LENGTH_SHORT).show();
-//            }
-//        } else {
-//            Toast.makeText(requireContext(), "ownerId is null", Toast.LENGTH_SHORT).show();
-//            // Handle the case where ownerId is null
-//        }
-//
-//        // Set notification message to TextView
-//        textView.setText(notificationMessage);
-//
-//        return view;
-//
-//    }
 
 }

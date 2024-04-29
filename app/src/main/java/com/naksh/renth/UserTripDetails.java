@@ -78,7 +78,6 @@ public class UserTripDetails extends AppCompatActivity {
         binding = ActivityUserTripDetailsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         myDialog = new Dialog(this);
-//        TextView selectedDate = findViewById(R.id.fromDate);
         Intent intent = getIntent();
         if (intent != null) {
             Animation animation = AnimationUtils.loadAnimation(UserTripDetails.this, R.anim.slide_left_to_right);
@@ -101,11 +100,6 @@ public class UserTripDetails extends AppCompatActivity {
             phoneNo = intent.getStringExtra("phoneno");
             userEmail = intent.getStringExtra("userEmail");
             priceOfProperty=intent.getStringExtra("priceofproperty");
-            Toast.makeText(this, "price:" +priceOfProperty, Toast.LENGTH_SHORT).show();
-
-//            Toast.makeText(this, "userId:" + userId, Toast.LENGTH_SHORT).show();
-//            Toast.makeText(this, "userName:" + userName, Toast.LENGTH_SHORT).show();
-
             propertyId = intent.getStringExtra("property_id");
             if (propertyId != null) {
                 parentId = intent.getStringExtra("parent_id");
@@ -127,19 +121,17 @@ public class UserTripDetails extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference("UserTripDetailsModel");
-
         progressDialog = new ProgressDialog(UserTripDetails.this);
         progressDialog.setTitle("Saving trip details");
         progressDialog.setMessage("Make payment");
         NumberPicker numberPicker = findViewById(R.id.np);
         numberPicker.setMinValue(0);
         numberPicker.setMaxValue(6);
-
         numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
                 // Display the selected number using a Toast
-                Toast.makeText(UserTripDetails.this, "Selected number: " + newVal, Toast.LENGTH_SHORT).show();
+                Toast.makeText(UserTripDetails.this, "Selected slot: " + newVal, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -171,10 +163,6 @@ public class UserTripDetails extends AppCompatActivity {
                     return; // Exit the method as validation failed
                 }
 
-//                if (guest > 10) {
-//                    Toast.makeText(UserTripDetails.this, "Guest count should not be less than 10", Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
                 String selectedDateStr = Objects.requireNonNull(binding.fromDate.getText()).toString();
                 Intent i=getIntent();
                 i.putExtra("fDate",selectedDateStr);
@@ -184,16 +172,13 @@ public class UserTripDetails extends AppCompatActivity {
                 }
                 progressDialog.show();
 
-
-//                Toast.makeText(UserTripDetails.this, "selectedDate="+selectedDateStr, Toast.LENGTH_SHORT).show();
                 int pickerValue = binding.np.getValue();
                 int slots = Integer.parseInt(String.valueOf(pickerValue).trim());
                 int guests = Integer.parseInt(Objects.requireNonNull(binding.guests.getText()).toString());
                 if(guests>10){
                     Toast.makeText(UserTripDetails.this, "Guest count should not exceed 10", Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
-
-                    return; // Exit the method as validation failed
+                    return;
                 }
                 progressDialog.show();
 
@@ -207,31 +192,22 @@ public class UserTripDetails extends AppCompatActivity {
                     Log.d(TAG, "selectedDateStr: " + selectedDateStr);
                     Log.d(TAG, "fromDate: " + fromDate);
                     Log.d(TAG, "toDate: " + toDate);
-//                    Toast.makeText(UserTripDetails.this, "fromDate inside try="+fromDate, Toast.LENGTH_SHORT).show();
                     if (fromDate.equals("Choose booking date!")) {
                         Toast.makeText(UserTripDetails.this, "Invalid or missing from/to date", Toast.LENGTH_SHORT).show();
                         return; // Exit the method as validation failed
 
                     }
-                    Toast.makeText(UserTripDetails.this, "selected date="+selectedDateStr, Toast.LENGTH_SHORT).show();
                     if (fromDate.equals("Select from date") || toDate.equals("Select to date")||selectedDateStr.equals("Choose booking date!")) {
-                        // Invalid or missing from/to date
-//                        progressDialog.dismiss();
-//                        Toast.makeText(UserTripDetails.this, "Invalid or missing from/to date", Toast.LENGTH_SHORT).show();
                         selectedDateStr="11/11/1111";
                         fromDate="11/11/1111";
                         toDate="11/11/1111";
 
-//                        return; // Exit the method
                     }
-//                    Toast.makeText(UserTripDetails.this, "fdate=="+fromDate, Toast.LENGTH_SHORT).show();
-                    // Both fromDate and toDate are not equal to "Select from/to date", proceed with date parsing
+
                     Date selectedDate = sdf.parse(selectedDateStr);
-                    Toast.makeText(UserTripDetails.this, "sDate=="+selectedDate, Toast.LENGTH_SHORT).show();
 
                     Date from = sdf.parse(fromDate);
                     Date to = sdf.parse(toDate);
-                    Toast.makeText(UserTripDetails.this, "fdate=="+fromDate, Toast.LENGTH_SHORT).show();
 
                     if (selectedDate != null && from != null) {
                         if (selectedDate.equals(from) || (selectedDate.after(from) && selectedDate.before(to)) || selectedDate.equals(to)) {
@@ -240,7 +216,6 @@ public class UserTripDetails extends AppCompatActivity {
                             progressDialog.dismiss();
 //                            progressDialog.dismiss();
                         } else {
-//                            Toast.makeText(UserTripDetails.this, "........", Toast.LENGTH_SHORT).show();
                             progressDialog.show();
 
                             // Retrieve property details from the database to compare dates
@@ -254,14 +229,8 @@ public class UserTripDetails extends AppCompatActivity {
                                         String pop=dataSnapshot.child("priceofproperty").getValue(String.class);
                                         Intent i=getIntent();
                                         i.putExtra("priceofproperty",pop);
-                                        Toast.makeText(UserTripDetails.this, "fordate="+propertyDateStr, Toast.LENGTH_SHORT).show();
                                         try {
-//                                            Toast.makeText(UserTripDetails.this, "selectedDate="+selectedDate, Toast.LENGTH_SHORT).show();
-//
-//                                            Toast.makeText(UserTripDetails.this, "propertyDateStr="+propertyDateStr, Toast.LENGTH_SHORT).show();
-
                                             Date propertyDate = sdf.parse(propertyDateStr);
-                                            Toast.makeText(UserTripDetails.this, "propertyDate="+propertyDate, Toast.LENGTH_SHORT).show();
 
                                             if (propertyDate != null) {
                                                 if (selectedDate.equals(propertyDate)) {
@@ -315,7 +284,7 @@ public class UserTripDetails extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // Handle logout action
-                        Toast.makeText(UserTripDetails.this, "Going back", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(UserTripDetails.this, "Going back", Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -352,10 +321,7 @@ public class UserTripDetails extends AppCompatActivity {
                             intent.putExtra("userEmail", userEmail);
                             intent.putExtra("fDate",selectedDateStr);
                             intent.putExtra("priceofproperty",priceOfProperty);
-
-//                            Toast.makeText(UserTripDetails.this, "selectedDate="+selectedDateStr, Toast.LENGTH_SHORT).show();
                             startActivity(intent);
-
                             finish(); // Finish this activity after starting the next one
                         } else {
                             progressDialog.dismiss();
@@ -406,7 +372,6 @@ public class UserTripDetails extends AppCompatActivity {
                 if (dataSnapshot.exists()) {
                     // Retrieve property details
                     String priceLong = dataSnapshot.child("priceofproperty").getValue(String.class);
-                    Toast.makeText(UserTripDetails.this, "priceofproperty="+priceLong, Toast.LENGTH_SHORT).show();
                     Intent i=getIntent();
                     i.putExtra("price",priceLong);
                     int pop = 0; // Default value
@@ -423,16 +388,9 @@ public class UserTripDetails extends AppCompatActivity {
                     int price = Integer.parseInt(numericPart); // Convert the numeric part to an integer
 //                    TextView priceOfPropertyTextView = findViewById(R.id.priceofprperty);
                         String pricestring=(price + price*(0.2)+"0");
-                    Toast.makeText(UserTripDetails.this, "price==="+pricestring, Toast.LENGTH_SHORT).show();
                     Intent intent=getIntent();
                     intent.putExtra("pp",pricestring);
-//                    String priceString = "Price: <b>₹" + pop + ".00"+"</b>"; // Assuming pop is the price
 
-//                    Toast.makeText(UserTripDetails.this, priceString, Toast.LENGTH_SHORT).show();
-//                    CharSequence styledText = Html.fromHtml(priceString);
-//                    priceOfPropertyTextView.setText(styledText);
-
-//b
                 } else {
                     // Handle the case where no property details are found
                     Toast.makeText(UserTripDetails.this, "No property details found", Toast.LENGTH_SHORT).show();
@@ -456,7 +414,6 @@ public class UserTripDetails extends AppCompatActivity {
                 if (dataSnapshot.exists()) {
                     // Retrieve property details
                     String priceLong = dataSnapshot.child("priceofproperty").getValue(String.class);
-                    Toast.makeText(UserTripDetails.this, "priceofproperty="+priceLong, Toast.LENGTH_SHORT).show();
                     Intent i=getIntent();
                     i.putExtra("price",priceLong);
                     int pop = 0; // Default value
@@ -474,8 +431,6 @@ public class UserTripDetails extends AppCompatActivity {
                     Intent intent=getIntent();
                     intent.putExtra("propertyPrice",pricestring);
                     String priceString = "Price: <b>₹" + pop + ".00"+"</b>"; // Assuming pop is the price
-
-//                    Toast.makeText(UserTripDetails.this, priceString, Toast.LENGTH_SHORT).show();
                     CharSequence styledText = Html.fromHtml(priceString);
                     priceOfPropertyTextView.setText(styledText);
 

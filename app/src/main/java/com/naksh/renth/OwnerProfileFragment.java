@@ -83,22 +83,6 @@ public class OwnerProfileFragment extends Fragment {
             }
         }
 
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//                             Bundle savedInstanceState) {
-//        View view = inflater.inflate(R.layout.fragment_owner_profile, container, false);
-//        TextView textView = view.findViewById(R.id.owneremail);
-//        TextView textView2 = view.findViewById(R.id.username);
-//
-//        Bundle bundle = getArguments();
-//        if (bundle != null) {
-//            String receivedText2 = bundle.getString("nameOwner");
-//            textView2.setText(receivedText2);
-//            String receivedText3 = bundle.getString("emailOwner");
-//            textView.setText(receivedText3);
-//        }
-//        return view;
-//    }
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
@@ -125,11 +109,8 @@ public class OwnerProfileFragment extends Fragment {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             // Handle logout action
-                            Toast.makeText(requireContext(), "Logging out...", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(requireContext(), LoginScreen.class);
-
                             startActivity(intent);
-
                             // Clear previous owner's details
                             textView1.setText("");
                             textView2.setText("");

@@ -446,7 +446,7 @@ public class LoginScreen extends AppCompatActivity {
                     }
                 } else {
                     // Email not found in OwnerPersonalDetailsActivity node
-                    Toast.makeText(LoginScreen.this, "Owner data not found", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginScreen.this, "No owner exist", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -503,16 +503,9 @@ public class LoginScreen extends AppCompatActivity {
                     return; // Return without attempting to sign in if no category is selected
                 }
 
-//                Toast.makeText(LoginScreen.this, "email=" + email.getText().toString(), Toast.LENGTH_SHORT).show();
-//                Toast.makeText(LoginScreen.this, "password=" + password.getText().toString(), Toast.LENGTH_SHORT).show();
-
-                // Getting the selected radio button and user type
                 RadioButton selectedRadioButton = findViewById(selectedId);
                 String userType = selectedRadioButton.getText().toString();
-//                Toast.makeText(LoginScreen.this, "selected radio buttom="+userType, Toast.LENGTH_SHORT).show();
 
-
-                // Showing progress dialog
                 progressDialog.show();
 
                 // Attempting to sign in with email and password
@@ -522,18 +515,13 @@ public class LoginScreen extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 progressDialog.dismiss(); // Dismiss the progress dialog
                                 if (task.isSuccessful()) {
-                                    Toast.makeText(LoginScreen.this, "done", Toast.LENGTH_SHORT).show();
                                     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
                                     if (currentUser != null) {
-                                        Toast.makeText(LoginScreen.this, "current user not null", Toast.LENGTH_SHORT).show();
-                                        Toast.makeText(LoginScreen.this, "userType="+userType, Toast.LENGTH_SHORT).show();
-
                                         // Redirecting based on user type
                                         if (userType.equals("User")) {
 
                                             checkUserDetails(currentUser.getEmail(), selectedRadioButton);
                                         } else if (userType.equals("Owner")) {
-                                            Toast.makeText(LoginScreen.this, "inside elseif block", Toast.LENGTH_SHORT).show();
 
                                             checkOwnerPersonalDetails(currentUser.getEmail(), selectedRadioButton);
                                         }
@@ -560,9 +548,7 @@ public class LoginScreen extends AppCompatActivity {
                             }
                         });
             }
-//            Button loginbtn=findViewById(R.id.loginbtn);
-//            loginbtn.
-
+//
         });
 
         togglePasswordVisibilityImage.setOnClickListener(new View.OnClickListener() {
@@ -624,21 +610,18 @@ public class LoginScreen extends AppCompatActivity {
                                             if (eMailFromDatabase != null && eMailFromDatabase.equals(email.getText().toString().trim())) {
                                                 String userTypeFromDatabase = userSnapshot.child("category").getValue(String.class);
                                                 String userType = selectedRadioButton.getText().toString();
-                                                Toast.makeText(LoginScreen.this, userTypeFromDatabase + " " + userType, Toast.LENGTH_SHORT).show();
 
                                                 if (userType.equals(userTypeFromDatabase)) {
                                                     Intent intent = new Intent(LoginScreen.this, OwnerHomeActivity.class);
                                                     intent.putExtra("user_id", userId);
                                                     intent.putExtra("id", ownerid);
                                                     intent.putExtra("oname", ownername);
-
-//                                                    Toast.makeText(LoginScreen.this, "====="+ownerid, Toast.LENGTH_SHORT).show();
                                                     intent.putExtra("notification_message", notificationMessage);
                                                     intent.putExtra("userName", userName);
-//                                                    retriveNotification(ownerid);
                                                     startActivity(intent);
-                                                    finish(); // Finish the current activity
-//                                                    overridePendingTransition(R.anim.slide_in_right,R.anim.slide_in_left);
+                                                    finish();
+                                                    overridePendingTransition(R.anim.slide_in_left,R.anim.slide_in_right);
+
 
                                                 } else {
                                                     Toast.makeText(LoginScreen.this, "Role mismatch", Toast.LENGTH_SHORT).show();
@@ -711,7 +694,6 @@ public class LoginScreen extends AppCompatActivity {
                                             if (eMailFromDatabase != null && eMailFromDatabase.equals(email.getText().toString().trim())) {
                                                 String userTypeFromDatabase = userSnapshot.child("category").getValue(String.class);
                                                 String userType = selectedRadioButton.getText().toString();
-                                                Toast.makeText(LoginScreen.this, userTypeFromDatabase + " " + userType, Toast.LENGTH_SHORT).show();
 
                                                 if (userType.equals(userTypeFromDatabase)) {
                                                     Intent intent = new Intent(LoginScreen.this, PropertyRecyclerActivityForUser.class);
@@ -721,15 +703,7 @@ public class LoginScreen extends AppCompatActivity {
                                                     intent.putExtra("userName", userName);
                                                     intent.putExtra("phoneno", phoneno);
                                                     intent.putExtra("userEmail", userEmail);
-
-                                                    Toast.makeText(LoginScreen.this, "userEmail in login screen="+userEmail, Toast.LENGTH_LONG).show();
-//                                                    Toast.makeText(LoginScreen.this, "ownerId in login screen="+ownerId, Toast.LENGTH_LONG).show();
-
-
                                                     intent.putExtra("userEmail", eMailFromDatabase);
-//                                                    Toast.makeText(LoginScreen.this, "email in login screen="+eMailFromDatabase, Toast.LENGTH_SHORT).show();
-
-
                                                     startActivity(intent);
                                                     finish(); // Finish the current activity
                                                     overridePendingTransition(R.anim.slide_in_left,R.anim.slide_in_right);

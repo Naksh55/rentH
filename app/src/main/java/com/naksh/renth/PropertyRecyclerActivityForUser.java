@@ -77,22 +77,16 @@ public class PropertyRecyclerActivityForUser extends AppCompatActivity {
         if (i != null) {
             userId = i.getStringExtra("user_id");
             userName = i.getStringExtra("userName");
-            Toast.makeText(this, "userNAME IN home"+userName, Toast.LENGTH_SHORT).show();
-
             ownerId = i.getStringExtra("id");
             userId = i.getStringExtra("user_id");
-//            userName = i.getStringExtra("name");
             userEmail = i.getStringExtra("userEmail");
             userPhoneno = i.getStringExtra("phoneno");
-            Toast.makeText(this, "phoneno"+userPhoneno+"email="+userEmail, Toast.LENGTH_SHORT).show();
-//            Toast.makeText(this, userId, Toast.LENGTH_SHORT).show();
-//            Toast.makeText(this, userName, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this,"phoneno="+userPhoneno, Toast.LENGTH_SHORT).show();
 
 
         } else {
             Toast.makeText(this, "intent is null", Toast.LENGTH_SHORT).show();
         }
-
 
 
         list = new ArrayList<>();
@@ -105,63 +99,6 @@ public class PropertyRecyclerActivityForUser extends AppCompatActivity {
         });
         recyclerView.setAdapter(myAdapter);
 
-
-
-
-//         Configure FirebaseRecyclerOptions
-        //............code to delete..........
-//        FirebaseRecyclerOptions<PropertyDetailsModel> options = new FirebaseRecyclerOptions.Builder<PropertyDetailsModel>()
-//                .setQuery(database.orderByChild("ownerId").equalTo(ownerId), PropertyDetailsModel.class)
-//                .build();
-//
-//        // Create adapter using FirebaseRecyclerOptions
-//        myAdapter = new MyAdapter(options, new MyAdapter.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(PropertyDetailsModel item) {
-//                String propertyName = item.getNameofproperty(); // Accessing the nameofproperty directly from the clicked item
-//                retrieveParentInfoFromDatabase(propertyName, item.getPropertyId()); // Pass propertyId as well
-//            }
-//        });
-//        recyclerView.setAdapter(myAdapter);
-
-//        Query query = database.orderByChild("ownerId").equalTo(ownerId);
-//
-//        query.addValueEventListener(new ValueEventListener() {
-//                                        @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                list.clear(); // Clear the list before adding new data
-//                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-//                    PropertyDetailsModel testingModel = dataSnapshot.getValue(PropertyDetailsModel.class);
-//                    list.add(testingModel);
-//                }
-//                myAdapter.reverseList(); // Call this method to reverse the list
-//                myAdapter.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                Log.e("PropertyRecyclerActivity", "Database error: " + error.getMessage());
-//            }
-//        });
-//                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                                            list.clear(); // Clear the list before adding new data
-//                                            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-//                                                PropertyDetailsModel testingModel = dataSnapshot.getValue(PropertyDetailsModel.class);
-//                                                list.add(testingModel);
-//                                            }
-//
-//                                            // Log the number of properties retrieved
-//                                            Log.d("PropertyRecyclerActivity", "Number of properties retrieved: " + list.size());
-//
-//                                            myAdapter.reverseList(); // Call this method to reverse the list
-//                                            myAdapter.notifyDataSetChanged();
-//                                        }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
 
         database.addValueEventListener(new ValueEventListener() {
             @Override
@@ -187,7 +124,6 @@ public class PropertyRecyclerActivityForUser extends AppCompatActivity {
                     return true;
                 } else if (item.getItemId() == R.id.profile) {
                     Intent intent = new Intent(PropertyRecyclerActivityForUser.this, UserProfileActivity.class);
-                    Toast.makeText(PropertyRecyclerActivityForUser.this, userName+"==userName", Toast.LENGTH_SHORT).show();
                     intent.putExtra("user_id", userId);
                     intent.putExtra("userName", userName);
                     intent.putExtra("userEmail", userEmail);
@@ -201,26 +137,6 @@ public class PropertyRecyclerActivityForUser extends AppCompatActivity {
         });
     }
 
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.search, menu);
-//        MenuItem item = menu.findItem(R.id.search);
-//        SearchView searchView = (SearchView) item.getActionView();
-//
-//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                filter(query);
-//                return true;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                filter(newText);
-//                return true;
-//            }
-//        });
-//        return super.onCreateOptionsMenu(menu);
-//    }
     private void retrieveParentInfoFromDatabase(String propertyName, String propertyId) {
         DatabaseReference parentRef = FirebaseDatabase.getInstance("https://renth-aca8f-default-rtdb.firebaseio.com/").getReference("PropertyDetailsModel");
         Query query = parentRef.orderByChild("nameofproperty").equalTo(propertyName);
@@ -240,14 +156,8 @@ public class PropertyRecyclerActivityForUser extends AppCompatActivity {
                         intent.putExtra("user_id", userId);
                         intent.putExtra("userName", userName);
                         intent.putExtra("owner_id", ownerId);
-                        intent.putExtra("phoneno",userPhoneno);
                         intent.putExtra("userEmail",userEmail);
-                        Toast.makeText(PropertyRecyclerActivityForUser.this,"ownerId= " + ownerId, Toast.LENGTH_SHORT).show();
-
-
-//                        Toast.makeText(PropertyRecyclerActivityForUser.this, "userId= " + userId + ", ownerId= " + ownerId, Toast.LENGTH_SHORT).show();
-//                        Toast.makeText(PropertyRecyclerActivityForUser.this, "Parent ID: " + parentId, Toast.LENGTH_SHORT).show();
-
+                        intent.putExtra("phoneno",userPhoneno);
                         startActivity(intent);
                         break;
                     }
@@ -263,42 +173,6 @@ public class PropertyRecyclerActivityForUser extends AppCompatActivity {
         });
     }
 
-    private void retrieveParentInfoFromDatabase2(String propertyName, String propertyId, String nameOfState) {
-        DatabaseReference parentRef = FirebaseDatabase.getInstance("https://renth-aca8f-default-rtdb.firebaseio.com/").getReference("PropertyDetailsModel");
-        Query query = parentRef.orderByChild("state").equalTo(propertyName);
-
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @SuppressLint("LongLogTag")
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        String parentId = snapshot.getKey();
-                        String propertyId = snapshot.getKey();
-                        Intent intent = getIntent();
-                        intent.putExtra("property_id", propertyId);
-                        intent.putExtra("parent_id", parentId);
-                        intent.putExtra("user_id", userId);
-                        intent.putExtra("userName", userName);
-                        intent.putExtra("id", ownerId);
-
-
-                        Toast.makeText(PropertyRecyclerActivityForUser.this, "userId= " + userId + ", ownerId= " + ownerId, Toast.LENGTH_SHORT).show();
-//                        Toast.makeText(PropertyRecyclerActivityForUser.this, "Parent ID: " + parentId, Toast.LENGTH_SHORT).show();
-
-                        break;
-                    }
-                } else {
-                    Log.e("PropertyRecyclerActivity", "No parent found for property: " + propertyName);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e("PropertyRecyclerActivity", "Database query cancelled.", databaseError.toException());
-            }
-        });
-    }
 
     private void filter(String query) {
         ArrayList<PropertyDetailsModel> filteredList = new ArrayList<>();
@@ -345,25 +219,6 @@ public class PropertyRecyclerActivityForUser extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    //    private void txtSearch(String str) {
-//        Log.d("SearchQuery", "Search string: " + str);
-//
-//        Query query = FirebaseDatabase.getInstance().getReference()
-//                .child("PropertyDetailsModel")
-//                .orderByChild("state")
-//                .startAt(str)
-//                .endAt(str + "\uf8ff");
-//
-//        Log.d("SearchQuery", "Firebase Query: " + query.toString());
-//
-//        FirebaseRecyclerOptions<PropertyDetailsModel> options =
-//                new FirebaseRecyclerOptions.Builder<PropertyDetailsModel>()
-//                        .setQuery(query, PropertyDetailsModel.class)
-//                        .build();
-//
-//        // Update the existing adapter with new options
-//        myAdapter.updateOptions(options);
-//    }
     private void txtSearch(String str) {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("PropertyDetailsModel");
 
@@ -381,7 +236,6 @@ public class PropertyRecyclerActivityForUser extends AppCompatActivity {
                     if (property != null && property.getState() != null && property.getState().toLowerCase().startsWith(str.toLowerCase())) {
                         filteredList.add(property);
                         // Display property details in a toast
-                        Toast.makeText(PropertyRecyclerActivityForUser.this, "Property Name: " + property.getNameofproperty() + "\nState: " + property.getState(), Toast.LENGTH_SHORT).show();
                     }
                     else{
                         Toast.makeText(PropertyRecyclerActivityForUser.this, "data not found", Toast.LENGTH_SHORT).show();
@@ -398,51 +252,4 @@ public class PropertyRecyclerActivityForUser extends AppCompatActivity {
             }
         });
     }
-
-
-
-
-
-
-//    private void txtSearch(String str) {
-////        DatabaseReference parentRef = FirebaseDatabase.getInstance("https://renth-aca8f-default-rtdb.firebaseio.com/").getReference("PropertyDetailsModel");
-////        Query query = parentRef.orderByChild("state").startAt(str).endAt(str + "!");
-////
-////        query.addListenerForSingleValueEvent(new ValueEventListener() {
-////            @SuppressLint("LongLogTag")
-////            @Override
-////            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-////                if (dataSnapshot.exists()) {
-////                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-////                        String parentId = snapshot.getKey();
-////                        String propertyId = snapshot.child("propertyId").getValue(String.class);
-////                        String nameOfProperty = snapshot.child("nameofproperty").getValue(String.class);
-////                        String nameOfState = snapshot.child("state").getValue(String.class);
-////
-////                        retrieveParentInfoFromDatabase2(nameOfProperty,propertyId,nameOfState);
-////
-////                        MyAdapter adapter = new MyAdapter(this, list);
-//////
-////                         recyclerView.setAdapter(adapter);
-////                    }
-////                }
-//////
-//////
-////            }
-////
-////            @Override
-////            public void onCancelled(@NonNull DatabaseError error) {
-////
-////            }
-////        });
-//////
-//        FirebaseRecyclerOptions<PropertyDetailsModel> options = new FirebaseRecyclerOptions.Builder<PropertyDetailsModel>()
-//                .setQuery(FirebaseDatabase.getInstance().getReference().child("PropertyDetailsModel").orderByChild("state").startAt(str).endAt(str + "!"), PropertyDetailsModel.class)
-//                .build();
-//               myAdapter=new MyAdapter(options);
-//        MyAdapter myAdapter = new MyAdapter(options);
-//
-//        recyclerView.setAdapter(myAdapter);
-//
-//    }
 }

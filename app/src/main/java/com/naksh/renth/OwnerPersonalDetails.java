@@ -394,7 +394,6 @@ public class OwnerPersonalDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityOwnerPersonalDetailsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
         // Initialize FirebaseAuth instance
         mAuth = FirebaseAuth.getInstance();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -410,7 +409,6 @@ public class OwnerPersonalDetails extends AppCompatActivity {
 //                progressDialog.show();
                 String name = Objects.requireNonNull(binding.nameet.getText()).toString();
                 String ageString = Objects.requireNonNull(binding.ageet.getText()).toString();
-
                 String gender = getSelectedGender();
                 String phoneNumber = binding.ophonenoet.getText().toString();
                 String oemail = binding.oemailet.getText().toString();
@@ -431,7 +429,7 @@ public class OwnerPersonalDetails extends AppCompatActivity {
                 }
 
                 // Validate age range
-                if (age <= 0 || age >= 100) {
+                if (age <= 18 || age >= 100) {
                     // Display a toast indicating that the age is invalid
                     Toast.makeText(OwnerPersonalDetails.this, "Enter a valid age", Toast.LENGTH_SHORT).show();
                     return; // Exit the method if age is invalid
@@ -456,9 +454,6 @@ public class OwnerPersonalDetails extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()) {
-                            // Email exists in the "Users" node
-                            // Proceed with your logic
-                            // For example, you can start the next activity or perform other actions
                             saveDataAndNavigate();
                         } else {
                             // Email does not exist in the "Users" node
@@ -510,12 +505,7 @@ public class OwnerPersonalDetails extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         progressDialog.dismiss(); // Dismiss the progress dialog
                         if (task.isSuccessful()) {
-                            // Data saved successfully
-                            // Proceed with your logic
-                            // Retrieve owner name from the model
                             String ownerName = ownerPersonalDetailsModel.getOname();
-
-                            Toast.makeText(OwnerPersonalDetails.this, ownerId, Toast.LENGTH_SHORT).show();
                             Intent intent=new Intent(OwnerPersonalDetails.this,OwnerHomeActivity.class);
                             intent.putExtra("id", ownerId);
                             intent.putExtra("oname",ownerName);

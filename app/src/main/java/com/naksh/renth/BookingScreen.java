@@ -88,7 +88,7 @@ String phonoNo;
              phonoNo=intent.getStringExtra("phoneno");
              userEmail=intent.getStringExtra("userEmail");
 //            Toast.makeText(this, "ownerId in booking screen==="+ownerId, Toast.LENGTH_LONG).show();
-//            Toast.makeText(this, "userName in booking screen==="+userName, Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "phoneno in booking screen==="+phonoNo, Toast.LENGTH_LONG).show();
 
 //            Toast.makeText(this, "userId=="+userId, Toast.LENGTH_SHORT).show();
 //            Toast.makeText(this, "userName=="+userName, Toast.LENGTH_SHORT).show();
@@ -154,9 +154,9 @@ private void handleBookingButtonClick(String propertyId) {
                 intent.putExtra("phoneno",phonoNo);
                 intent.putExtra("userEmail",userEmail);
                 intent.putExtra("priceofproperty",price);
-                Toast.makeText(BookingScreen.this, "price==="+price, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(BookingScreen.this, "price==="+price, Toast.LENGTH_SHORT).show();
 
-                Toast.makeText(BookingScreen.this, "phoneNo="+phonoNo+"userName="+userName, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(BookingScreen.this, "phoneNo="+phonoNo+"userName="+userName, Toast.LENGTH_SHORT).show();
                     startActivity(intent);
 //                    Toast.makeText(BookingScreen.this, fDate + "From date is null", Toast.LENGTH_SHORT).show();
 //                    Toast.makeText(BookingScreen.this, tDate + "to date is null", Toast.LENGTH_SHORT).show();

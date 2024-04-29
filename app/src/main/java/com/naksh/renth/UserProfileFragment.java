@@ -72,7 +72,6 @@ public class UserProfileFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // Handle logout action
-                        Toast.makeText(requireContext(), "Logging out...", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(requireContext(), LoginScreen.class);
                         startActivity(intent);
                     }

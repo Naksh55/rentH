@@ -144,14 +144,11 @@ public class SignUpScreen extends AppCompatActivity {
         password = findViewById(R.id.etPassword);
         confirmPassword = findViewById(R.id.etConfirmPassword); // Initialize confirmPassword EditText
         togglePasswordVisibilityImage = findViewById(R.id.password_toggle); // Initialize ImageView
-
-
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Creating Account");
         progressDialog.setMessage("We are creating your account");
-
         signupbtn = findViewById(R.id.signup);
         signupbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,10 +156,10 @@ public class SignUpScreen extends AppCompatActivity {
                 int selectedId = binding.person2.getCheckedRadioButtonId();
                 if (selectedId != -1) {
                     if (!validation()) {
-                        return; // Return if validation fails
+                        return;
                     }
 
-                    progressDialog.show(); // Show progress dialog
+                    progressDialog.show();
                     mAuth.createUserWithEmailAndPassword(binding.etemail.getText().toString(), binding.etPassword.getText().toString())
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                 @Override
@@ -183,15 +180,8 @@ public class SignUpScreen extends AppCompatActivity {
                                         if (selectedId == R.id.u) {
                                             startActivity(new Intent(SignUpScreen.this, UserPersonalDetails.class));
                                         } else {
-
-//                                            String useremail = binding.etemail.getText().toString();
-//                                            Intent intent = new Intent(SignUpScreen.this, OwnerPersonalDetails.class);
-//                                            intent.putExtra("keyname", useremail);
-//                                            startActivity(intent);
-
                                             Intent intent = new Intent(SignUpScreen.this, OwnerPersonalDetails.class);
                                             startActivity(intent);
-
 
                                         }
                                     } else {

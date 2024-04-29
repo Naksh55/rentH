@@ -81,8 +81,7 @@ public class PaymentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
-//        int price = 100;
-//        int newprice=price*100;
+
         try {
             PhonePe.init(this);
         } catch (Exception e) {
@@ -91,11 +90,7 @@ public class PaymentActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null) {
             priceofproperty=intent.getStringExtra("pp");
-//            slot=intent.getStringExtra("slot");
             pop=intent.getStringExtra("propertyPrice");
-            Toast.makeText(this, "price="+priceofproperty, Toast.LENGTH_SHORT).show();
-
-//            Toast.makeText(this, "price="+priceofproperty, Toast.LENGTH_SHORT).show();
             Animation animation = AnimationUtils.loadAnimation(PaymentActivity.this, R.anim.slide_left_to_right);
 
             TextView ratepernight=findViewById(R.id.ratepernight);
@@ -113,15 +108,12 @@ public class PaymentActivity extends AppCompatActivity {
 
             propertyId = intent.getStringExtra("property_id");
             fromDate=intent.getStringExtra("fDate");
-//            Toast.makeText(this, "from date="+fromDate, Toast.LENGTH_SHORT).show();
             ownerId = intent.getStringExtra("owner_id");
             propertyName = intent.getStringExtra("propertyName");
             phoneNo = intent.getStringExtra("phoneno");
-//            Toast.makeText(this, "phoneno=" + phoneNo, Toast.LENGTH_SHORT).show();
             userEmail = intent.getStringExtra("userEmail");
             userName = intent.getStringExtra("userName");
-//            Toast.makeText(this, "ownerId=" + ownerId, Toast.LENGTH_LONG).show();
-//            Toast.makeText(this, "propertyId in payment antivity="+propertyId, Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "userEmail="+userEmail, Toast.LENGTH_SHORT).show();
             slots = intent.getIntExtra("slot", 0); // 0 is the default value if "slot" extra is not found
             if (slots == 0) {
                 Toast.makeText(this, "Slots is null", Toast.LENGTH_SHORT).show();
@@ -129,7 +121,6 @@ public class PaymentActivity extends AppCompatActivity {
             } else {
 //                Toast.makeText(this, "Slots: " + slots, Toast.LENGTH_SHORT).show();
             }
-//            Toast.makeText(this, String.valueOf(slots), Toast.LENGTH_SHORT).show();
 
             if (propertyId != null) {
                 parentId = intent.getStringExtra("id");
@@ -137,9 +128,6 @@ public class PaymentActivity extends AppCompatActivity {
                 userId = intent.getStringExtra("user_id");
                 username = intent.getStringExtra("userName");
                 notificationMessage = intent.getStringExtra("notification_message");
-//                Toast.makeText(this,notificationMessage , Toast.LENGTH_SHORT).show();
-
-//                Toast.makeText(this, "userId="+userId, Toast.LENGTH_SHORT).show();
                 retrieveDetailsFromDatabase(propertyId, parentId);
                 retrieveOwnerIDs();
 
@@ -154,10 +142,8 @@ public class PaymentActivity extends AppCompatActivity {
         FirebaseUser user = auth.getCurrentUser();
         if (user != null) {
             username = user.getDisplayName();
-
-            // Use the username here
         }
-//
+
 
         Button payment = findViewById(R.id.payment);
         payment.setOnClickListener(new View.OnClickListener() {
@@ -174,17 +160,11 @@ public class PaymentActivity extends AppCompatActivity {
                         if (dataSnapshot.exists()) {
                             String userName = dataSnapshot.child("name").getValue(String.class);
                             String userId = dataSnapshot.child("id").getValue(String.class);
-//                            Toast.makeText(PaymentActivity.this, "name="+userName, Toast.LENGTH_SHORT).show();
                                 if (userName != null) {
                                 String notificationMessage = "Your property " + propertyName + " has been booked by " + userName +" "+"on "+fromDate+ "\nCustomer contact: " + phoneNo + "\nCustomer Email: " + userEmail;
-                                    Toast.makeText(PaymentActivity.this, "notifocationmesage="+notificationMessage, Toast.LENGTH_LONG).show();
-//                                Toast.makeText(PaymentActivity.this, "userName="+userName, Toast.LENGTH_SHORT).show();
                                 Intent intent = getIntent();
                                 intent.putExtra("notification_message", notificationMessage);
 
-//                                NotificationFragment notificationFragment = new NotificationFragment();
-//                                notificationFragment.addNotification("notification_message");
-// Assuming you have a reference to the NotificationFragment
                                 String param2 = "";
                                 String id = "";
                                 NotificationFragment notificationFragment = NotificationFragment.newInstance(id, param2, notificationMessage, userId, userName);
@@ -196,7 +176,6 @@ public class PaymentActivity extends AppCompatActivity {
                                 intent.putExtra("property_id", propertyId);
                                 intent.putExtra("id", ownerId);
 
-//                                Toast.makeText(PaymentActivity.this, "userName="+userName, Toast.LENGTH_SHORT).show();
                                 createNotificationMessage(notificationMessage, userId, propertyId, ownerId);
 //                                startActivity(intent);
                             } else {
@@ -223,7 +202,7 @@ public class PaymentActivity extends AppCompatActivity {
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this)
                 .setTitle("Terms and Conditions")
-                .setMessage("......")
+                .setMessage("The total price includes the price of the Property and it increases when the slots are more than 1. A user has to pay extra money if he/she does any damage to the owner's property or to any of the items in owner's property. The price of damage will be decided by the owner itself.")
                 .setPositiveButton("Accept", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -237,19 +216,13 @@ public class PaymentActivity extends AppCompatActivity {
                                 if (dataSnapshot.exists()) {
                                     String userName = dataSnapshot.child("name").getValue(String.class);
                                     String userId = dataSnapshot.child("id").getValue(String.class);
-//                            Toast.makeText(PaymentActivity.this, "name="+userName, Toast.LENGTH_SHORT).show();
                                     if (userName != null) {
                                         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
                                         String currentTime = sdf.format(new Date());
                                         String notificationMessage = "Your property " + propertyName + " has been booked by " + userName +" "+"on "+fromDate+" "+"for "+slots+" slots "+ "at "+currentTime+"\nCustomer contact: " + phoneNo + "\nCustomer Email: " + userEmail;
-                                        Toast.makeText(PaymentActivity.this, "message="+notificationMessage, Toast.LENGTH_SHORT).show();
-//                                Toast.makeText(PaymentActivity.this, "userName="+userName, Toast.LENGTH_SHORT).show();
                                         Intent intent = getIntent();
                                         intent.putExtra("notification_message", notificationMessage);
 
-//                                NotificationFragment notificationFragment = new NotificationFragment();
-//                                notificationFragment.addNotification("notification_message");
-// Assuming you have a reference to the NotificationFragment
                                         String param2 = "";
                                         String id = "";
                                         NotificationFragment notificationFragment = NotificationFragment.newInstance(id, param2, notificationMessage, userId, userName);
@@ -261,9 +234,7 @@ public class PaymentActivity extends AppCompatActivity {
                                         intent.putExtra("property_id", propertyId);
                                         intent.putExtra("id", ownerId);
 
-//                                Toast.makeText(PaymentActivity.this, "userName="+userName, Toast.LENGTH_SHORT).show();
                                         createNotificationMessage(notificationMessage, userId, propertyId, ownerId);
-//                                startActivity(intent);
                                     } else {
                                         Toast.makeText(PaymentActivity.this, "User name not found", Toast.LENGTH_SHORT).show();
                                     }
@@ -280,13 +251,10 @@ public class PaymentActivity extends AppCompatActivity {
                         });
                         // Handle logout action
                         JSONObject data = new JSONObject();
-//                String upiId = "7973958511@ybl";
 
                         try {
                             data.put("merchantTransactionId", "MT7850590068188104");
                             data.put("merchantId", "PGTESTPAYUAT");
-//                    data.put("merchantId", upiId);
-
                             data.put("merchantUserId", "MUID123");
                             data.put("amount", 480000);
                             data.put("mobileNumber", "9999999999");
@@ -401,20 +369,12 @@ public class PaymentActivity extends AppCompatActivity {
                         String priceString = "<b>₹" + (pop*slots)  + "</b>"; // Assuming pop is the price
                         String numericPart = priceString.replaceAll("[^\\d]", ""); // Remove non-numeric characters
                         int price = Integer.parseInt(numericPart); // Convert the numeric part to an integer
-//                    Toast.makeText(PaymentActivity.this, priceString, Toast.LENGTH_SHORT).show();
                         CharSequence styledText = Html.fromHtml(priceString);
                         priceOfPropertyTextView.setText(styledText);
                         TextView totalPrice = findViewById(R.id.totalprice);
                         String priceString2 = "<b>₹" + (price + price*(0.2)) + "0" + "</b>";
-//                        String pricestring=(price + price*(0.2)+"0");
-//                        Intent i=getIntent();
-//                        i.putExtra("propertyPrice",pricestring);
                         CharSequence styledText2 = Html.fromHtml(priceString2);
                         totalPrice.setText(styledText2);// Assuming pop is the price
-//                        TextView cleaningCharges = findViewById(R.id.cleaningprice);
-//                        String priceString3 = "<b>₹" + (pop + pop * 0.2) + "0" + "</b>";
-//                        CharSequence styledText3 = Html.fromHtml(priceString3);
-//                        totalPrice.setText(styledText3);
 
                     }
                 }
@@ -450,7 +410,7 @@ public class PaymentActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
                                 // Notification message created successfully
-                                Toast.makeText(PaymentActivity.this, "Notification message created successfully", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(PaymentActivity.this, "Notification sent to owner", Toast.LENGTH_SHORT).show();
                             } else {
                                 // Failed to create notification message
                                 Toast.makeText(PaymentActivity.this, "Failed to create notification message", Toast.LENGTH_SHORT).show();

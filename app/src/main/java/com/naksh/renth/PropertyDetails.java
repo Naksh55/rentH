@@ -282,7 +282,6 @@ public class PropertyDetails extends AppCompatActivity {
     ImageView propertyDPImageView;
 
     EditText nameOfPropertyEditText,priceOfPropertyEditText,addressEditText,propertyDescriptionEditText;
-//    TextInputLayout typeofpropertyEditText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -290,19 +289,13 @@ public class PropertyDetails extends AppCompatActivity {
         setContentView(binding.getRoot());
         nameOfPropertyEditText = findViewById(R.id.nameofproperty);
         spinner = findViewById(R.id.spinner);
-//        typeofpropertyEditText = findViewById(R.id.typeofproperty);
         priceOfPropertyEditText = findViewById(R.id.priceofproperty);
         addressEditText = findViewById(R.id.addressEditText);
         spinnerState = findViewById(R.id.spinnerstate);
         spinnerCity = findViewById(R.id.spinnercity);
         propertyDescriptionEditText = findViewById(R.id.propertyDescriptionEditText);
         propertyDPImageView = findViewById(R.id.propertydp);
-        // Retrieve propertyId from Intent extras
-        // Retrieve ownerId from intent extras
         ownerId = getIntent().getStringExtra("id");
-        //        Toast.makeText(PropertyDetails.this, ownerId, Toast.LENGTH_SHORT).show();
-
-
 
         Spinner typeOfPropertySpinner = findViewById(R.id.spinner);
         Spinner cityspinner = findViewById(R.id.spinnercity);
@@ -1210,8 +1203,6 @@ public class PropertyDetails extends AppCompatActivity {
         Intent i=getIntent();
         if(i!=null) {
             oName= i.getStringExtra("oname");
-
-            Toast.makeText(this, "ownername="+oName, Toast.LENGTH_LONG).show();
 
         }
         else{

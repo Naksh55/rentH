@@ -18,7 +18,6 @@ String userId,userName,userEmail,userPhoneno;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_home);
-
         bottomNavigationView = findViewById(R.id.bottomnavigation);
         getSupportFragmentManager().beginTransaction().replace(R.id.container, userHomeFrament).commit();
         Intent intent=getIntent();
@@ -40,8 +39,6 @@ String userId,userName,userEmail,userPhoneno;
                     intent.putExtra("name",userName);
                     intent.putExtra("userEmail",userEmail);
                     intent.putExtra("phoneno",userPhoneno);
-
-
                     startActivity(intent);
                 }
                 else{
