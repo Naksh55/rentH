@@ -9,7 +9,7 @@ public class PropertyDetailsModel {
     String typeofproperty,address,city,state,propertydiscription;
     String fromdate,todate;
     String priceofproperty;
-    private String propertydp; // Assuming imageUrl is the URL of the image
+    private String propertydp,image1,image2,image3; // Assuming imageUrl is the URL of the image
     String ownerId;
     String oName;
     private String key; // Assuming key is a String
@@ -18,19 +18,18 @@ public class PropertyDetailsModel {
 
     public PropertyDetailsModel(){}
 
-    public PropertyDetailsModel(String nameofproperty,  String typeofproperty, String address, String city, String state, String propertydiscription, String priceofproperty, String propertydp,String oName){
-        this.nameofproperty = nameofproperty;
-        this.typeofproperty = typeofproperty;
-        this.address = address;
-        this.city = city;
-        this.state = state;
-        this.propertydiscription = propertydiscription;
-        this.priceofproperty = priceofproperty;
-        this.propertydp = propertydp;
-        this.oName=oName;
+public PropertyDetailsModel(String nameofproperty,  String typeofproperty, String address, String city, String state, String propertydiscription, String priceofproperty, String propertydp,String oName){
+    this.nameofproperty = nameofproperty;
+    this.typeofproperty = typeofproperty;
+    this.address = address;
+    this.city = city;
+    this.state = state;
+    this.propertydiscription = propertydiscription;
+    this.priceofproperty = priceofproperty;
+    this.propertydp = propertydp;
+    this.oName=oName;
 
-    }
-
+}
     public PropertyDetailsModel(String nameofproperty,  String typeofproperty, String address, String city, String state, String propertydiscription, String priceofproperty, String propertydp,String oName,String propertyId){
         this.nameofproperty = nameofproperty;
         this.typeofproperty = typeofproperty;
@@ -44,87 +43,28 @@ public class PropertyDetailsModel {
         this.propertyId=propertyId;
 
     }
-//    public PropertyDetailsModel(String nameofproperty, String typeofproperty, String address, String city, String state, String propertydiscription, String fromdate, String todate, int priceofproperty, String propertydp, String randomPropertyId) {
-//        this.nameofproperty = nameofproperty;
-//        this.typeofproperty = typeofproperty;
-//        this.address = address;
-//        this.city = city;
-//        this.state = state;
-//        this.propertydiscription = propertydiscription;
-//        this.fromdate = fromdate;
-//        this.todate = todate;
-//        this.priceofproperty = priceofproperty;
-//        this.propertydp = propertydp;
-//        this.randomPropertyId = randomPropertyId;
-//    }
 
-//    public PropertyDetailsModel(String nameofproperty, int priceofproperty, String typeofproperty, String address, String state, String city, String propertydiscription, String id, String propertydp, String fromdate, String todate) {
-//        this.nameofproperty = nameofproperty;
-//        this.id = id;
-//        this.typeofproperty = typeofproperty;
-//        this.address = address;
-//        this.city = city;
-//        this.state = state;
-//        this.propertydiscription = propertydiscription;
-//        this.priceofproperty = priceofproperty;
-//        this.propertydp = propertydp;
-//        this.fromdate=fromdate;
-//        this.todate=todate;
-//    }
+public PropertyDetailsModel(String nameofproperty, String priceofproperty, String typeofproperty, String address, String state, String city, String propertydiscription, String ownerId, String imageUrl, String fromDateString, String toDateString,String oName,String propertyId) {
+    this.nameofproperty = nameofproperty;
+    this.priceofproperty = priceofproperty;
+    this.typeofproperty = typeofproperty;
+    this.address = address;
+    this.state = state;
+    this.city = city;
+    this.propertydiscription = propertydiscription;
+    this.ownerId = ownerId; // Set ownerId
+    this.propertydp = imageUrl;
+    this.fromdate = fromDateString;
+    this.todate = toDateString;
+    this.oName=oName;
+    this.propertyId=propertyId;
 
-    public PropertyDetailsModel(String nameofproperty, String priceofproperty, String typeofproperty, String address, String state, String city, String propertydiscription, String ownerId, String imageUrl, String fromDateString, String toDateString,String oName,String propertyId) {
-        this.nameofproperty = nameofproperty;
-        this.priceofproperty = priceofproperty;
-        this.typeofproperty = typeofproperty;
-        this.address = address;
-        this.state = state;
-        this.city = city;
-        this.propertydiscription = propertydiscription;
-        this.ownerId = ownerId; // Set ownerId
-        this.propertydp = imageUrl;
-        this.fromdate = fromDateString;
-        this.todate = toDateString;
-        this.oName=oName;
-        this.propertyId=propertyId;
-
-    }
-
+}
     public PropertyDetailsModel( String propertyName, String typeOfProperty, String priceofproperty) {
         this.nameofproperty=propertyName;
         this.typeofproperty=typeOfProperty;
         this.priceofproperty=priceofproperty;
     }
-//    public PropertyDetailsModel(String nameofproperty, String typeofproperty, String address, String city, String state, String propertydiscription, String fromdate, String todate, int priceofproperty,String imageUrl) {
-////        this.nameofproperty = nameofproperty;
-//////        this.typeofproperty = typeofproperty;
-//////        this.address = address;
-//////        this.city = city;
-//////        this.state = state;
-//////        this.propertydiscription = propertydiscription;
-//////        this.fromdate = fromdate;
-//////        this.todate = todate;
-////        this.priceofproperty = priceofproperty;
-//////        this.imageUrl=imageUrl;
-//    }
-
-//    public PropertyDetailsModel(String nameofproperty, String typeofproperty, String address, String city, String state, String propertydiscription, String fromdate, String todate, int priceofproperty) {
-//
-//        this.nameofproperty = nameofproperty;
-////        this.typeofproperty = typeofproperty;
-////        this.address = address;
-////        this.city = city;
-////        this.state = state;
-////        this.propertydiscription = propertydiscription;
-////        this.fromdate = fromdate;
-////        this.todate = todate;
-//        this.priceofproperty = priceofproperty;
-//    }
-
-
-//    public PropertyDetailsModel(String nameofproperty, int priceofproperty) {
-//        this.nameofproperty = nameofproperty;
-//        this.priceofproperty = priceofproperty;
-//    }
 
 
 
