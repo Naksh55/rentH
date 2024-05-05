@@ -1319,27 +1319,14 @@ public class PropertyDetails extends AppCompatActivity {
         startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE);
     }
 
-    @Override
+ @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == GALLERY_REQUEST_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {
             selectedImageUri = data.getData();
             binding.propertydp.setImageURI(selectedImageUri);
         }
-        if (requestCode == GALLERY_REQUEST_CODE2 && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            selectedImageUri2 = data.getData();
-            binding.propertydp2.setImageURI(selectedImageUri2);
-        }
-        if (requestCode == GALLERY_REQUEST_CODE3 && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            selectedImageUri3 = data.getData();
-            binding.propertydp3.setImageURI(selectedImageUri3);
-        }
-        if (requestCode == GALLERY_REQUEST_CODE4 && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            selectedImageUri4 = data.getData();
-            binding.propertydp4.setImageURI(selectedImageUri4);
-        }
     }
-
 
     private void uploadImageToFirebaseStorage(String ownerId, Uri imageUri) {
         StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("images/" + UUID.randomUUID().toString());
@@ -1347,100 +1334,59 @@ public class PropertyDetails extends AppCompatActivity {
         storageRef.putFile(imageUri)
                 .addOnSuccessListener(taskSnapshot -> storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
                     String imageUrl = uri.toString();
-                    storePropertyDetails(ownerId,  imageUrl);
+                    storePropertyDetails(ownerId, imageUrl);
                 }))
                 .addOnFailureListener(e -> {
                     progressDialog.dismiss();
                     Toast.makeText(PropertyDetails.this, "Failed to upload image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
     }
-//
-//    private void uploadImageToFirebaseStorage2(String ownerId, Uri imageUri2) {
-//        StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("images/" + UUID.randomUUID().toString());
-//
-//        storageRef.putFile(imageUri2)
-//                .addOnSuccessListener(taskSnapshot -> storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-//                    String imageUrl2 = uri.toString();
-//                    storePropertyDetails(ownerId, null, imageUrl2, null, null);
-//                }))
-//                .addOnFailureListener(e -> {
-//                    progressDialog.dismiss();
-//                    Toast.makeText(PropertyDetails.this, "Failed to upload image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-//                });
-//
-//    }
-//    private void uploadImageToFirebaseStorage3(String ownerId, Uri imageUri3) {
-//        StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("images/" + UUID.randomUUID().toString());
-//
-//        storageRef.putFile(imageUri3)
-//                .addOnSuccessListener(taskSnapshot -> storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-//                    String imageUrl3 = uri.toString();
-//                    storePropertyDetails(ownerId, null, imageUrl3, null, null);
-//                }))
-//                .addOnFailureListener(e -> {
-//                    progressDialog.dismiss();
-//                    Toast.makeText(PropertyDetails.this, "Failed to upload image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-//                });
-//    }
-//    private void uploadImageToFirebaseStorage4(String ownerId, Uri imageUri4) {
-//        StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("images/" + UUID.randomUUID().toString());
-//
-//        storageRef.putFile(imageUri4)
-//                .addOnSuccessListener(taskSnapshot -> storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-//                    String imageUrl4 = uri.toString();
-//                    storePropertyDetails(ownerId, null, imageUrl4, null, null);
-//                }))
-//                .addOnFailureListener(e -> {
-//                    progressDialog.dismiss();
-//                    Toast.makeText(PropertyDetails.this, "Failed to upload image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-//                });
-//    }
-private void storePropertyDetails(String ownerId, String imageUrl) {
-    String nameofproperty = Objects.requireNonNull(binding.nameofproperty.getText()).toString();
-    String priceofproperty = String.valueOf(Integer.parseInt(Objects.requireNonNull(binding.priceofproperty.getText()).toString()));
-    String typeofproperty = ((Spinner) findViewById(R.id.spinner)).getSelectedItem().toString();
-    String address = Objects.requireNonNull(binding.addressEditText.getText()).toString();
-    String state =  ((Spinner)findViewById(R.id.spinnerstate)).getSelectedItem().toString();
-    String city =  ((Spinner)findViewById(R.id.spinnercity)).getSelectedItem().toString();
-    String propertydiscription = Objects.requireNonNull(binding.propertyDescriptionEditText.getText()).toString();
-    String fromDateString = Objects.requireNonNull(binding.fromdate.getText()).toString();
-    String toDateString = Objects.requireNonNull(binding.todate.getText()).toString();
-    propertyId = propertiesRef.push().getKey();
+
+    private void storePropertyDetails(String ownerId, String imageUrl) {
+        String nameofproperty = Objects.requireNonNull(binding.nameofproperty.getText()).toString();
+        String priceofproperty = String.valueOf(Integer.parseInt(Objects.requireNonNull(binding.priceofproperty.getText()).toString()));
+        String typeofproperty = ((Spinner) findViewById(R.id.spinner)).getSelectedItem().toString();
+        String address = Objects.requireNonNull(binding.addressEditText.getText()).toString();
+        String state =  ((Spinner)findViewById(R.id.spinnerstate)).getSelectedItem().toString();
+        String city =  ((Spinner)findViewById(R.id.spinnercity)).getSelectedItem().toString();
+        String propertydiscription = Objects.requireNonNull(binding.propertyDescriptionEditText.getText()).toString();
+        String fromDateString = Objects.requireNonNull(binding.fromdate.getText()).toString();
+        String toDateString = Objects.requireNonNull(binding.todate.getText()).toString();
+        propertyId = propertiesRef.push().getKey();
 
 
-    // Explicitly set the propertyId in the PropertyDetailsModel
-    PropertyDetailsModel propertyDetailsModel;
+        // Explicitly set the propertyId in the PropertyDetailsModel
+        PropertyDetailsModel propertyDetailsModel;
 
-    if (imageUrl != null) {
-        propertyDetailsModel = new PropertyDetailsModel(nameofproperty, priceofproperty, typeofproperty, address, state, city, propertydiscription, ownerId, imageUrl, fromDateString, toDateString,oName,propertyId);
-    } else {
-        propertyDetailsModel = new PropertyDetailsModel(nameofproperty, priceofproperty, typeofproperty, address, state, city, propertydiscription, ownerId, imageUrl, fromDateString, toDateString,oName,propertyId);
-    }
-    //        Toast.makeText(PropertyDetails.this, ownerId, Toast.LENGTH_SHORT).show();
-    assert ownerId != null;
+        if (imageUrl != null) {
+            propertyDetailsModel = new PropertyDetailsModel(nameofproperty, priceofproperty, typeofproperty, address, state, city, propertydiscription, ownerId, imageUrl, fromDateString, toDateString,oName,propertyId);
+        } else {
+            propertyDetailsModel = new PropertyDetailsModel(nameofproperty, priceofproperty, typeofproperty, address, state, city, propertydiscription, ownerId, imageUrl, fromDateString, toDateString,oName,propertyId);
+        }
+        //        Toast.makeText(PropertyDetails.this, ownerId, Toast.LENGTH_SHORT).show();
+        assert ownerId != null;
 //            propertiesRef.child(ownerId).push().setValue(propertyDetailsModel)
 
 // Set the owner ID within the propertyDetailsModel
-    propertyDetailsModel.setOwnerId(ownerId);
+        propertyDetailsModel.setOwnerId(ownerId);
 
 // Set the property details under the generated key
-    assert propertyId != null;
-    propertiesRef.child(propertyId).setValue(propertyDetailsModel)
-            .addOnCompleteListener(task -> {
-                progressDialog.dismiss();
-                if (task.isSuccessful()) {
-                    Intent intent = new Intent(PropertyDetails.this, OwnerHomeActivity.class);
-                    intent.putExtra("id", ownerId);
-                    intent.putExtra("propertyId", propertyId);
-                    intent.putExtra("oname",oName);
+        assert propertyId != null;
+        propertiesRef.child(propertyId).setValue(propertyDetailsModel)
+                .addOnCompleteListener(task -> {
+                    progressDialog.dismiss();
+                    if (task.isSuccessful()) {
+                        Intent intent = new Intent(PropertyDetails.this, OwnerHomeActivity.class);
+                        intent.putExtra("id", ownerId);
+                        intent.putExtra("propertyId", propertyId);
+                        intent.putExtra("oname",oName);
 
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(PropertyDetails.this, "Failed to store property details", Toast.LENGTH_SHORT).show();
-                }
-            });
-}
-
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(PropertyDetails.this, "Failed to store property details", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
 
     public boolean validation() {
         String oname = nameOfPropertyEditText.getText().toString().trim();
