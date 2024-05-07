@@ -415,6 +415,13 @@ public class OwnerHomeActivity extends AppCompatActivity {
             }
         });
         // Other initialization code...
+        ImageView walletImg = findViewById(R.id.walletImg);
+        profileImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadWalletFragmentWithOwnerId(ownerId);
+            }
+        });
 
     }
 
@@ -439,6 +446,15 @@ public class OwnerHomeActivity extends AppCompatActivity {
                 .commit();
     }
 
+    private void loadWalletFragmentWithOwnerId(String ownerId) {
+        // Create a new instance of the OwnerProfileFragment with ownerId
+        WalletFragment fragment = WalletFragment.newInstance(ownerId, null);
+
+        // Start a new transaction to replace the container with the fragment
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container, fragment)
+                .commit();
+    }
     private void retrievePropertiesForOwner(String ownerId) {
         DatabaseReference propertiesRef = FirebaseDatabase.getInstance().getReference()
                 .child("PropertyDetailsModel");

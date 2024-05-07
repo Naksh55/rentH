@@ -23,7 +23,17 @@
         android:textStyle="bold"
         android:textSize="30sp"
         android:layout_marginTop="13dp"
-        android:layout_marginLeft="50dp" />
+        android:layout_marginLeft="50dp"
+        android:id="@+id/home"/>
+
+    <ImageView
+        android:id="@+id/walletImg"
+        android:layout_width="50sp"
+        android:layout_height="50sp"
+        android:src="@drawable/baseline_account_balance_wallet_24"
+        android:layout_marginLeft="370dp"
+        android:layout_marginTop="10dp"/>
+
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -51,6 +61,7 @@
         app:itemIconTint="@color/bottom_nav_color"
         app:itemTextColor="@color/bottom_nav_color"
         app:menu="@menu/bottom_navigation_menu2" />
+
 
 
 </RelativeLayout>

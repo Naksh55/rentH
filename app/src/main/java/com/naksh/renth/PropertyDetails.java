@@ -267,7 +267,7 @@ public class PropertyDetails extends AppCompatActivity {
     private FirebaseAuth mAuth;
     ProgressDialog progressDialog;
     DatabaseReference propertiesRef;
-//    private static final int GALLERY_REQUEST_CODE = 1001; // Request code for gallery intent
+    //    private static final int GALLERY_REQUEST_CODE = 1001; // Request code for gallery intent
     private Uri selectedImageUri; // Uri to store the selected image
     private Uri selectedImageUri2; // Uri to store the selected image
     private Uri selectedImageUri3; // Uri to store the selected image
@@ -1319,7 +1319,7 @@ public class PropertyDetails extends AppCompatActivity {
         startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE);
     }
 
- @Override
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == GALLERY_REQUEST_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {
