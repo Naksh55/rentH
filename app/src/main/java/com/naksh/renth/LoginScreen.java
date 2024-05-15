@@ -374,6 +374,7 @@
         import androidx.annotation.NonNull;
         import androidx.appcompat.app.AppCompatActivity;
 
+        import android.annotation.SuppressLint;
         import android.app.ProgressDialog;
         import android.content.Intent;
         import android.os.Bundle;
@@ -400,6 +401,7 @@
         import com.google.firebase.database.DatabaseError;
         import com.google.firebase.database.DatabaseReference;
         import com.google.firebase.database.FirebaseDatabase;
+        import com.google.firebase.database.Query;
         import com.google.firebase.database.ValueEventListener;
         import com.naksh.renth.databinding.ActivityLoginScreenBinding;
 
@@ -420,6 +422,7 @@ public class LoginScreen extends AppCompatActivity {
     String ownerId;
     String userId;
     String userName;
+    int totalPrice;
     ImageView togglePasswordVisibilityImage; // Change to ImageView
 //    TextView forgotPasswordTV;
 
@@ -593,7 +596,74 @@ public class LoginScreen extends AppCompatActivity {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         String  ownerid = snapshot.child("id").getValue(String.class);
                          String ownername = snapshot.child("oname").getValue(String.class);
+//                        DatabaseReference database = FirebaseDatabase.getInstance().getReference("NotificationMessage").child("-NxxMi0uFXUv1OTvsZV5");
+//
+//                        database.addListenerForSingleValueEvent(new ValueEventListener() {
+//                            @Override
+//                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                                if (dataSnapshot.exists()) {
+//                                    // Retrieve property details
+//                                    String notificationMessage = dataSnapshot.child("notificationMessage").getValue(String.class);
+//                                    String userId = dataSnapshot.child("userId").getValue(String.class);
+//                                    String propertyId = dataSnapshot.child("propertyId").getValue(String.class);
+//                                    String ownerid = dataSnapshot.child("ownerId").getValue(String.class);
+//                                    String notificationId=dataSnapshot.child("notificationId").getValue(String.class);
+//                                    Integer totalprice=dataSnapshot.child("totalprice").getValue(Integer.class);
+//                                    Toast.makeText(LoginScreen.this, "price="+totalprice, Toast.LENGTH_SHORT).show();
+//                                    // You can directly retrieve the ownerId from the method parameter
+//                                    // Assumingyou want to send this data to another activity
+//                                    Intent intent = getIntent();
+//                                    intent.putExtra("notification_message", notificationMessage);
+//                                    intent.putExtra("owner_id", ownerid); // Use the ownerId from the method parameter
+//                                    intent.putExtra("user_id", userId);
+//                                    intent.putExtra("propertyId", propertyId);
+//                                    intent.putExtra("totalprice", totalprice);
+//
+//
+//                                } else {
+//                                    // Handle the case where no property details are found
+//                                    Toast.makeText(LoginScreen.this, "No property details found", Toast.LENGTH_SHORT).show();
+//                                }
+//                            }
+//
+//                            @Override
+//                            public void onCancelled(@NonNull DatabaseError error) {
+//                                // Handle database error
+//                            }
+//                        });
 
+                        DatabaseReference parentRef = FirebaseDatabase.getInstance("https://renth-aca8f-default-rtdb.firebaseio.com/").getReference("NotificationMessage");
+                        Query query = parentRef.orderByChild("notificationId");
+
+                        query.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @SuppressLint("LongLogTag")
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.exists()) {
+                                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                        String notificationId = snapshot.getKey();
+                                        Integer totalprice=snapshot.child("totalprice").getValue(Integer.class);
+                                        Toast.makeText(LoginScreen.this, "totalvalue in login screen=="+totalprice, Toast.LENGTH_SHORT).show();
+
+                                        Toast.makeText(LoginScreen.this, "nId="+notificationId, Toast.LENGTH_SHORT).show();
+//                                        String ownerId = snapshot.child("ownerId").getValue(String.class); // Assuming email is stored under "email" child node
+                                        Intent intent =getIntent();
+                                        intent.putExtra("nId", notificationId);
+                                        intent.putExtra("totalprice", totalprice);
+
+
+                                        break;
+                                    }
+                                } else {
+//                                    Log.e("PropertyRecyclerActivity", "No parent found for property: " + propertyName);
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                Log.e("PropertyRecyclerActivity", "Database query cancelled.", databaseError.toException());
+                            }
+                        });
                         if (ownerid != null) {
                             DatabaseReference userRef = FirebaseDatabase.getInstance().getReference()
                                     .child("Users");
@@ -618,6 +688,7 @@ public class LoginScreen extends AppCompatActivity {
                                                     intent.putExtra("oname", ownername);
                                                     intent.putExtra("notification_message", notificationMessage);
                                                     intent.putExtra("userName", userName);
+
                                                     startActivity(intent);
                                                     finish();
                                                     overridePendingTransition(R.anim.slide_in_left,R.anim.slide_in_right);

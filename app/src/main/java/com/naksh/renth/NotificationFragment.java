@@ -1,5 +1,6 @@
 package com.naksh.renth;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -128,8 +129,25 @@ public void onCreate(Bundle savedInstanceState) {
                 notificationMessages.clear(); // Clear existing data
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     String ownerid = snapshot.child("ownerId").getValue(String.class);
+                    Integer totalPriceInteger = snapshot.child("totalprice").getValue(Integer.class);
+                    int totalprice = (totalPriceInteger != null) ? totalPriceInteger : 0; // Default value if totalprice is null
+                    Log.d("Database Values", "OwnerId: " + ownerid + ", TotalPrice: " + totalprice);
+
                     if (ownerid != null && ownerid.equals(ownerId)) { // Replace currentUserOwnerId with the ownerId of the current user
                         String message = snapshot.child("notificationMessage").getValue(String.class);
+//                        Integer totalPriceInteger = snapshot.child("totalprice").getValue(Integer.class);
+//                        int totalprice = (totalPriceInteger != null) ? totalPriceInteger : 0; // Default value if totalprice is null
+//                        Toast.makeText(getContext(), "price="+totalprice, Toast.LENGTH_SHORT).show();
+// Now you can safely use 'totalprice' variable
+                        Toast.makeText(getContext(), "price="+totalprice, Toast.LENGTH_SHORT).show();
+
+                        Bundle bundle = new Bundle();
+                        bundle.putString("totalPrice", String.valueOf(totalprice));
+// Create new fragment instance and set arguments
+                        WalletFragment walletFragment = new WalletFragment();
+                        walletFragment.setArguments(bundle);
+
+
                         if (message != null) {
                             notificationMessages.add(message);
                         }

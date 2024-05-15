@@ -321,6 +321,7 @@ public class OwnerHomeActivity extends AppCompatActivity {
     String ownerName;
     FirebaseDatabase database;
     String phoneNo;
+    int totalprice;
 
     TextView ownerNameTextView, ownerPhoneNumberTextView, ownerEmailTextView;
 
@@ -336,9 +337,12 @@ public class OwnerHomeActivity extends AppCompatActivity {
             database = FirebaseDatabase.getInstance();
             ownerId = intent.getStringExtra("id");
             phoneNo=intent.getStringExtra("phoneno");
+            totalprice=intent.getIntExtra("totalprice",0);
+            Toast.makeText(OwnerHomeActivity.this, "price in ....."+totalprice, Toast.LENGTH_SHORT).show();
+
 
         }
-
+//        Toast.makeText(this, "totalprice="+totalprice, Toast.LENGTH_SHORT).show();
         DatabaseReference database = FirebaseDatabase.getInstance().getReference("NotificationMessage");
 
         database.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -354,6 +358,9 @@ public class OwnerHomeActivity extends AppCompatActivity {
                     String userId = dataSnapshot.child("userId").getValue(String.class);
                     String propertyId = dataSnapshot.child("propertyId").getValue(String.class);
                     String ownerid = dataSnapshot.child("ownerId").getValue(String.class);
+                    Integer totalprice = dataSnapshot.child("totalprice").getValue(Integer.class);
+//                    Toast.makeText(OwnerHomeActivity.this, "price in ....."+totalprice, Toast.LENGTH_SHORT).show();
+
 
                 } else {
                     // Handle the case where no property details are found
@@ -416,7 +423,7 @@ public class OwnerHomeActivity extends AppCompatActivity {
         });
         // Other initialization code...
         ImageView walletImg = findViewById(R.id.walletImg);
-        profileImg.setOnClickListener(new View.OnClickListener() {
+        walletImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 loadWalletFragmentWithOwnerId(ownerId);
@@ -448,7 +455,7 @@ public class OwnerHomeActivity extends AppCompatActivity {
 
     private void loadWalletFragmentWithOwnerId(String ownerId) {
         // Create a new instance of the OwnerProfileFragment with ownerId
-        WalletFragment fragment = WalletFragment.newInstance(ownerId, null);
+        WalletFragment fragment = WalletFragment.newInstance(ownerId, null,totalprice);
 
         // Start a new transaction to replace the container with the fragment
         getSupportFragmentManager().beginTransaction()
@@ -516,6 +523,7 @@ public class OwnerHomeActivity extends AppCompatActivity {
                     String propertyId = dataSnapshot.child("propertyId").getValue(String.class);
                     String ownerid = dataSnapshot.child("ownerId").getValue(String.class);
                     String notificationId=dataSnapshot.child("notificationId").getValue(String.class);
+                    Integer totalprice=dataSnapshot.child("totalprice").getValue(Integer.class);
                     // You can directly retrieve the ownerId from the method parameter
                     // Assumingyou want to send this data to another activity
                     Intent intent = getIntent();
@@ -523,6 +531,8 @@ public class OwnerHomeActivity extends AppCompatActivity {
                     intent.putExtra("owner_id", ownerid); // Use the ownerId from the method parameter
                     intent.putExtra("user_id", userId);
                     intent.putExtra("propertyId", propertyId);
+                    intent.putExtra("totalprice", totalprice);
+
 
                 } else {
                     // Handle the case where no property details are found

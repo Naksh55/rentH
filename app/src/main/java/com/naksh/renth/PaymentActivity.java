@@ -77,6 +77,8 @@ public class PaymentActivity extends AppCompatActivity {
     String fromDate;
     String priceofproperty;
     String pop;
+    int proamount;
+
     String newpriceofproperty;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,10 +92,11 @@ public class PaymentActivity extends AppCompatActivity {
         }
         Intent intent = getIntent();
         if (intent != null) {
-            priceofproperty=intent.getStringExtra("pp");
+            priceofproperty=intent.getStringExtra("priceofproperty");
             pop=intent.getStringExtra("propertyPrice");
+            proamount= Integer.parseInt(priceofproperty); // Convert string to int
+            Toast.makeText(this, "price=="+priceofproperty, Toast.LENGTH_SHORT).show();
             Animation animation = AnimationUtils.loadAnimation(PaymentActivity.this, R.anim.slide_left_to_right);
-
             TextView ratepernight=findViewById(R.id.ratepernight);
             ratepernight.startAnimation(animation);
             TextView cleaningcharges=findViewById(R.id.cleaningcharges);
@@ -116,6 +119,8 @@ public class PaymentActivity extends AppCompatActivity {
             userName = intent.getStringExtra("userName");
 //            Toast.makeText(this, "userEmail="+userEmail, Toast.LENGTH_SHORT).show();
             slots = intent.getIntExtra("slot", 0); // 0 is the default value if "slot" extra is not found
+            proamount=proamount*slots;
+            Toast.makeText(this, "new amt-="+proamount, Toast.LENGTH_SHORT).show();
             if (slots == 0) {
                 Toast.makeText(this, "Slots is null", Toast.LENGTH_SHORT).show();
                 return; // Exit the method as slots is null
@@ -161,7 +166,7 @@ public class PaymentActivity extends AppCompatActivity {
                         if (dataSnapshot.exists()) {
                             String userName = dataSnapshot.child("name").getValue(String.class);
                             String userId = dataSnapshot.child("id").getValue(String.class);
-                                if (userName != null) {
+                            if (userName != null) {
                                 String notificationMessage = "Your property " + propertyName + " has been booked by " + userName +" "+"on "+fromDate+ "\nCustomer contact: " + phoneNo + "\nCustomer Email: " + userEmail;
                                 Intent intent = getIntent();
                                 intent.putExtra("notification_message", notificationMessage);
@@ -177,7 +182,7 @@ public class PaymentActivity extends AppCompatActivity {
                                 intent.putExtra("property_id", propertyId);
                                 intent.putExtra("id", ownerId);
 
-                                createNotificationMessage(notificationMessage, userId, propertyId, ownerId);
+                                createNotificationMessage(notificationMessage, userId, propertyId, ownerId,proamount);
 //                                startActivity(intent);
                             } else {
                                 Toast.makeText(PaymentActivity.this, "User name not found", Toast.LENGTH_SHORT).show();
@@ -220,8 +225,8 @@ public class PaymentActivity extends AppCompatActivity {
                                     if (userName != null) {
                                         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
                                         String currentTime = sdf.format(new Date());
-                                        String notificationMessage = "Your property " + propertyName + " has been booked by " + userName +" "+"on "+fromDate+" "+"for "+slots+" slots "+ "at "+currentTime+"\nCustomer contact: " + phoneNo + "\nCustomer Email: " + userEmail;
-                                        Intent intent = getIntent();
+                                        String notificationMessage = "Your property " + propertyName + " has been booked by " + userName +" "+"on "+fromDate+" "+"for "+slots+" slots "+ "at "+currentTime+" for ₹"+proamount+"\nCustomer contact: " + phoneNo + "\nCustomer Email: " + userEmail;
+                                        Intent intent = new Intent(PaymentActivity.this,PropertyRecyclerActivityForUser.class);
                                         intent.putExtra("notification_message", notificationMessage);
 
                                         String param2 = "";
@@ -235,7 +240,8 @@ public class PaymentActivity extends AppCompatActivity {
                                         intent.putExtra("property_id", propertyId);
                                         intent.putExtra("id", ownerId);
 
-                                        createNotificationMessage(notificationMessage, userId, propertyId, ownerId);
+                                        createNotificationMessage(notificationMessage, userId, propertyId, ownerId,proamount);
+                                        startActivity(intent);
                                     } else {
                                         Toast.makeText(PaymentActivity.this, "User name not found", Toast.LENGTH_SHORT).show();
                                     }
@@ -251,36 +257,36 @@ public class PaymentActivity extends AppCompatActivity {
                             }
                         });
                         // Handle logout action
-                        JSONObject data = new JSONObject();
-
-                        try {
-                            data.put("merchantTransactionId", "MT7850590068188104");
-                            data.put("merchantId", "PGTESTPAYUAT");
-                            data.put("merchantUserId", "MUID123");
-                            data.put("amount", 480000);
-                            data.put("mobileNumber", "9999999999");
-                            data.put("callbackUrl", "https://webhook.site/7fbbf7fb-c73c-4504-8467-14b0845d7c38");
-                            JSONObject paymentInstrument = new JSONObject();
-                            paymentInstrument.put("type", "PAY_PAGE");
-                            paymentInstrument.put("targetApp", "com.phonepe.simulator");
-                            data.put("paymentInstrument", paymentInstrument);
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        // Convert data HashMap to JSON and then encode to Base64
-                        String base64Body = Base64.encodeToString(data.toString().getBytes(Charset.defaultCharset()), Base64.NO_WRAP);
-                        String checksum = sha256(base64Body + "/pg/v1/pay" + "099eb0cd-02cf-4e2a-8aca-3e6c6aff0399") + "###1";
-                        B2BPGRequest b2BPGRequest = new B2BPGRequestBuilder()
-                                .setData(base64Body)
-                                .setChecksum(checksum)
-                                .setUrl("/pg/v1/pay")
-                                .build();
-                        try {
-                            startActivityForResult(PhonePe.getImplicitIntent(PaymentActivity.this, b2BPGRequest, ""), 1);
-                        } catch (PhonePeInitException e) {
-                            e.printStackTrace();
-                        }
+//                        JSONObject data = new JSONObject();
+//
+//                        try {
+//                            data.put("merchantTransactionId", "MT7850590068188104");
+//                            data.put("merchantId", "PGTESTPAYUAT");
+//                            data.put("merchantUserId", "MUID123");
+//                            data.put("amount", 480000);
+//                            data.put("mobileNumber", "9999999999");
+//                            data.put("callbackUrl", "https://webhook.site/7fbbf7fb-c73c-4504-8467-14b0845d7c38");
+//                            JSONObject paymentInstrument = new JSONObject();
+//                            paymentInstrument.put("type", "PAY_PAGE");
+//                            paymentInstrument.put("targetApp", "com.phonepe.simulator");
+//                            data.put("paymentInstrument", paymentInstrument);
+//
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//                        // Convert data HashMap to JSON and then encode to Base64
+//                        String base64Body = Base64.encodeToString(data.toString().getBytes(Charset.defaultCharset()), Base64.NO_WRAP);
+//                        String checksum = sha256(base64Body + "/pg/v1/pay" + "099eb0cd-02cf-4e2a-8aca-3e6c6aff0399") + "###1";
+//                        B2BPGRequest b2BPGRequest = new B2BPGRequestBuilder()
+//                                .setData(base64Body)
+//                                .setChecksum(checksum)
+//                                .setUrl("/pg/v1/pay")
+//                                .build();
+//                        try {
+//                            startActivityForResult(PhonePe.getImplicitIntent(PaymentActivity.this, b2BPGRequest, ""), 1);
+//                        } catch (PhonePeInitException e) {
+//                            e.printStackTrace();
+//                        }
                     }
                 })
                 .setNegativeButton("Reject", null);
@@ -369,6 +375,9 @@ public class PaymentActivity extends AppCompatActivity {
                         TextView priceOfPropertyTextView = findViewById(R.id.ratepernightprice);
                         String priceString = "<b>₹" + (pop*slots)  + "</b>"; // Assuming pop is the price
                         String numericPart = priceString.replaceAll("[^\\d]", ""); // Remove non-numeric characters
+                        Intent i=getIntent();
+                        i.putExtra("proamount",numericPart);
+                        Toast.makeText(PaymentActivity.this, numericPart, Toast.LENGTH_SHORT).show();
                         int price = Integer.parseInt(numericPart); // Convert the numeric part to an integer
                         CharSequence styledText = Html.fromHtml(priceString);
                         priceOfPropertyTextView.setText(styledText);
@@ -393,7 +402,7 @@ public class PaymentActivity extends AppCompatActivity {
         });
     }
 
-    private void createNotificationMessage(String notificationMessage, String userId, String propertyId,String ownerId) {
+    private void createNotificationMessage(String notificationMessage, String userId, String propertyId,String ownerId,int proamount) {
         DatabaseReference notificationRef = FirebaseDatabase.getInstance().getReference("NotificationMessage");
         String notificationId = notificationRef.push().getKey(); // Generate unique ID for the notification
 
@@ -404,6 +413,7 @@ public class PaymentActivity extends AppCompatActivity {
             newNotificationRef.child("notificationMessage").setValue(notificationMessage);
             newNotificationRef.child("userId").setValue(userId);
             newNotificationRef.child("ownerId").setValue(ownerId);
+            newNotificationRef.child("totalprice").setValue(proamount);
 
             newNotificationRef.child("propertyId").setValue(propertyId)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {

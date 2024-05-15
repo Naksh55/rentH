@@ -2,6 +2,7 @@ package com.naksh.renth.Models;
 
 public class NotificationModel {
     String notificationId,notificationMessage,id,userId,propertyId,ownerId;
+    int totalprice;
 
     public NotificationModel(String notificationId,String notificationMessage,String id) {
         this.notificationMessage = notificationMessage;
@@ -15,6 +16,16 @@ public class NotificationModel {
         this.userId = userId;
         this.propertyId = propertyId;
         this.ownerId=ownerId;
+    }
+
+    public NotificationModel(String notificationId, String notificationMessage, String id, String userId, String propertyId, String ownerId, int totalprice) {
+        this.notificationId = notificationId;
+        this.notificationMessage = notificationMessage;
+        this.id = id;
+        this.userId = userId;
+        this.propertyId = propertyId;
+        this.ownerId = ownerId;
+        this.totalprice = totalprice;
     }
 
     public String getNotificationMessage() {
@@ -63,5 +74,13 @@ public class NotificationModel {
 
     public void setOwnerId(String ownerId) {
         this.ownerId = ownerId;
+    }
+
+    public int getTotalprice() {
+        return totalprice;
+    }
+
+    public void setTotalprice(int totalprice) {
+        this.totalprice = totalprice;
     }
 }
