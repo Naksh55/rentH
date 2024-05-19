@@ -307,9 +307,9 @@ public class PropertyDetails extends AppCompatActivity {
         propertyDPImageView = findViewById(R.id.propertydp);
         ownerId = getIntent().getStringExtra("id");
 
-        propertyDPImageView2 = findViewById(R.id.propertydp2);
-        propertyDPImageView3 = findViewById(R.id.propertydp3);
-        propertyDPImageView4 = findViewById(R.id.propertydp4);
+//        propertyDPImageView2 = findViewById(R.id.propertydp2);
+//        propertyDPImageView3 = findViewById(R.id.propertydp3);
+//        propertyDPImageView4 = findViewById(R.id.propertydp4);
 
         // Example for propertyDPImageView2
         propertyDPImageView2.setOnClickListener(new View.OnClickListener() {
