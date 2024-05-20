@@ -266,37 +266,37 @@
             android:layout_marginTop="20sp"
             android:background="@drawable/image_edges" />
 
-<!--        <ImageView-->
-<!--            android:id="@+id/propertydp2"-->
-<!--            android:layout_width="350dp"-->
-<!--            android:layout_height="350dp"-->
-<!--            android:scaleType="fitXY"-->
-<!--            android:src="@drawable/baseline_home_24"-->
-<!--            android:layout_centerHorizontal="true"-->
-<!--            android:layout_below="@+id/propertydp"-->
-<!--            android:layout_marginTop="20sp"-->
-<!--            android:background="@drawable/image_edges" />-->
+        <ImageView
+            android:id="@+id/propertydp2"
+            android:layout_width="350dp"
+            android:layout_height="350dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/baseline_home_24"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/propertydp"
+            android:layout_marginTop="20sp"
+            android:background="@drawable/image_edges" />
 
-<!--        <ImageView-->
-<!--            android:id="@+id/propertydp3"-->
-<!--            android:layout_width="350dp"-->
-<!--            android:layout_height="350dp"-->
-<!--            android:scaleType="fitXY"-->
-<!--            android:src="@drawable/baseline_home_24"-->
-<!--            android:layout_centerHorizontal="true"-->
-<!--            android:layout_below="@+id/propertydp2"-->
-<!--            android:layout_marginTop="20sp"-->
-<!--            android:background="@drawable/image_edges" />-->
-<!--        <ImageView-->
-<!--            android:id="@+id/propertydp4"-->
-<!--            android:layout_width="350dp"-->
-<!--            android:layout_height="350dp"-->
-<!--            android:scaleType="fitXY"-->
-<!--            android:src="@drawable/baseline_home_24"-->
-<!--            android:layout_centerHorizontal="true"-->
-<!--            android:layout_below="@+id/propertydp3"-->
-<!--            android:layout_marginTop="20sp"-->
-<!--            android:background="@drawable/image_edges" />-->
+        <ImageView
+            android:id="@+id/propertydp3"
+            android:layout_width="350dp"
+            android:layout_height="350dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/baseline_home_24"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/propertydp2"
+            android:layout_marginTop="20sp"
+            android:background="@drawable/image_edges" />
+        <ImageView
+            android:id="@+id/propertydp4"
+            android:layout_width="350dp"
+            android:layout_height="350dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/baseline_home_24"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/propertydp3"
+            android:layout_marginTop="20sp"
+            android:background="@drawable/image_edges" />
 
 
         <EditText
@@ -312,7 +312,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Next"
-            android:layout_below="@+id/propertydp"
+            android:layout_below="@+id/propertydp4"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="100sp"
             android:backgroundTint="@color/light_blue"/>

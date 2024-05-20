@@ -9,8 +9,10 @@ public class PropertyDetailsModel {
     String typeofproperty,address,city,state,propertydiscription;
     String fromdate,todate;
     String priceofproperty;
-    private String propertydp,image1,image2,image3; // Assuming imageUrl is the URL of the image
-    String ownerId;
+    private String propertydp1;
+    private String propertydp2;
+    private String propertydp3;
+    private String propertydp4;    String ownerId;
     String oName;
     private String key; // Assuming key is a String
     String propertyId;
@@ -18,7 +20,7 @@ public class PropertyDetailsModel {
 
     public PropertyDetailsModel(){}
 
-public PropertyDetailsModel(String nameofproperty,  String typeofproperty, String address, String city, String state, String propertydiscription, String priceofproperty, String propertydp,String oName){
+public PropertyDetailsModel(String nameofproperty,  String typeofproperty, String address, String city, String state, String propertydiscription, String priceofproperty, String propertydp1,String oName){
     this.nameofproperty = nameofproperty;
     this.typeofproperty = typeofproperty;
     this.address = address;
@@ -26,11 +28,11 @@ public PropertyDetailsModel(String nameofproperty,  String typeofproperty, Strin
     this.state = state;
     this.propertydiscription = propertydiscription;
     this.priceofproperty = priceofproperty;
-    this.propertydp = propertydp;
+    this.propertydp1 = propertydp1;
     this.oName=oName;
 
 }
-    public PropertyDetailsModel(String nameofproperty,  String typeofproperty, String address, String city, String state, String propertydiscription, String priceofproperty, String propertydp,String oName,String propertyId){
+    public PropertyDetailsModel(String nameofproperty,  String typeofproperty, String address, String city, String state, String propertydiscription, String priceofproperty, String propertydp1,String oName,String propertyId){
         this.nameofproperty = nameofproperty;
         this.typeofproperty = typeofproperty;
         this.address = address;
@@ -38,7 +40,7 @@ public PropertyDetailsModel(String nameofproperty,  String typeofproperty, Strin
         this.state = state;
         this.propertydiscription = propertydiscription;
         this.priceofproperty = priceofproperty;
-        this.propertydp = propertydp;
+        this.propertydp1 = propertydp1;
         this.oName=oName;
         this.propertyId=propertyId;
 
@@ -53,7 +55,7 @@ public PropertyDetailsModel(String nameofproperty, String priceofproperty, Strin
     this.city = city;
     this.propertydiscription = propertydiscription;
     this.ownerId = ownerId; // Set ownerId
-    this.propertydp = imageUrl;
+    this.propertydp1 = imageUrl;
     this.fromdate = fromDateString;
     this.todate = toDateString;
     this.oName=oName;
@@ -67,6 +69,27 @@ public PropertyDetailsModel(String nameofproperty, String priceofproperty, Strin
     }
 
 
+    public PropertyDetailsModel(String nameofproperty, String priceofproperty, String typeofproperty, String address,
+                                String state, String city, String propertydiscription, String ownerId, String propertydp1,
+                                String propertydp2, String propertydp3, String propertydp4, String fromDateString,
+                                String toDateString, String oName, String propertyId) {
+        this.nameofproperty = nameofproperty;
+        this.priceofproperty = priceofproperty;
+        this.typeofproperty = typeofproperty;
+        this.address = address;
+        this.state = state;
+        this.city = city;
+        this.propertydiscription = propertydiscription;
+        this.ownerId = ownerId;
+        this.propertydp1 = propertydp1;
+        this.propertydp2 = propertydp2;
+        this.propertydp3 = propertydp3;
+        this.propertydp4 = propertydp4;
+        this.fromdate = fromDateString;
+        this.todate = toDateString;
+        this.oName = oName;
+        this.propertyId = propertyId;
+    }
 
     public String getNameofproperty() {
         return nameofproperty;
@@ -141,12 +164,37 @@ public PropertyDetailsModel(String nameofproperty, String priceofproperty, Strin
     }
 
     public String getImageUrl() {
-        return propertydp;
+        return propertydp1;
+    }
+    public void setImageUrl(String propertydp1) {
+        this.propertydp1 = propertydp1;
     }
 
-    public void setImageUrl(String propertydp) {
-        this.propertydp = propertydp;
+    public String getPropertydp2() {
+        return propertydp2;
     }
+
+    public void setPropertydp2(String propertydp2) {
+        this.propertydp2 = propertydp2;
+    }
+
+    public String getPropertydp3() {
+        return propertydp3;
+    }
+
+    public void setPropertydp3(String propertydp3) {
+        this.propertydp3 = propertydp3;
+    }
+
+    public String getPropertydp4() {
+        return propertydp4;
+    }
+
+    public void setPropertydp4(String propertydp4) {
+        this.propertydp4 = propertydp4;
+    }
+
+
 
     public String getId() {
         return id;
