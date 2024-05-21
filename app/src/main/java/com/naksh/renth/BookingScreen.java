@@ -42,7 +42,7 @@ public class BookingScreen extends AppCompatActivity {
     TextView ownerPhoneNumberTextView;
     TextView ownerEmailTextView;
     String parentId;
-    ImageView imageView;
+    ImageView imageView,imageView2,imageView3,imageView4;
     StorageReference storageReference;
     String ownerphoneno;
     private String propertyId;
@@ -197,6 +197,10 @@ private void handleBookingButtonClick(String propertyId) {
                     String fromDateValue = dataSnapshot.child("fordate").getValue(String.class);
                     String toDateValue = dataSnapshot.child("todate").getValue(String.class);
                     imageView =findViewById(R.id.proimage);
+                    imageView2 =findViewById(R.id.proimage2);
+                    imageView3 =findViewById(R.id.proimage3);
+                    imageView4 =findViewById(R.id.proimage4);
+
                     // Set property details in respective TextViews
                     stateofproperty = findViewById(R.id.stateofprperty);
                     nameOfProperty = findViewById(R.id.nameofproperty);
@@ -205,6 +209,10 @@ private void handleBookingButtonClick(String propertyId) {
                     propertyDescription = findViewById(R.id.discription);
                     address = findViewById(R.id.addressofprperty);
                     String imageUrl = dataSnapshot.child("imageUrl").getValue(String.class);
+                    String imageUrl2 = dataSnapshot.child("propertydp2").getValue(String.class);
+                    String imageUrl3 = dataSnapshot.child("propertydp3").getValue(String.class);
+                    String imageUrl4 = dataSnapshot.child("propertydp4").getValue(String.class);
+
 //                    textView2.setText(Html.fromHtml("<b>Name:</b> " + ownerName));
 
                     stateofproperty.setText(Html.fromHtml("<b>State: </b> " + state));
@@ -215,6 +223,10 @@ private void handleBookingButtonClick(String propertyId) {
                     address.setText(Html.fromHtml("<b>Address:</b> " + addressOfProperty));
                     storageReference = FirebaseStorage.getInstance().getReference();
                     Picasso.get().load(imageUrl).into(imageView);
+                    Picasso.get().load(imageUrl2).into(imageView2);
+                    Picasso.get().load(imageUrl3).into(imageView3);
+                    Picasso.get().load(imageUrl4).into(imageView4);
+
                     Animation animation = AnimationUtils.loadAnimation(BookingScreen.this, R.anim.slide_left_to_right);
                     // Apply  animation to the TextViews
                     stateofproperty.startAnimation(animation);
