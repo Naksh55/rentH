@@ -306,9 +306,9 @@ public class PropertyDetails extends AppCompatActivity {
         propertyDPImageView = findViewById(R.id.propertydp);
         ownerId = getIntent().getStringExtra("id");
 
-        propertyDPImageView2 = findViewById(R.id.propertydp2);
-        propertyDPImageView3 = findViewById(R.id.propertydp3);
-        propertyDPImageView4 = findViewById(R.id.propertydp4);
+//        propertyDPImageView2 = findViewById(R.id.propertydp2);
+//        propertyDPImageView3 = findViewById(R.id.propertydp3);
+//        propertyDPImageView4 = findViewById(R.id.propertydp4);
 
         // Example for propertyDPImageView2
         propertyDPImageView.setOnClickListener(new View.OnClickListener() {
@@ -319,34 +319,34 @@ public class PropertyDetails extends AppCompatActivity {
                 startActivityForResult(intent, GALLERY_REQUEST_CODE);
             }
         });
-        propertyDPImageView2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, GALLERY_REQUEST_CODE2);
-            }
-        });
+//        propertyDPImageView2.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(Intent.ACTION_PICK);
+//                intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                startActivityForResult(intent, GALLERY_REQUEST_CODE2);
+//            }
+//        });
 //
 //// Example for propertyDPImageView3
-        propertyDPImageView3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, GALLERY_REQUEST_CODE3);
-            }
-        });
+//        propertyDPImageView3.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(Intent.ACTION_PICK);
+//                intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                startActivityForResult(intent, GALLERY_REQUEST_CODE3);
+//            }
+//        });
 
 // Example for propertyDPImageView4
-        propertyDPImageView4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, GALLERY_REQUEST_CODE4);
-            }
-        });
+//        propertyDPImageView4.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(Intent.ACTION_PICK);
+//                intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                startActivityForResult(intent, GALLERY_REQUEST_CODE4);
+//            }
+//        });
 
 
         Spinner typeOfPropertySpinner = findViewById(R.id.spinner);
@@ -1285,15 +1285,15 @@ public class PropertyDetails extends AppCompatActivity {
 //
 //        });
         binding.propertydp.setOnClickListener(v -> openGallery(GALLERY_REQUEST_CODE));
-        binding.propertydp2.setOnClickListener(v -> openGallery(GALLERY_REQUEST_CODE2));
-        binding.propertydp3.setOnClickListener(v -> openGallery(GALLERY_REQUEST_CODE3));
-        binding.propertydp4.setOnClickListener(v -> openGallery(GALLERY_REQUEST_CODE4));
+//        binding.propertydp2.setOnClickListener(v -> openGallery(GALLERY_REQUEST_CODE2));
+//        binding.propertydp3.setOnClickListener(v -> openGallery(GALLERY_REQUEST_CODE3));
+//        binding.propertydp4.setOnClickListener(v -> openGallery(GALLERY_REQUEST_CODE4));
         binding.nextbutton.setOnClickListener(v -> {
             if (!validation()) {
                 return;
             }
             progressDialog.show();
-            uploadImagesToFirebaseStorage();
+            uploadImageToFirebaseStorage(ownerId,selectedImageUri1);
         });
     }
     private void showDatePickerDialog(TextView textView) {
@@ -1336,70 +1336,71 @@ private void openGallery(int requestCode) {
     startActivityForResult(galleryIntent, requestCode);
 }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == GALLERY_REQUEST_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {
-//            selectedImageUri = data.getData();
-//            binding.propertydp.setImageURI(selectedImageUri);
-//        }
-//    }
-@Override
-protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    super.onActivityResult(requestCode, resultCode, data);
-    if (resultCode == RESULT_OK && data != null && data.getData() != null) {
-        switch (requestCode) {
-            case GALLERY_REQUEST_CODE:
-                selectedImageUri1 = data.getData();
-                binding.propertydp.setImageURI(selectedImageUri1);
-                break;
-            case GALLERY_REQUEST_CODE2:
-                selectedImageUri2 = data.getData();
-                binding.propertydp2.setImageURI(selectedImageUri2);
-                break;
-            case GALLERY_REQUEST_CODE3:
-                selectedImageUri3 = data.getData();
-                binding.propertydp3.setImageURI(selectedImageUri3);
-                break;
-            case GALLERY_REQUEST_CODE4:
-                selectedImageUri4 = data.getData();
-                binding.propertydp4.setImageURI(selectedImageUri4);
-                break;
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == GALLERY_REQUEST_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            selectedImageUri1 = data.getData();
+            binding.propertydp.setImageURI(selectedImageUri1);
         }
     }
-}
-//    private void uploadImageToFirebaseStorage(String ownerId, Uri imageUri) {
-//        StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("images/" + UUID.randomUUID().toString());
-//
-//        storageRef.putFile(imageUri)
-//                .addOnSuccessListener(taskSnapshot -> storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-//                    String imageUrl = uri.toString();
-//                    storePropertyDetails(ownerId, imageUrl);
-//                }))
-//                .addOnFailureListener(e -> {
-//                    progressDialog.dismiss();
-//                    Toast.makeText(PropertyDetails.this, "Failed to upload image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-//                });
+//@Override
+//protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//    super.onActivityResult(requestCode, resultCode, data);
+//    if (resultCode == RESULT_OK && data != null && data.getData() != null) {
+//        switch (requestCode) {
+//            case GALLERY_REQUEST_CODE:
+//                selectedImageUri1 = data.getData();
+//                binding.propertydp.setImageURI(selectedImageUri1);
+//                break;
+//            case GALLERY_REQUEST_CODE2:
+//                selectedImageUri2 = data.getData();
+//                binding.propertydp2.setImageURI(selectedImageUri2);
+//                break;
+//            case GALLERY_REQUEST_CODE3:
+//                selectedImageUri3 = data.getData();
+//                binding.propertydp3.setImageURI(selectedImageUri3);
+//                break;
+//            case GALLERY_REQUEST_CODE4:
+//                selectedImageUri4 = data.getData();
+//                binding.propertydp4.setImageURI(selectedImageUri4);
+//                break;
+//        }
 //    }
-private void uploadImagesToFirebaseStorage() {
-    if (selectedImageUri1 == null || selectedImageUri2 == null || selectedImageUri3 == null || selectedImageUri4 == null) {
-        Toast.makeText(this, "Please choose all four images", Toast.LENGTH_SHORT).show();
-        progressDialog.dismiss();
-        return;
-    }
 
-    StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+    private void uploadImageToFirebaseStorage(String ownerId, Uri imageUri) {
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("images/" + UUID.randomUUID().toString());
 
-    uploadSingleImage(storageRef, selectedImageUri1, uri1 -> {
-        uploadSingleImage(storageRef, selectedImageUri2, uri2 -> {
-            uploadSingleImage(storageRef, selectedImageUri3, uri3 -> {
-                uploadSingleImage(storageRef, selectedImageUri4, uri4 -> {
-                    storePropertyDetails(ownerId, uri1.toString(), uri2.toString(), uri3.toString(), uri4.toString());
+        storageRef.putFile(imageUri)
+                .addOnSuccessListener(taskSnapshot -> storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                    String imageUrl = uri.toString();
+                    storePropertyDetails(ownerId, imageUrl);
+                }))
+                .addOnFailureListener(e -> {
+                    progressDialog.dismiss();
+                    Toast.makeText(PropertyDetails.this, "Failed to upload image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
-            });
-        });
-    });
-}
+    }
+//private void uploadImagesToFirebaseStorage() {
+//            if (selectedImageUri1 == null || selectedImageUri2 == null || selectedImageUri3 == null || selectedImageUri4 == null) {
+//                Toast.makeText(this, "Please choose all four images", Toast.LENGTH_SHORT).show();
+//                progressDialog.dismiss();
+//                return;
+//            }
+//        }
+//
+//    StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+//
+//    uploadSingleImage(storageRef, selectedImageUri1, uri1 -> {
+//        uploadSingleImage(storageRef, selectedImageUri2, uri2 -> {
+//            uploadSingleImage(storageRef, selectedImageUri3, uri3 -> {
+//                uploadSingleImage(storageRef, selectedImageUri4, uri4 -> {
+//                    storePropertyDetails(ownerId, uri1.toString(), uri2.toString(), uri3.toString(), uri4.toString());
+//                });
+//            });
+//        });
+//    });
+//}
 
     private void uploadSingleImage(StorageReference storageRef, Uri imageUri, OnSuccessListener<Uri> onSuccessListener) {
         if (imageUri == null) {
@@ -1418,87 +1419,87 @@ private void uploadImagesToFirebaseStorage() {
                 });
     }
 
-//    private void storePropertyDetails(String ownerId, String imageUrl) {
-//        String nameofproperty = Objects.requireNonNull(binding.nameofproperty.getText()).toString();
-//        String priceofproperty = String.valueOf(Integer.parseInt(Objects.requireNonNull(binding.priceofproperty.getText()).toString()));
-//        String typeofproperty = ((Spinner) findViewById(R.id.spinner)).getSelectedItem().toString();
-//        String address = Objects.requireNonNull(binding.addressEditText.getText()).toString();
-//        String state =  ((Spinner)findViewById(R.id.spinnerstate)).getSelectedItem().toString();
-//        String city =  ((Spinner)findViewById(R.id.spinnercity)).getSelectedItem().toString();
-//        String propertydiscription = Objects.requireNonNull(binding.propertyDescriptionEditText.getText()).toString();
-//        String fromDateString = Objects.requireNonNull(binding.fromdate.getText()).toString();
-//        String toDateString = Objects.requireNonNull(binding.todate.getText()).toString();
-//        propertyId = propertiesRef.push().getKey();
-//
-//
-//        // Explicitly set the propertyId in the PropertyDetailsModel
-//        PropertyDetailsModel propertyDetailsModel;
-//
-//        if (imageUrl != null) {
-//            propertyDetailsModel = new PropertyDetailsModel(nameofproperty, priceofproperty, typeofproperty, address, state, city, propertydiscription, ownerId, imageUrl, fromDateString, toDateString,oName,propertyId);
-//        } else {
-//            propertyDetailsModel = new PropertyDetailsModel(nameofproperty, priceofproperty, typeofproperty, address, state, city, propertydiscription, ownerId, imageUrl, fromDateString, toDateString,oName,propertyId);
-//        }
-//        //        Toast.makeText(PropertyDetails.this, ownerId, Toast.LENGTH_SHORT).show();
-//        assert ownerId != null;
-////            propertiesRef.child(ownerId).push().setValue(propertyDetailsModel)
-//
-//// Set the owner ID within the propertyDetailsModel
-//        propertyDetailsModel.setOwnerId(ownerId);
-//
-//// Set the property details under the generated key
-//        assert propertyId != null;
-//        propertiesRef.child(propertyId).setValue(propertyDetailsModel)
-//                .addOnCompleteListener(task -> {
-//                    progressDialog.dismiss();
-//                    if (task.isSuccessful()) {
-//                        Intent intent = new Intent(PropertyDetails.this, OwnerHomeActivity.class);
-//                        intent.putExtra("id", ownerId);
-//                        intent.putExtra("propertyId", propertyId);
-//                        intent.putExtra("oname",oName);
-//
-//                        startActivity(intent);
-//                    } else {
-//                        Toast.makeText(PropertyDetails.this, "Failed to store property details", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//    }
-
-
-
-    private void storePropertyDetails(String ownerId, String imageUrl1, String imageUrl2, String imageUrl3, String imageUrl4) {
+    private void storePropertyDetails(String ownerId, String imageUrl) {
         String nameofproperty = Objects.requireNonNull(binding.nameofproperty.getText()).toString();
         String priceofproperty = String.valueOf(Integer.parseInt(Objects.requireNonNull(binding.priceofproperty.getText()).toString()));
-        String typeofproperty = binding.spinner.getSelectedItem().toString();
+        String typeofproperty = ((Spinner) findViewById(R.id.spinner)).getSelectedItem().toString();
         String address = Objects.requireNonNull(binding.addressEditText.getText()).toString();
-        String state = binding.spinnerstate.getSelectedItem().toString();
-        String city = binding.spinnercity.getSelectedItem().toString();
+        String state =  ((Spinner)findViewById(R.id.spinnerstate)).getSelectedItem().toString();
+        String city =  ((Spinner)findViewById(R.id.spinnercity)).getSelectedItem().toString();
         String propertydiscription = Objects.requireNonNull(binding.propertyDescriptionEditText.getText()).toString();
         String fromDateString = Objects.requireNonNull(binding.fromdate.getText()).toString();
         String toDateString = Objects.requireNonNull(binding.todate.getText()).toString();
         propertyId = propertiesRef.push().getKey();
 
-        PropertyDetailsModel propertyDetailsModel = new PropertyDetailsModel(nameofproperty, priceofproperty, typeofproperty, address, state, city, propertydiscription, ownerId, imageUrl1, imageUrl2, imageUrl3, imageUrl4, fromDateString, toDateString, oName, propertyId);
-        assert ownerId != null;
-            propertiesRef.child(ownerId).push().setValue(propertyDetailsModel);
 
-//// Set the owner ID within the propertyDetailsModel
+        // Explicitly set the propertyId in the PropertyDetailsModel
+        PropertyDetailsModel propertyDetailsModel;
+
+        if (imageUrl != null) {
+            propertyDetailsModel = new PropertyDetailsModel(nameofproperty, priceofproperty, typeofproperty, address, state, city, propertydiscription, ownerId, imageUrl, fromDateString, toDateString,oName,propertyId);
+        } else {
+            propertyDetailsModel = new PropertyDetailsModel(nameofproperty, priceofproperty, typeofproperty, address, state, city, propertydiscription, ownerId, imageUrl, fromDateString, toDateString,oName,propertyId);
+        }
+        //        Toast.makeText(PropertyDetails.this, ownerId, Toast.LENGTH_SHORT).show();
+        assert ownerId != null;
+//            propertiesRef.child(ownerId).push().setValue(propertyDetailsModel)
+
+// Set the owner ID within the propertyDetailsModel
         propertyDetailsModel.setOwnerId(ownerId);
 
-        propertiesRef.child(propertyId).setValue(propertyDetailsModel).addOnCompleteListener(task -> {
-            progressDialog.dismiss();
-            if (task.isSuccessful()) {
-                Intent intent = new Intent(PropertyDetails.this, OwnerHomeActivity.class);
-                intent.putExtra("id", ownerId);
-                intent.putExtra("propertyId", propertyId);
-                intent.putExtra("oname", oName);
-                startActivity(intent);
-            } else {
-                Log.e("DatabaseError", "Failed to store property details: " + task.getException().getMessage());
-                Toast.makeText(PropertyDetails.this, "Failed to store property details", Toast.LENGTH_SHORT).show();
-            }
-        });
+// Set the property details under the generated key
+        assert propertyId != null;
+        propertiesRef.child(propertyId).setValue(propertyDetailsModel)
+                .addOnCompleteListener(task -> {
+                    progressDialog.dismiss();
+                    if (task.isSuccessful()) {
+                        Intent intent = new Intent(PropertyDetails.this, OwnerHomeActivity.class);
+                        intent.putExtra("id", ownerId);
+                        intent.putExtra("propertyId", propertyId);
+                        intent.putExtra("oname",oName);
+
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(PropertyDetails.this, "Failed to store property details", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
+
+
+
+//    private void storePropertyDetails(String ownerId, String imageUrl1, String imageUrl2, String imageUrl3, String imageUrl4) {
+//        String nameofproperty = Objects.requireNonNull(binding.nameofproperty.getText()).toString();
+//        String priceofproperty = String.valueOf(Integer.parseInt(Objects.requireNonNull(binding.priceofproperty.getText()).toString()));
+//        String typeofproperty = binding.spinner.getSelectedItem().toString();
+//        String address = Objects.requireNonNull(binding.addressEditText.getText()).toString();
+//        String state = binding.spinnerstate.getSelectedItem().toString();
+//        String city = binding.spinnercity.getSelectedItem().toString();
+//        String propertydiscription = Objects.requireNonNull(binding.propertyDescriptionEditText.getText()).toString();
+//        String fromDateString = Objects.requireNonNull(binding.fromdate.getText()).toString();
+//        String toDateString = Objects.requireNonNull(binding.todate.getText()).toString();
+//        propertyId = propertiesRef.push().getKey();
+//
+//        PropertyDetailsModel propertyDetailsModel = new PropertyDetailsModel(nameofproperty, priceofproperty, typeofproperty, address, state, city, propertydiscription, ownerId, imageUrl1, imageUrl2, imageUrl3, imageUrl4, fromDateString, toDateString, oName, propertyId);
+//        assert ownerId != null;
+//            propertiesRef.child(ownerId).push().setValue(propertyDetailsModel);
+//
+////// Set the owner ID within the propertyDetailsModel
+//        propertyDetailsModel.setOwnerId(ownerId);
+//
+//        propertiesRef.child(propertyId).setValue(propertyDetailsModel).addOnCompleteListener(task -> {
+//            progressDialog.dismiss();
+//            if (task.isSuccessful()) {
+//                Intent intent = new Intent(PropertyDetails.this, OwnerHomeActivity.class);
+//                intent.putExtra("id", ownerId);
+//                intent.putExtra("propertyId", propertyId);
+//                intent.putExtra("oname", oName);
+//                startActivity(intent);
+//            } else {
+//                Log.e("DatabaseError", "Failed to store property details: " + task.getException().getMessage());
+//                Toast.makeText(PropertyDetails.this, "Failed to store property details", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
 //    public boolean validation() {
 //        String oname = nameOfPropertyEditText.getText().toString().trim();
 //        String price = priceOfPropertyEditText.getText().toString().trim();
@@ -1556,7 +1557,7 @@ private void uploadImagesToFirebaseStorage() {
             return false;
         }
 
-        if (binding.propertydp.getDrawable() == null || binding.propertydp2.getDrawable() == null || binding.propertydp3.getDrawable() == null || binding.propertydp4.getDrawable() == null) {
+        if (binding.propertydp.getDrawable() == null || binding.propertydp.getDrawable() == null ) {
             Toast.makeText(this, "Please choose all four images", Toast.LENGTH_SHORT).show();
             return false;
         }

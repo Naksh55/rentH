@@ -176,14 +176,15 @@ public class PropertyRecyclerActivityForUser extends AppCompatActivity {
     private void filter(String query) {
         ArrayList<PropertyDetailsModel> filteredList = new ArrayList<>();
         for (PropertyDetailsModel item : list) {
-            // Filter logic based on the state attribute
-            if (item.getState().toLowerCase().contains(query.toLowerCase())) {
+            // Check if the state is not null before proceeding
+            if (item.getState() != null && item.getState().toLowerCase().contains(query.toLowerCase())) {
                 filteredList.add(item);
             }
         }
         // Update the dataset with the filtered results
         myAdapter.updateList(filteredList);
     }
+
 
 
     @Override
