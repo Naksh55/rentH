@@ -47,7 +47,6 @@ public class PropertyRecyclerActivityForUser extends AppCompatActivity {
     String userEmail;
     String userPhoneno;
 //hi
-
     private  SearchView searchView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
