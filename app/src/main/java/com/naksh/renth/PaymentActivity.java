@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.Html;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -212,40 +213,66 @@ public class PaymentActivity extends AppCompatActivity {
                 .setPositiveButton("Accept", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        // Get user reference from Firebase
                         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference()
                                 .child("UserPersonalDetailsModel")
-                                .child(userId); // Assuming you have the userId available
+                                .child(userId); // Ensure you have the userId passed correctly
 
+                        // Add listener to fetch user data once
                         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 if (dataSnapshot.exists()) {
+                                    // Extract user details from Firebase
                                     String userName = dataSnapshot.child("name").getValue(String.class);
                                     String userId = dataSnapshot.child("id").getValue(String.class);
+
                                     if (userName != null) {
+                                        // Create a timestamp for the notification
                                         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
                                         String currentTime = sdf.format(new Date());
-                                        String notificationMessage = "Your property " + propertyName + " has been booked by " + userName +" "+"on "+fromDate+" "+"for "+slots+" slots "+ "at "+currentTime+" for ₹"+proamount+"\nCustomer contact: " + phoneNo + "\nCustomer Email: " + userEmail;
-                                        Intent intent = new Intent(PaymentActivity.this,PropertyRecyclerActivityForUser.class);
+
+                                        // Create notification message
+                                        String notificationMessage = "Your property " + propertyName + " has been booked by " + userName + " on " + fromDate + " for " + slots + " slots at " + currentTime + " for ₹" + proamount + "\nCustomer contact: " + phoneNo + "\nCustomer Email: " + userEmail;
+
+                                        // Create an intent to navigate to PropertyRecyclerActivityForUser
+                                        Intent intent = new Intent(PaymentActivity.this, PropertyRecyclerActivityForUser.class);
                                         intent.putExtra("notification_message", notificationMessage);
-
-                                        String param2 = "";
-                                        String id = "";
-                                        NotificationFragment notificationFragment = NotificationFragment.newInstance(id, param2, notificationMessage, userId, userName);
-
-                                        notificationFragment.addNotification("notification_message");
-
                                         intent.putExtra("user_id", userId);
                                         intent.putExtra("userName", userName);
                                         intent.putExtra("property_id", propertyId);
-                                        intent.putExtra("id", ownerId);
+                                        intent.putExtra("id", ownerId); // Owner's ID, make sure it's correct
 
-                                        createNotificationMessage(notificationMessage, userId, propertyId, ownerId,proamount);
-                                        startActivity(intent);
+                                        // Handle notification fragment creation and passing data
+                                        String param2 = "";  // Assuming this is some other parameter you need to pass
+                                        String id="";
+                                        NotificationFragment notificationFragment = NotificationFragment.newInstance(id, param2, notificationMessage, userId, userName);
+
+                                        // Add notification to the fragment
+                                        notificationFragment.addNotification("notification_message");
+
+                                        // Trigger the notification method
+                                        createNotificationMessage(notificationMessage, userId, propertyId, ownerId, proamount);
+
+                                        // Show a "Payment Done" dialog with an OK button
+                                        new AlertDialog.Builder(PaymentActivity.this)
+                                                .setTitle("Payment Done")
+                                                .setMessage("Your payment has been successfully processed.")
+                                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        // Start the activity
+                                                        startActivity(intent);
+                                                        finish(); // Optionally close the PaymentActivity
+                                                    }
+                                                })
+                                                .show(); // Show the confirmation dialog
                                     } else {
+                                        // Handle case where userName is not found in Firebase
                                         Toast.makeText(PaymentActivity.this, "User name not found", Toast.LENGTH_SHORT).show();
                                     }
                                 } else {
+                                    // Handle case where user details are missing in Firebase
                                     Toast.makeText(PaymentActivity.this, "User details not found", Toast.LENGTH_SHORT).show();
                                 }
                             }
@@ -253,11 +280,14 @@ public class PaymentActivity extends AppCompatActivity {
                             @Override
                             public void onCancelled(@NonNull DatabaseError databaseError) {
                                 // Handle database error
-                                Toast.makeText(PaymentActivity.this, "Failed to retrieve user details: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(PaymentActivity.this, "Failed to retrieve user data: " + databaseError.getMessage(), Toast.LENGTH_LONG).show();
                             }
                         });
+                    }
+                })
                         // Handle logout action
 //                        JSONObject data = new JSONObject();
+//
 //
 //                        try {
 //                            data.put("merchantTransactionId", "MT7850590068188104");
@@ -283,12 +313,15 @@ public class PaymentActivity extends AppCompatActivity {
 //                                .setUrl("/pg/v1/pay")
 //                                .build();
 //                        try {
-//                            startActivityForResult(PhonePe.getImplicitIntent(PaymentActivity.this, b2BPGRequest, ""), 1);
+//                            Intent phonePeIntent = PhonePe.getImplicitIntent(PaymentActivity.this, b2BPGRequest, "");
+//                            startActivityForResult(phonePeIntent, 1);
 //                        } catch (PhonePeInitException e) {
+//                            Log.e("PaymentActivity", "PhonePeInitException: " + e.getMessage());
+//                            e.printStackTrace();
+//                        } catch (Exception e) {
+//                            Log.e("PaymentActivity", "Exception: " + e.getMessage());
 //                            e.printStackTrace();
 //                        }
-                    }
-                })
                 .setNegativeButton("Reject", null);
 
 

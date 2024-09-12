@@ -139,7 +139,7 @@ public PropertyDetailsModel(String nameofproperty, String priceofproperty, Strin
         this.propertydiscription = propertydiscription;
     }
 
-    public String getFordate() {
+    public String getFromdate() {
         return fromdate;
     }
 

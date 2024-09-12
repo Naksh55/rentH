@@ -141,7 +141,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/renthfeeprice"
         app:layout_constraintStart_toEndOf="@+id/ratepernight"
-        android:textSize="25sp"
+        android:textSize="20sp"
         android:text="Rate"
         android:textColor="@color/black"
         android:layout_marginTop="25dp"

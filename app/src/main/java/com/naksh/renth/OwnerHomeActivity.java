@@ -338,7 +338,7 @@ public class OwnerHomeActivity extends AppCompatActivity {
             ownerId = intent.getStringExtra("id");
             phoneNo=intent.getStringExtra("phoneno");
             totalprice=intent.getIntExtra("totalprice",0);
-            Toast.makeText(OwnerHomeActivity.this, "price in ....."+totalprice, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(OwnerHomeActivity.this, "price in ....."+totalprice, Toast.LENGTH_SHORT).show();
 
 
         }
@@ -422,13 +422,13 @@ public class OwnerHomeActivity extends AppCompatActivity {
             }
         });
         // Other initialization code...
-        ImageView walletImg = findViewById(R.id.walletImg);
-        walletImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadWalletFragmentWithOwnerId(ownerId);
-            }
-        });
+//        ImageView walletImg = findViewById(R.id.walletImg);
+//        walletImg.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                loadWalletFragmentWithOwnerId(ownerId);
+//            }
+//        });
 
     }
 

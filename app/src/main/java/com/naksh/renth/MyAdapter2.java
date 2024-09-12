@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,8 +82,16 @@ public class MyAdapter2 extends RecyclerView.Adapter<MyAdapter2.ViewHolder> {
 
                 final DialogPlus dialogPlus = DialogPlus.newDialog(holder.img2.getContext())
                         .setContentHolder(new com.orhanobut.dialogplus.ViewHolder(R.layout.update_popup))
-                        .setExpanded(true, 1200)
+                        .setExpanded(true, 1500)
                         .create();
+
+//                final DialogPlus dialogPlus = DialogPlus.newDialog(context)
+//                        .setContentHolder(new ViewHolder(R.layout.update_popup))
+//                        .setExpanded(true)  // This makes the dialog expand to full height
+//                        .setGravity(Gravity.BOTTOM)
+//                        .create();
+//                String fromDate = intent.getStringExtra("from_date");
+
                 View v = dialogPlus.getHolderView();
                 EditText name = v.findViewById(R.id.nameofpET);
                 EditText discription = v.findViewById(R.id.descriptionofpET);
@@ -91,13 +100,15 @@ public class MyAdapter2 extends RecyclerView.Adapter<MyAdapter2.ViewHolder> {
                 EditText fromdate=v.findViewById(R.id.fDate);
                 EditText toDate=v.findViewById(R.id.tDate);
                 // Check if the dates are in standard format (you may need to adjust this condition)
+//                Toast.makeText(context, "Fordate: " + property.getFromdate(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(context, "todate: " + property.getTodate(), Toast.LENGTH_SHORT).show();
 
                 Button btnupdate = v.findViewById(R.id.btnupdate);
                 Button btndelete=v.findViewById(R.id.deletebtn);
                 name.setText(property.getNameofproperty());
                 discription.setText(property.getPropertydiscription());
 
-                fromdate.setText(property.getFordate());
+                fromdate.setText(property.getFromdate());
                 toDate.setText(property.getTodate());
 
                 price.setText(String.valueOf(property.getPriceofproperty()));

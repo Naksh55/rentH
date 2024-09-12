@@ -643,9 +643,9 @@ public class LoginScreen extends AppCompatActivity {
                                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                         String notificationId = snapshot.getKey();
                                         Integer totalprice=snapshot.child("totalprice").getValue(Integer.class);
-                                        Toast.makeText(LoginScreen.this, "totalvalue in login screen=="+totalprice, Toast.LENGTH_SHORT).show();
-
-                                        Toast.makeText(LoginScreen.this, "nId="+notificationId, Toast.LENGTH_SHORT).show();
+//                                        Toast.makeText(LoginScreen.this, "totalvalue in login screen=="+totalprice, Toast.LENGTH_SHORT).show();
+//
+//                                        Toast.makeText(LoginScreen.this, "nId="+notificationId, Toast.LENGTH_SHORT).show();
 //                                        String ownerId = snapshot.child("ownerId").getValue(String.class); // Assuming email is stored under "email" child node
                                         Intent intent =getIntent();
                                         intent.putExtra("nId", notificationId);

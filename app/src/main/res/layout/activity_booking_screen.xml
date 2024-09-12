@@ -4,72 +4,28 @@
     android:layout_width="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/loginbkg"
-    >
+    xmlns:tools="http://schemas.android.com/tools" >
     <androidx.constraintlayout.widget.ConstraintLayout
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".BookingScreen">
-
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guide_v_10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintGuide_percent="0.1"
-            android:orientation="vertical" />
-
-
-        <!-- First Image -->
+            app:layout_constraintGuide_percent=".1"
+            android:orientation="vertical"
+            android:id="@+id/guide_v_10"
+            />
         <ImageView
             android:id="@+id/proimage"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
             android:src="@drawable/ic_image"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/proimage2"
-            app:layout_constraintDimensionRatio="H,1:1"
-            android:layout_margin="8dp"/>
-
-        <!-- Second Image -->
-        <ImageView
-            android:id="@+id/proimage2"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:src="@drawable/ic_image"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@id/proimage"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/proimage3"
-            app:layout_constraintDimensionRatio="H,1:1"
-            android:layout_margin="8dp"/>
-
-        <!-- Third Image -->
-        <ImageView
-            android:id="@+id/proimage3"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:src="@drawable/ic_image"
-            app:layout_constraintTop_toBottomOf="@id/proimage"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/proimage4"
-            app:layout_constraintDimensionRatio="H,1:1"
-            android:layout_margin="8dp"/>
-
-        <!-- Fourth Image -->
-        <ImageView
-            android:id="@+id/proimage4"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:src="@drawable/ic_image"
-            app:layout_constraintTop_toBottomOf="@id/proimage2"
-            app:layout_constraintStart_toEndOf="@id/proimage3"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintDimensionRatio="H,1:1"
-            android:layout_margin="8dp"/>
-
-        <!-- Other UI elements -->
+            android:layout_marginTop="30sp"
+            android:layout_marginRight="40dp"/>
         <TextView
             android:id="@+id/nameofproperty"
             android:layout_width="wrap_content"
@@ -77,11 +33,10 @@
             android:text="Name of property"
             android:textSize="35sp"
             android:textColor="@color/black"
-            app:layout_constraintTop_toBottomOf="@+id/proimage4"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/proimage"
+            app:layout_constraintStart_toEndOf="@+id/guide_v_10"
             android:layout_marginTop="25sp"
-            android:layout_marginStart="16dp"/>
-
+            />
         <TextView
             android:id="@+id/typeodproperty"
             android:layout_width="wrap_content"
@@ -134,20 +89,17 @@
             app:layout_constraintStart_toEndOf="@+id/guide_v_10"
             android:textSize="25sp"
             android:textStyle="bold"
-            android:textColor="@color/black"
             android:text="Property Disription : "
             android:paddingTop="20sp"/>
 
-        <TextView
+        <View
             android:id="@+id/sepline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="          ________________________________________________________"
-            android:textColor="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/lb_grey"
             app:layout_constraintTop_toBottomOf="@+id/prodiscription"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/guide_v_10"
-            android:layout_marginTop="50sp"
+            android:layout_marginTop="50dp"
             />
         <TextView
             android:id="@+id/discription"
@@ -155,7 +107,6 @@
             android:layout_height="wrap_content"
             android:text="Property Discription goes here......."
             android:textSize="15sp"
-            android:textColor="@color/black"
             app:layout_constraintTop_toBottomOf="@+id/prodiscription"
             app:layout_constraintStart_toEndOf="@+id/guide_v_10"
             android:layout_marginTop="10sp"/>
@@ -165,19 +116,18 @@
             android:id="@+id/bookingbutton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Book now"
+            android:text="BOOK NOW"
+            android:backgroundTint="@color/light_blue"
             app:layout_constraintTop_toBottomOf="@+id/oemail"
             app:layout_constraintStart_toEndOf="@id/guide_v_10"
             android:layout_marginTop="70sp"
-            android:layout_marginLeft="110dp"
-            android:backgroundTint="@color/light_blue"/>
+            android:layout_marginLeft="110dp" />
 
         <TextView
             android:id="@+id/oname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Owner Name"
-            android:textColor="@color/black"
             app:layout_constraintTop_toBottomOf="@+id/sepline"
             app:layout_constraintStart_toEndOf="@+id/guide_v_10"
             android:textSize="25sp"
@@ -189,31 +139,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Owner Contact"
-            android:textColor="@color/black"
             app:layout_constraintTop_toBottomOf="@+id/oname"
             app:layout_constraintStart_toEndOf="@+id/guide_v_10"
-            android:textSize="25sp"
+            android:textSize="20dp"
             android:layout_marginTop="25sp"/>
         <TextView
             android:id="@+id/oemail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Owner E-mail id"
-            android:textColor="@color/black"
             app:layout_constraintTop_toBottomOf="@+id/opnumber"
             app:layout_constraintStart_toEndOf="@+id/guide_v_10"
-            android:textSize="20sp"
+            android:textSize="15sp"
             android:layout_marginTop="25sp"/>
-        <TextView
-            android:id="@+id/sepline2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="    _____________________________________________________________"
-            android:textColor="@color/background_gradient_end"
-            app:layout_constraintTop_toBottomOf="@id/oemail"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="10sp"
-            />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
