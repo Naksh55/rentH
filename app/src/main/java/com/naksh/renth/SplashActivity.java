@@ -16,38 +16,71 @@ import com.google.firebase.auth.FirebaseAuth;
 public class SplashActivity extends AppCompatActivity {
     FirebaseAuth auth;
 
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_main);
+//        ImageView renthLogo1 = findViewById(R.id.renthlogo);
+//        auth = FirebaseAuth.getInstance();
+//
+//
+//        // Scale animation for the logo
+////        Animation scaleAnimation = AnimationUtils.loadAnimation(this, R.anim_two.xml.scale_animation);
+////        renthLogo1.startAnimation(scaleAnimation);
+//        renthLogo1.animate().alpha(1f).setDuration(2000).start();
+////
+////        // Scale animation for the logo
+////        Animation scaleAnimation = AnimationUtils.loadAnimation(this, R.anim_two.xml.scale_animation);
+////        renthLogo1.startAnimation(scaleAnimation);
+//        // Slide in animation from the left
+//        Animation slideInLeftAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_in_left);
+//        renthLogo1.startAnimation(slideInLeftAnimation);
+//
+////
+//
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                Intent intent = new Intent(SplashActivity.this,LoginScreen.class);
+//                startActivity(intent);
+//                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+//                finish();            }
+//        }, 3500);
+//    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main);  // Assuming this is the correct layout file for the splash screen
+
         ImageView renthLogo1 = findViewById(R.id.renthlogo);
         auth = FirebaseAuth.getInstance();
 
-
-        // Scale animation for the logo
-//        Animation scaleAnimation = AnimationUtils.loadAnimation(this, R.anim_two.xml.scale_animation);
-//        renthLogo1.startAnimation(scaleAnimation);
-        renthLogo1.animate().alpha(1f).setDuration(2000).start();
-//
-//        // Scale animation for the logo
-//        Animation scaleAnimation = AnimationUtils.loadAnimation(this, R.anim_two.xml.scale_animation);
-//        renthLogo1.startAnimation(scaleAnimation);
         // Slide in animation from the left
         Animation slideInLeftAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_in_left);
         renthLogo1.startAnimation(slideInLeftAnimation);
 
-//
-
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(SplashActivity.this,LoginScreen.class);
-                startActivity(intent);
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                finish();            }
-        }, 3500);
-    }
+                // Check if the user is already logged in
+                if (auth.getCurrentUser() != null) {
+                    // User is logged in, navigate to MainActivity (or the home screen)
+                    Intent intent = new Intent(SplashActivity.this, LoginScreen.class);
+                    startActivity(intent);
+                } else {
+                    // User is not logged in, navigate to LoginScreen
+                    Intent intent = new Intent(SplashActivity.this, PropertyRecyclerActivityForUser.class);
+                    startActivity(intent);
+                }
 
+                // Apply fade in and fade out transition
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                finish();
+            }
+        }, 3500);  // Delay for 3.5 seconds before redirecting
+    }
+}
 //    private void finishWithSlideOut() {
 //        ImageView renthLogo1 = findViewById(R.id.renthlogo);
 //
@@ -65,7 +98,6 @@ public class SplashActivity extends AppCompatActivity {
 //            }
 //        }, 1500); // Duration of slide out animation
 //    }
-}
 
 //package com.naksh.renth;
 //
