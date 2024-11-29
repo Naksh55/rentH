@@ -97,7 +97,7 @@ public class BookingScreen extends AppCompatActivity {
 
 
             propertyId = intent.getStringExtra("property_id");
-            System.out.println("Property ID");
+            Toast.makeText(this, "id="+propertyId, Toast.LENGTH_SHORT).show();
             System.out.println(propertyId);
             if (propertyId != null) {
                 parentId = intent.getStringExtra("parent_id");
@@ -133,7 +133,10 @@ private void handleBookingButtonClick(String propertyId) {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
             if (dataSnapshot.exists()) {
-                String fromDate = dataSnapshot.child("fordate").getValue(String.class);
+                String fromDate = dataSnapshot.child("fordate").getValue(String.class) != null
+                        ? dataSnapshot.child("fordate").getValue(String.class)
+                        : dataSnapshot.child("fromdate").getValue(String.class);
+
                 String todate = dataSnapshot.child("todate").getValue(String.class);
                 String propertyName = dataSnapshot.child("nameofproperty").getValue(String.class);
                 String price=dataSnapshot.child("priceofproperty").getValue(String.class);
@@ -144,6 +147,7 @@ private void handleBookingButtonClick(String propertyId) {
 //                Intent intent = getIntent();
 //                if (intent != null) {
                 Intent intent = new Intent(BookingScreen.this, UserTripDetails.class);
+//                Toast.makeText(BookingScreen.this, "from date="+fromDate, Toast.LENGTH_SHORT).show();
                     intent.putExtra("from_date",fromDate);
                     intent.putExtra("to_date",todate);
                     intent.putExtra("property_id",propertyId);

@@ -184,6 +184,7 @@ public class UserTripDetails extends AppCompatActivity {
 
                 assert intent != null;
                 String fromDate = intent.getStringExtra("from_date");
+                Toast.makeText(UserTripDetails.this, "date =="+fromDate, Toast.LENGTH_SHORT).show();
                 String toDate = intent.getStringExtra("to_date");
 
                 // Check if the selected date falls within the booking range
@@ -192,6 +193,7 @@ public class UserTripDetails extends AppCompatActivity {
                     Log.d(TAG, "selectedDateStr: " + selectedDateStr);
                     Log.d(TAG, "fromDate: " + fromDate);
                     Log.d(TAG, "toDate: " + toDate);
+                    assert fromDate != null;
                     if (fromDate.equals("Choose booking date!")) {
                         Toast.makeText(UserTripDetails.this, "Invalid or missing from/to date", Toast.LENGTH_SHORT).show();
                         return; // Exit the method as validation failed
@@ -225,11 +227,14 @@ public class UserTripDetails extends AppCompatActivity {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     if (dataSnapshot.exists()) {
-                                        String propertyDateStr = dataSnapshot.child("fordate").getValue(String.class);
+                                        String propertyDateStr = dataSnapshot.child("fordate").getValue(String.class) != null
+                                                ? dataSnapshot.child("fordate").getValue(String.class)
+                                                : dataSnapshot.child("fromdate").getValue(String.class);
                                         String pop=dataSnapshot.child("priceofproperty").getValue(String.class);
                                         Intent i=getIntent();
                                         i.putExtra("priceofproperty",pop);
                                         try {
+                                            assert propertyDateStr != null;
                                             Date propertyDate = sdf.parse(propertyDateStr);
 
                                             if (propertyDate != null) {
