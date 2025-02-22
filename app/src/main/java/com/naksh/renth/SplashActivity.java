@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -70,7 +71,8 @@ public class SplashActivity extends AppCompatActivity {
                     startActivity(intent);
                 } else {
                     // User is not logged in, navigate to LoginScreen
-                    Intent intent = new Intent(SplashActivity.this, PropertyRecyclerActivityForUser.class);
+                    Intent intent = new Intent(SplashActivity.this, LoginScreen.class);
+                    Toast.makeText(SplashActivity.this, "hi", Toast.LENGTH_SHORT).show();
                     startActivity(intent);
                 }
 

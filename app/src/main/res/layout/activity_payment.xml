@@ -8,35 +8,30 @@
     android:background="@drawable/loginbkg">
 
     <androidx.constraintlayout.widget.Guideline
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent=".1"
-        android:orientation="vertical"
         android:id="@+id/guide_v_10"
-        />
-    <androidx.constraintlayout.widget.Guideline
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent=".045"
-        android:orientation="horizontal"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.1" />
+
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guide_v_11"
-        />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.045" />
+
     <TextView
         android:id="@+id/paymentmenthod"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Payment"
-        android:layout_marginTop="100dp"
         android:textSize="45dp"
         android:textColor="@color/black"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@+id/guide_v_11"
-        app:layout_constraintStart_toEndOf="@+id/guide_v_10"/>
-
-
-
-
-
+        app:layout_constraintStart_toEndOf="@+id/guide_v_10"
+        android:layout_marginTop="50dp" />
 
     <TextView
         android:id="@+id/pricedetails"
@@ -48,7 +43,8 @@
         android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@+id/guide_v_10"
         app:layout_constraintTop_toBottomOf="@+id/paymentmenthod"
-        android:layout_marginTop="25sp" />
+        android:layout_marginTop="25dp" />
+
     <TextView
         android:id="@+id/ratepernight"
         android:layout_width="wrap_content"
@@ -58,7 +54,18 @@
         android:textColor="@color/black"
         app:layout_constraintTop_toBottomOf="@+id/pricedetails"
         app:layout_constraintStart_toEndOf="@+id/guide_v_10"
-        android:layout_marginTop="30sp"/>
+        android:layout_marginTop="20dp" />
+
+    <TextView
+        android:id="@+id/ratepernightprice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Rate"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toTopOf="@+id/ratepernight"
+        app:layout_constraintStart_toEndOf="@+id/ratepernight"
+        android:layout_marginStart="40dp" />
 
     <TextView
         android:id="@+id/cleaningcharges"
@@ -67,97 +74,81 @@
         android:text="Cleaning charges"
         android:textSize="20sp"
         android:textColor="@color/black"
-
         app:layout_constraintTop_toBottomOf="@+id/ratepernight"
         app:layout_constraintStart_toEndOf="@+id/guide_v_10"
-        android:layout_marginTop="30sp"/>
-
-
-    <TextView
-        android:id="@+id/renthfee"
-        android:layout_width="wrap_content"
-        android:textColor="@color/black"
-
-        android:layout_height="wrap_content"
-        android:text="rentH Fee"
-        android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@+id/cleaningcharges"
-        app:layout_constraintStart_toEndOf="@+id/guide_v_10"
-        android:layout_marginTop="30sp"/>
-    <TextView
-        android:id="@+id/ratepernightprice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/pricedetails"
-        app:layout_constraintStart_toEndOf="@+id/ratepernight"
-        android:textSize="20sp"
-        android:text="Rate"
-        android:textColor="@color/black"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="100sp"/>
+        android:layout_marginTop="20dp" />
 
     <TextView
         android:id="@+id/cleaningprice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/ratepernightprice"
-        app:layout_constraintStart_toEndOf="@+id/ratepernight"
-        android:textSize="20sp"
         android:text="+10%"
+        android:textSize="20sp"
         android:textStyle="bold"
         android:textColor="@color/black"
+        app:layout_constraintTop_toTopOf="@+id/cleaningcharges"
+        app:layout_constraintStart_toEndOf="@+id/cleaningcharges"
+        android:layout_marginStart="40dp" />
 
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="100sp"/>
+    <TextView
+        android:id="@+id/renthfee"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="rentH Fee"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/cleaningcharges"
+        app:layout_constraintStart_toEndOf="@+id/guide_v_10"
+        android:layout_marginTop="20dp" />
+
     <TextView
         android:id="@+id/renthfeeprice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/cleaningprice"
-        app:layout_constraintStart_toEndOf="@+id/ratepernight"
-        android:textSize="20sp"
         android:text="+10%"
+        android:textSize="20sp"
         android:textStyle="bold"
         android:textColor="@color/black"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="100sp"/>
+        app:layout_constraintTop_toTopOf="@+id/renthfee"
+        app:layout_constraintStart_toEndOf="@+id/renthfee"
+        android:layout_marginStart="110dp" />
 
+    <!-- Horizontal Chain for Total and Total Price -->
     <TextView
         android:id="@+id/total"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/renthfee"
-        app:layout_constraintStart_toEndOf="@+id/guide_v_10"
-        android:textSize="25sp"
-        android:textStyle="bold"
+        android:layout_width="196dp"
+        android:layout_height="31dp"
+        android:layout_marginTop="30dp"
         android:text="Grand Total"
         android:textColor="@color/black"
-        android:layout_marginTop="30dp"
-        />
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/totalprice"
+        app:layout_constraintStart_toEndOf="@+id/guide_v_10"
+        app:layout_constraintTop_toBottomOf="@+id/renthfee" />
 
     <TextView
         android:id="@+id/totalprice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/renthfeeprice"
-        app:layout_constraintStart_toEndOf="@+id/ratepernight"
-        android:textSize="20sp"
         android:text="Rate"
+        android:textSize="19sp"
         android:textColor="@color/black"
-        android:layout_marginTop="25dp"
-        android:layout_marginLeft="100sp"/>
+        app:layout_constraintTop_toBottomOf="@+id/renthfeeprice"
+        app:layout_constraintStart_toEndOf="@+id/total"
+        android:layout_marginTop="35sp"
+        />
+
     <Button
         android:id="@+id/payment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/totalprice"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintStart_toEndOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="50dp"
         android:text="Make Payment"
+        android:textColor="@color/white"
         android:backgroundTint="@color/light_blue"
-       />
-
+        app:layout_constraintTop_toBottomOf="@+id/total"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="50dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

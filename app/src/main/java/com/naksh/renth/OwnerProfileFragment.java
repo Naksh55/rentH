@@ -88,6 +88,8 @@ public class OwnerProfileFragment extends Fragment {
                 Bundle savedInstanceState) {
             View view = inflater.inflate(R.layout.fragment_owner_profile, container, false);
             TextView textView1= view.findViewById(R.id.owneremail);
+//            TextView logoutTxt= view.findViewById(R.id.logout);
+
             TextView textView2 = view.findViewById(R.id.username);
             TextView textView3 = view.findViewById(R.id.ownerphoneno);
             Bundle bundle = getArguments();
@@ -121,8 +123,8 @@ public class OwnerProfileFragment extends Fragment {
 
             final AlertDialog logoutConfirmationDialog = alertDialogBuilder.create();
 
-            Button logoutButton = view.findViewById(R.id.logutbutton);
-            logoutButton.setOnClickListener(new View.OnClickListener() {
+            TextView logoutText = view.findViewById(R.id.logout);
+            logoutText.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     // Show logout confirmation dialog
