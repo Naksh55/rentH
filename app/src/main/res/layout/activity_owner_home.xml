@@ -15,14 +15,14 @@
         android:src="@drawable/baseline_account_circle_24"
         android:layout_marginTop="10dp" />
 
-    <ImageView
-        android:id="@+id/kycimg"
-        android:layout_width="50sp"
-        android:layout_height="50sp"
-        android:src="@drawable/kyc"
-        android:layout_marginTop="10dp"
-        android:layout_toEndOf="@+id/profileimg"
-        android:layout_marginStart="280dp" />
+<!--    <ImageView-->
+<!--        android:id="@+id/kycimg"-->
+<!--        android:layout_width="50sp"-->
+<!--        android:layout_height="50sp"-->
+<!--        android:src="@drawable/kyc"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:layout_toEndOf="@+id/profileimg"-->
+<!--        android:layout_marginStart="280dp" />-->
 
     <TextView
         android:layout_width="wrap_content"

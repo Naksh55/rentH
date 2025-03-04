@@ -97,7 +97,7 @@ public class BookingScreen extends AppCompatActivity {
 
 
             propertyId = intent.getStringExtra("property_id");
-            Toast.makeText(this, "id="+propertyId, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "id="+propertyId, Toast.LENGTH_SHORT).show();
             System.out.println(propertyId);
             if (propertyId != null) {
                 parentId = intent.getStringExtra("parent_id");
