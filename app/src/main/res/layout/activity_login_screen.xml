@@ -65,7 +65,7 @@
             android:id="@+id/user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="User"
+            android:text="Patient"
             android:textSize="18sp"
             android:paddingEnd="20dp"
             android:buttonTint="@color/light_blue"
@@ -77,7 +77,7 @@
             android:id="@+id/owner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Owner"
+            android:text="Psychologist"
             android:textSize="18sp"
 
             android:buttonTint="@color/light_blue"

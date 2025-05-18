@@ -6,15 +6,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SplashActivity"
-    android:background="@color/white"
+    android:background="@color/teal"
 
     >
 
     <ImageView
         android:id="@+id/renthlogo"
-        android:layout_width="600dp"
-        android:layout_height="600dp"
-        android:src="@drawable/renthlogo"
+        android:layout_width="500dp"
+        android:layout_height="500dp"
+        android:src="@drawable/neuracaredp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

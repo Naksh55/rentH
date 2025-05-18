@@ -20,7 +20,7 @@
         android:id="@+id/availablepropertyTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Available properties"
+        android:text="Available Counseling Centers"
         android:textSize="30sp"
         android:textStyle="bold"
         android:layout_gravity="center_horizontal"

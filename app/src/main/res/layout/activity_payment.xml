@@ -71,7 +71,7 @@
         android:id="@+id/cleaningcharges"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Cleaning charges"
+        android:text="GST charges"
         android:textSize="20sp"
         android:textColor="@color/black"
         app:layout_constraintTop_toBottomOf="@+id/ratepernight"
@@ -88,13 +88,13 @@
         android:textColor="@color/black"
         app:layout_constraintTop_toTopOf="@+id/cleaningcharges"
         app:layout_constraintStart_toEndOf="@+id/cleaningcharges"
-        android:layout_marginStart="40dp" />
+        android:layout_marginStart="80dp" />
 
     <TextView
         android:id="@+id/renthfee"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="rentH Fee"
+        android:text="Neura Care Fee"
         android:textSize="20sp"
         android:textColor="@color/black"
         app:layout_constraintTop_toBottomOf="@+id/cleaningcharges"
@@ -111,7 +111,7 @@
         android:textColor="@color/black"
         app:layout_constraintTop_toTopOf="@+id/renthfee"
         app:layout_constraintStart_toEndOf="@+id/renthfee"
-        android:layout_marginStart="110dp" />
+        android:layout_marginStart="60dp" />
 
     <!-- Horizontal Chain for Total and Total Price -->
     <TextView

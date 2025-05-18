@@ -19,7 +19,7 @@
             android:id="@+id/titleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Enter Property Details"
+            android:text="Enter Center Details"
             android:textSize="35sp"
             android:textStyle="bold"
             android:textColor="@color/black"
@@ -32,7 +32,7 @@
             android:id="@+id/nameOfProperty"
             android:layout_width="350sp"
             android:layout_height="wrap_content"
-            android:hint=" Name of Property"
+            android:hint=" Name of Center"
             android:layout_marginTop="50sp"
             android:layout_marginLeft="25sp"
             android:layout_alignTop="@+id/titleTextView">
@@ -50,7 +50,7 @@
             android:id="@+id/typeOfPropertyTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Select type of Property:"
+            android:text="Select type of Center:"
             android:textSize="20sp"
             android:textColor="@color/black"
             android:layout_below="@id/nameOfProperty"
@@ -83,7 +83,7 @@
             android:layout_width="350sp"
             android:layout_height="wrap_content"
             android:layout_below="@id/typeofproperty"
-            android:hint=" Price of Property"
+            android:hint=" Price of Center"
             android:layout_marginTop="20sp"
             android:layout_marginLeft="25sp">
 
@@ -195,7 +195,7 @@
             android:layout_width="350sp"
             android:layout_height="wrap_content"
             android:layout_below="@id/cityLayout"
-            android:hint="Property Description"
+            android:hint="Center Description"
             android:layout_marginTop="20sp"
             android:layout_marginLeft="25sp">
 
@@ -248,7 +248,7 @@
             android:id="@+id/dptv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Select DP of property"
+            android:text="Select DP of Center"
             android:layout_below="@+id/todate"
             android:layout_marginTop="20sp"
             android:textColor="@color/black"
